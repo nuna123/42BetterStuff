@@ -16,10 +16,11 @@ void	*ft_calloc(size_t nmemb, size_t size)
 {
 	char	*res;
 
-	if (!nmemb || !size)
-		return (NULL);
-	if ((nmemb * size) / size != nmemb)
-		return (NULL);
+	if (nmemb && size)
+	{
+		if ((nmemb * size) / size != nmemb)
+			return (NULL);
+	}
 	res = malloc(size * nmemb);
 	if (!res)
 		return (NULL);
