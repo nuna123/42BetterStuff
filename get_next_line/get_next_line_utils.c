@@ -89,5 +89,6 @@ void	ft_strjoin(char **s1, char const *s2)
 	}
 	if (*s1)
 		free(*s1);
+	ft_bzero((char *)s2, BUFFER_SIZE);
 	*s1 = ret_str;
 }

@@ -14,28 +14,29 @@
 
 char	*read_file(int fd, char *res)
 {
-	char	buffer[BUFFER_SIZE + 1];
+	char	*buffer;
 	int		err_code;
 
-	ft_bzero(buffer, BUFFER_SIZE + 1);
+	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!buffer)
+		return (NULL);
 	err_code = 1;
 	while (err_code > 0 && !ft_strchr(res, '\n'))
 	{
 		err_code = read(fd, buffer, BUFFER_SIZE);
 		if (err_code > 0)
-		{
 			ft_strjoin(&res, buffer);
-			ft_bzero(buffer, BUFFER_SIZE);
-		}
 		else if (err_code == 0)
 			break ;
 		else if (err_code == -1)
 		{
 			if (res)
 				free(res);
-			return (NULL);
+			res = NULL;
+			break ;
 		}
 	}
+	free(buffer);
 	return (res);
 }
 
@@ -107,13 +108,8 @@ char	*get_next_line(int fd)
 	static char	*s[FOPEN_MAX];
 	char		*line;
 
-	if (BUFFER_SIZE < 1 || fd < 0)
+	if (BUFFER_SIZE < 1 || fd < 0 || fd > FOPEN_MAX)
 		return (NULL);
-	if (read(fd, NULL, 0) == -1)
-	{
-		free (s[fd]);
-		return (NULL);
-	}
 	s[fd] = read_file(fd, s[fd]);
 	if (!s[fd])
 		return (NULL);

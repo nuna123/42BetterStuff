@@ -14,28 +14,29 @@
 
 char	*read_file(int fd, char *res)
 {
-	char	buffer[BUFFER_SIZE + 1];
+	char	*buffer;
 	int		err_code;
 
-	ft_bzero(buffer, BUFFER_SIZE + 1);
+	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!buffer)
+		return (NULL);
 	err_code = 1;
 	while (err_code > 0 && !ft_strchr(res, '\n'))
 	{
 		err_code = read(fd, buffer, BUFFER_SIZE);
 		if (err_code > 0)
-		{
 			ft_strjoin(&res, buffer);
-			ft_bzero(buffer, BUFFER_SIZE);
-		}
 		else if (err_code == 0)
 			break ;
 		else if (err_code == -1)
 		{
 			if (res)
 				free(res);
-			return (NULL);
+			res = NULL;
+			break ;
 		}
 	}
+	free(buffer);
 	return (res);
 }
 
@@ -60,7 +61,7 @@ char	*update_s(char *s)
 		free(s);
 	if (!new_len)
 		return (NULL);
-	new_s = ft_calloc(new_len + 1, sizeof(char));
+	new_s = (char *) ft_calloc(new_len + 1, sizeof(char));
 	if (!new_s)
 		return (NULL);
 	i = -1;
@@ -85,7 +86,7 @@ char	*get_line(char *s)
 		line_len++;
 	if (s[line_len] == '\n')
 		line_len++;
-	line = ft_calloc(line_len + 1, sizeof(char));
+	line = (char *) ft_calloc(line_len + 1, sizeof(char));
 	if (!line)
 		return (NULL);
 	while (i < line_len)
@@ -107,6 +108,8 @@ char	*get_next_line(int fd)
 	static char	*s[FOPEN_MAX];
 	char		*line;
 
+	if (BUFFER_SIZE < 1 || fd < 0 || fd > FOPEN_MAX)
+		return (NULL);
 	s[fd] = read_file(fd, s[fd]);
 	if (!s[fd])
 		return (NULL);

@@ -29,7 +29,7 @@ void	ft_bzero(void *s, size_t n)
 	unsigned char	*p;
 	size_t			i;
 
-	p = s;
+	p = (unsigned char *) s;
 	i = 0;
 	if (!n)
 		return ;
@@ -40,7 +40,7 @@ void	ft_bzero(void *s, size_t n)
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
-	char	*res;
+	void	*res;
 
 	if ((nmemb * size) / size != nmemb)
 		return (NULL);
@@ -75,7 +75,7 @@ void	ft_strjoin(char **s1, char const *s2)
 	size_t	i;
 
 	tot_len = ft_strlen(*s1) + ft_strlen(s2);
-	ret_str = ft_calloc(tot_len + 1, sizeof(char));
+	ret_str = (char *)ft_calloc(tot_len + 1, sizeof(char));
 	if (!ret_str)
 		return ;
 	i = 0;
@@ -89,5 +89,6 @@ void	ft_strjoin(char **s1, char const *s2)
 	}
 	if (*s1)
 		free(*s1);
+	ft_bzero((char *)s2, BUFFER_SIZE);
 	*s1 = ret_str;
 }
