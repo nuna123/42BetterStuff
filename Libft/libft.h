@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+#include <fcntl.h>
 
 //For get_next_line
 # ifndef BUFFER_SIZE
@@ -80,6 +81,6 @@ t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
 					void (*del)(void *));
 
 //EXTRAS
-char			*get_line(char *s);
+char			*get_next_line(int fd);
 
 #endif

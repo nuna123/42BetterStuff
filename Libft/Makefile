@@ -25,6 +25,7 @@ BONUS_SRCS = ft_lstadd_back.c ft_lstclear.c ft_lstiter.c \
 		ft_lstmap.c  ft_lstsize.c ft_lstadd_front.c \
 		ft_lstdelone.c  ft_lstlast.c  ft_lstnew.c
 
+EXTRA_SRCS = get_next_line.c
 
 NAME = libft.a
 
@@ -37,20 +38,34 @@ OBJS_PREFIXED = $(addprefix $(OBJS_DIR), $(OBJS))
 BONUS_OBJS = $(BONUS_SRCS:.c=.o)
 BONUS_OBJS_PREFIXED = $(addprefix $(OBJS_DIR), $(BONUS_OBJS))
 
+EXTRA_OBJS = $(EXTRA_SRCS:.c=.o)
+EXTRA_OBJS_PREFIXED = $(addprefix $(OBJS_DIR), $(EXTRA_OBJS))
+
+
 CC_FLAGS = -Wall -Wextra -Werror
 CC = cc
 
 all: ${NAME}
 
 $(OBJS_DIR)%.o : %.c libft.h
-	mkdir -p $(OBJS_DIR)
-	$(CC) $(CC_FLAGS) -c $< -o $@
+	@ mkdir -p $(OBJS_DIR)
+	@ $(CC) $(CC_FLAGS) -c $< -o $@
 
-${NAME}:${OBJS_PREFIXED}
-	ar -crs ${NAME} ${OBJS_PREFIXED}
+${NAME}:	${OBJS_PREFIXED}
+	@ ar -crs ${NAME} ${OBJS_PREFIXED}
+	@ echo "${NAME} created!" 
+
 
 bonus: $(BONUS_OBJS_PREFIXED) $(NAME)
-	ar -rs ${NAME} ${BONUS_OBJS_PREFIXED}
+	@ ar -rs ${NAME} ${BONUS_OBJS_PREFIXED}
+	@ echo "BONUSES added to ${NAME}!" 
+
+
+extras: $(EXTRA_OBJS_PREFIXED) $(NAME)
+	@ ar -rs ${NAME} ${EXTRA_OBJS_PREFIXED}
+	@ echo "EXTRAS added to ${NAME}!" 
+
+extra: extras
 
 clean:
 	rm -rf ${OBJS_DIR}
@@ -60,4 +75,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus extras
