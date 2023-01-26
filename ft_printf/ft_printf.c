@@ -12,7 +12,19 @@ int	print_format(char *format_str, int *char_count);
 	can either be one letter or a bunch of numbers/points/flags
 	return it
 */
-char *grab_f_str();
+char *grab_f_str(char *s)
+{
+	int		f_str_len;
+	char	*ret_str;
+
+	f_str_len = 0;
+	while (ft_strchr(s, s[f_str_len]))
+		f_str_len++;
+	ret_str = ft_calloc(f_str_len + 1, sizeof(char));
+	if (!ret_str)
+		return (NULL);
+	ft_substr
+}
 int	ft_printf(const char *str, ...)
 {
 	int	char_count;

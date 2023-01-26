@@ -13,6 +13,8 @@
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
+#define POSSIBLE_FLGS="cspdiuxX0123456789-+ #"
+
 #include <stdarg.h>
 #include <stdio.h>
 
