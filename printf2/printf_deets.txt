@@ -1,0 +1,45 @@
+You have to implement the following conversions:
+• %c Prints a single character.
+• %s Prints a string (as defined by the common C convention).
+• %p The void * pointer argument has to be printed in hexadecimal format.
+• %d Prints a decimal (base 10) number.
+• %i Prints an integer in base 10.
+• %u Prints an unsigned decimal (base 10) number.
+• %x Prints a number in hexadecimal (base 16) lowercase format.
+• %X Prints a number in hexadecimal (base 16) uppercase format.
+• %% Prints a percent sign.
+
+Bonus list:
+• Manage any combination of the following flags: ’-0.’ and the field minimum width
+under all conversions.
+• Manage all the following flags: ’# +’ (Yes, one of them is a space)
+
+	Minimum field width - By default the width of a field will be the minimum required to hold the data.If you want to increase the field width you can use the following syntax.
+	Default is right aligned, first padding then the var.
+		CMD:	printf("Here is a number{%4d} and a{%10s}word.\n", 5, "little");
+		OUT:	Here is a number{   5}and a{    little}word.
+	padding is added only if var length is smaller than min.field
+
+	0	The value should be padded with '0's. For d, i, u, x, X conversions.
+			the converted value is padded on the left with zeros rather than blanks.
+			if used with c, s, the flag is ignored and val is blank-padded.
+	
+	Precision (.) - An optional precision, in the form of a period ('.')followed by an optional decimal digit string. 
+	If the precision is given as just '.', the precision is taken to be zero.
+	A negative precision is taken as if the precision were omitted.
+	This gives the minimum number of digits to appear for d, i, u, x, and X conversions,or the maximum number of characters to be printed from a string for s and S conversions.
+	//FOR ints: basically zero-padding
+	//FOR S: max_len of the str
+
+	-	LEFT-JUSTIFICATION: The converted value is to be left adjusted on the field
+			boundary.(The default is right justification.)The
+			converted value is padded on the right with blanks, rather
+			than on the left with blanks or zeros.A '-' overrides a 0
+			if both are given.
+
+
+
+	'+'/' ' SHOW SIGN add plus sign or space before positive vals
+
+	#	Prefix 0x to the output value when used with the hexadecimal conversion character x. 
+	makes it the same as con. char p.

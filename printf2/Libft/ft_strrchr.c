@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header.c                                           :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nroth <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/15 10:50:22 by nroth             #+#    #+#             */
-/*   Updated: 2022/10/15 10:50:30 by nroth            ###   ########.fr       */
+/*   Created: 2023/01/11 12:06:25 by nroth             #+#    #+#             */
+/*   Updated: 2023/01/11 12:06:26 by nroth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_bzero(void *s, size_t n)
+char	*ft_strrchr(const char *s, int c)
 {
-	unsigned char	*p;
-	size_t			i;
+	char	*res;
 
-	p = (unsigned char *) s;
-	i = 0;
-	if (!n)
-		return ;
-	while (i < n)
-		*(p + i++) = 0;
-	*p = 0;
+	res = NULL;
+	while (*s)
+	{
+		if (*s == c % 256)
+			res = (char *) s;
+		s++;
+	}
+	if (!c)
+		res = (char *) s;
+	return (res);
 }

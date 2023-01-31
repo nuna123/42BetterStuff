@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header.c                                           :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nroth <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/15 10:50:22 by nroth             #+#    #+#             */
-/*   Updated: 2022/10/15 10:50:30 by nroth            ###   ########.fr       */
+/*   Created: 2023/01/14 14:16:05 by nroth             #+#    #+#             */
+/*   Updated: 2023/01/14 14:16:06 by nroth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_bzero(void *s, size_t n)
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	unsigned char	*p;
-	size_t			i;
+	char			*res;
+	unsigned int	i;
 
-	p = (unsigned char *) s;
+	res = ft_calloc(ft_strlen(s) + 1, sizeof(char));
 	i = 0;
-	if (!n)
-		return ;
-	while (i < n)
-		*(p + i++) = 0;
-	*p = 0;
+	if (!res)
+		return (NULL);
+	while (i < ft_strlen(s))
+	{
+		res[i] = f(i, s[i]);
+		i++;
+	}
+	return (res);
 }

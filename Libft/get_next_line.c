@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-void	ft_str_append(char **s1, char const *s2)
+static void	ft_str_append(char **s1, char const *s2)
 {
 	char	*ret_str;
 	size_t	tot_len;
@@ -37,7 +37,7 @@ void	ft_str_append(char **s1, char const *s2)
 	*s1 = ret_str;
 }
 
-char	*read_file(int fd, char *res)
+static char	*read_file(int fd, char *res)
 {
 	char	*buffer;
 	int		err_code;
@@ -69,7 +69,7 @@ char	*read_file(int fd, char *res)
 	update s to remove the line read,
 	freeing original and allocating whatever leftover is in s
 */
-char	*update_s(char *s)
+static char	*update_s(char *s)
 {
 	int		i;
 	char	*new_s;
@@ -99,7 +99,7 @@ char	*update_s(char *s)
 /*
 	get the line from s, only up to \n or \0.
 */
-char	*get_line(char *s)
+static char	*get_line(char *s)
 {
 	char	*line;
 	int		line_len;

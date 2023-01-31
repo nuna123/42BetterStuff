@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header.c                                           :+:      :+:    :+:   */
+/*   header2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nroth <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/15 10:50:22 by nroth             #+#    #+#             */
-/*   Updated: 2022/10/15 10:50:30 by nroth            ###   ########.fr       */
+/*   Created: 2022/10/14 08:56:59 by nroth             #+#    #+#             */
+/*   Updated: 2022/10/14 08:57:05 by nroth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_bzero(void *s, size_t n)
+size_t	ft_strlen(const char *s)
 {
-	unsigned char	*p;
-	size_t			i;
+	unsigned long	length;
 
-	p = (unsigned char *) s;
-	i = 0;
-	if (!n)
-		return ;
-	while (i < n)
-		*(p + i++) = 0;
-	*p = 0;
+	if (!s)
+		return (0);
+	length = 0;
+	while (s[length] != '\0')
+		length++;
+	return (length);
 }

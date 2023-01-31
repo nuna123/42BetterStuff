@@ -10,18 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-void	ft_bzero(void *s, size_t n)
+int	ft_isprint(int c)
 {
-	unsigned char	*p;
-	size_t			i;
-
-	p = (unsigned char *) s;
-	i = 0;
-	if (!n)
-		return ;
-	while (i < n)
-		*(p + i++) = 0;
-	*p = 0;
+	if (c > 31 && c < 127)
+		return (16384);
+	return (0);
 }

@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header.c                                           :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nroth <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/15 10:50:22 by nroth             #+#    #+#             */
-/*   Updated: 2022/10/15 10:50:30 by nroth            ###   ########.fr       */
+/*   Created: 2023/01/12 14:40:22 by nroth             #+#    #+#             */
+/*   Updated: 2023/01/12 14:40:28 by nroth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_bzero(void *s, size_t n)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	unsigned char	*p;
-	size_t			i;
+	char	*ret_str;
+	int		tot_len;
 
-	p = (unsigned char *) s;
-	i = 0;
-	if (!n)
-		return ;
-	while (i < n)
-		*(p + i++) = 0;
-	*p = 0;
+	tot_len = ft_strlen(s1) + ft_strlen(s2) + 1;
+	ret_str = ft_calloc(tot_len, sizeof(char));
+	if (!ret_str)
+		return (NULL);
+	ft_strlcat(ret_str, (char *)s1, tot_len);
+	ft_strlcat(ret_str, (char *)s2, tot_len);
+	return (ret_str);
 }

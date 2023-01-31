@@ -1,27 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header.c                                           :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nroth <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/15 10:50:22 by nroth             #+#    #+#             */
-/*   Updated: 2022/10/15 10:50:30 by nroth            ###   ########.fr       */
+/*   Created: 2023/01/11 15:37:22 by nroth             #+#    #+#             */
+/*   Updated: 2023/01/11 15:37:24 by nroth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_bzero(void *s, size_t n)
+int	ft_atoi(const char *nptr)
 {
-	unsigned char	*p;
-	size_t			i;
+	int		res;
+	int		sign;
+	size_t	counter;
 
-	p = (unsigned char *) s;
-	i = 0;
-	if (!n)
-		return ;
-	while (i < n)
-		*(p + i++) = 0;
-	*p = 0;
+	res = 0;
+	sign = 1;
+	counter = 0;
+	while ((nptr[counter] >= 9 && nptr[counter] <= 13)
+		|| nptr[counter] == ' ')
+		counter++;
+	if (nptr[counter] == '-'
+		|| nptr[counter] == '+')
+		sign = 44 - nptr[counter++];
+	while (counter < ft_strlen(nptr) && ft_isdigit(nptr[counter]))
+	{
+		res = (res * 10) + (nptr[counter] - '0');
+		counter++;
+	}
+	return (res * sign);
 }

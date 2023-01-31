@@ -11,14 +11,23 @@
 # **************************************************************************** #
 
 
-NAME = libftprintf.a
 
-LIBFT = libft.a
-LIBFT_FOL = ./Libft/
-LIBFT_PATH = $(addprefix $(LIBFT_FOL), $(LIBFT))
+SRCS =	ft_atoi.c ft_itoa.c ft_putendl_fd.c ft_strlcat.c ft_substr.c \
+		ft_bzero.c ft_putnbr_fd.c ft_strlcpy.c ft_tolower.c \
+		ft_calloc.c ft_memchr.c ft_putstr_fd.c ft_strlen.c ft_toupper.c \
+		ft_isalnum.c ft_memcmp.c ft_split.c ft_strmapi.c \
+		ft_isalpha.c ft_memcpy.c ft_strchr.c ft_strncmp.c \
+		ft_isascii.c ft_memmove.c ft_strdup.c ft_strnstr.c \
+		ft_isdigit.c ft_memset.c ft_striteri.c ft_strrchr.c \
+		ft_isprint.c ft_putchar_fd.c ft_strjoin.c ft_strtrim.c
 
-SRCS = ft_printf.c printing_funcs.c ft_utilities.c
+BONUS_SRCS = ft_lstadd_back.c ft_lstclear.c ft_lstiter.c \
+		ft_lstmap.c  ft_lstsize.c ft_lstadd_front.c \
+		ft_lstdelone.c  ft_lstlast.c  ft_lstnew.c
 
+EXTRA_SRCS = get_next_line.c
+
+NAME = libft.a
 
 HEADER = $(NAME:.a=.h)
 
@@ -26,24 +35,37 @@ OBJS_DIR = objs/
 OBJS = $(SRCS:.c=.o)
 OBJS_PREFIXED = $(addprefix $(OBJS_DIR), $(OBJS))
 
+BONUS_OBJS = $(BONUS_SRCS:.c=.o)
+BONUS_OBJS_PREFIXED = $(addprefix $(OBJS_DIR), $(BONUS_OBJS))
+
+EXTRA_OBJS = $(EXTRA_SRCS:.c=.o)
+EXTRA_OBJS_PREFIXED = $(addprefix $(OBJS_DIR), $(EXTRA_OBJS))
+
+
 CC_FLAGS = -Wall -Wextra -Werror
 CC = cc
 
 all: ${NAME}
 
-$(OBJS_DIR)%.o : %.c
+$(OBJS_DIR)%.o : %.c libft.h
 	@ mkdir -p $(OBJS_DIR)
 	@ $(CC) $(CC_FLAGS) -c $< -o $@
 
-${NAME}:	${LIBFT} ${OBJS_PREFIXED}
-	mv ${LIBFT} ${NAME}
-	ar -rs ${NAME} ${OBJS_PREFIXED}
-	echo "${NAME} created!" 
+${NAME}:	${OBJS_PREFIXED}
+	@ ar -crs ${NAME} ${OBJS_PREFIXED}
+	@ echo "${NAME} created!" 
 
-${LIBFT}:
-	make -C ${LIBFT_FOL} all bonus extras
-	cp $(LIBFT_PATH) ${LIBFT}
 
+bonus: $(BONUS_OBJS_PREFIXED) $(NAME)
+	@ ar -rs ${NAME} ${BONUS_OBJS_PREFIXED}
+	@ echo "BONUSES added to ${NAME}!" 
+
+
+extras: $(EXTRA_OBJS_PREFIXED) $(NAME)
+	@ ar -rs ${NAME} ${EXTRA_OBJS_PREFIXED}
+	@ echo "EXTRAS added to ${NAME}!" 
+
+extra: extras
 
 clean:
 	rm -rf ${OBJS_DIR}

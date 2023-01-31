@@ -8,33 +8,30 @@
 */
 int	printer(va_list va_ptr, char *type_str, int *char_count)
 {
-	int		tot_len;
-	char	*toprint;
+	int tot_len;
 	if (!type_str)
 		return (-1);
 	if (ft_strlen(type_str) == 1)
 	{
 		if (type_str[0] == 'c')
-			toprint = print_char(va_arg(va_ptr, int));
+			tot_len = print_char(va_arg(va_ptr, int));
 		else if (type_str[0] == 's')
-			toprint = print_str(va_arg(va_ptr, char *));
+			tot_len = print_str(va_arg(va_ptr, char *));
 		else if (type_str[0] == 'p')
-			toprint = print_ptr(va_arg(va_ptr, unsigned long long));
+			tot_len = print_ptr(va_arg(va_ptr, unsigned long long));
 		else if (type_str[0] == 'd'
 			|| type_str[0] == 'i')
-			toprint = print_int(va_arg(va_ptr, int));
+			tot_len = print_int(va_arg(va_ptr, int));
 		else if (type_str[0] == 'u')
-			toprint = print_unsigned_int(va_arg(va_ptr, unsigned int));
+			tot_len = print_unsigned_int(va_arg(va_ptr, unsigned int));
 		else if (type_str[0] == 'x'
 				|| type_str[0] == 'X')
-			toprint = print_hex(va_arg(va_ptr, unsigned int), type_str[0]);
+			tot_len = print_hex(va_arg(va_ptr, unsigned int), type_str[0]);
 		else if (type_str[0] == '%')
-			toprint = print_char('%');
+			tot_len = print_char('%');
 	}
 	free(type_str);
-	*char_count += ft_strlen(toprint);
-	free(toprint);
-	return (1);
+	return (tot_len + *char_count);
 }
 
 char *grab_str(char *str)

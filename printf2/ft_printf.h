@@ -16,16 +16,23 @@
 int	ft_printf(const char *, ...);
 
 //printing_funcs
-int	print_char(int i);
-int	print_str(char *s);
-int	print_ptr(unsigned long long ptr);
-int	print_int(int num);
-int	print_unsigned_int(unsigned int num);
-int	print_hex(unsigned int num, char type);
+char *print_char(int i);
+char *print_str(char *s);
+char *print_ptr(void *x);
+char *print_int(int num);
+char *print_unsigned_int(unsigned int num);
+char *print_hex(unsigned int num, char type);
 
 //utilities file
 size_t	ft_pow(size_t nb, int power);
 char	*unsigned_itoa(size_t num);
+size_t	ft_unsigned_pow(size_t nb, int power);
+
+
+//len functions
+
+size_t	unsigned_len(unsigned long long num);
+size_t	num_len(int	num);
 
 
 #endif

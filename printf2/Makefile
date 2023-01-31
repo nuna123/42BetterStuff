@@ -17,7 +17,7 @@ LIBFT = libft.a
 LIBFT_FOL = ./Libft/
 LIBFT_PATH = $(addprefix $(LIBFT_FOL), $(LIBFT))
 
-SRCS = ft_printf.c printing_funcs.c ft_utilities.c
+SRCS = ft_printf.c printing_funcs.c ft_utilities.c len_functions.c
 
 
 HEADER = $(NAME:.a=.h)
