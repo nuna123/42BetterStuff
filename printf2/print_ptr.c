@@ -12,47 +12,45 @@
 
 #include "ft_printf.h"
 
-static void	hex_add_digit(unsigned int num, char cap, char *res_ptr, int num_len)
+static void	ptr_add_digits(unsigned long long num, char *res_ptr)
 {
-	unsigned int	div;
-	unsigned int	mod;
-	char	*last;
+	char			*last;
 
-	div = num / 16;
-	mod = num % 16;
-	if (!res_ptr)
-		return ;
-	last = ft_strchr(res_ptr, '\0');
-	if (div >= 16)
+	if (num >= 16)
 	{
-		hex_add_digit(div, cap, res_ptr, num_len);
-		last = ft_strchr(res_ptr, '\0');
+		ptr_add_digits(num / 16, res_ptr);
+		ptr_add_digits(num % 16, res_ptr);
 	}
-	else if (div)
+	else
 	{
-		*last = HEX_SMOL[div];
-		if (cap == 'X')
-			*last = HEX_CAP[div];
 		last = ft_strchr(res_ptr, '\0');
+		*last = HEX_SMOL[num];
 	}
-	*last = HEX_SMOL[mod];
-	if (cap == 'X')
-		*last = HEX_CAP[mod];
 }
-/*
-	type is X if capital, x if small
-*/
-char	*print_hex(unsigned int num, char type)
+
+int	ptr_len(unsigned long long num)
+{
+	int	len;
+
+	len = 0;
+	while (num != 0)
+	{
+		len++;
+		num = num / 16;
+	}
+	return (len);
+}
+
+char	*print_ptr(unsigned long long ptr)
 {
 	int		num_len;
 	char	*res;
 
-	num_len = 1;
-	while (num / ft_unsigned_pow(16, num_len) >= 16)
-		num_len++;
-	res = ft_calloc(num_len + 1, sizeof(char));
+	num_len = ptr_len(ptr);
+	res = ft_calloc(num_len + 3, sizeof(char));
 	if (!res)
 		return (NULL);
-	hex_add_digit(num, type, res, num_len);
+	ft_strlcat(res, "0x", 3);
+	ptr_add_digits(ptr, res);
 	return (res);
 }

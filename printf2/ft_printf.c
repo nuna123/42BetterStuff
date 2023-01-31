@@ -33,7 +33,7 @@ int	add_hex_pre(char type, char **toprint)
 	if (type == 'X')
 		newstr = ft_strjoin("0X", *toprint);
 	else
-		newstr = ft_strjoin("0X", *toprint);
+		newstr = ft_strjoin("0x", *toprint);
 	free(*toprint);
 	*toprint = newstr;
 	return (0);
@@ -62,10 +62,10 @@ int	print(char type, char *typestr, char *toprint)
 
 int	format_figureouter(va_list va_ptr, char *type_str, int *char_count)
 {
-	//int		tot_len;
 	char	*toprint;
 	if (!type_str)
 		return (-1);
+	toprint = NULL;
 	if (ft_strlen(type_str) == 1)
 	{
 		if (type_str[0] == 'c')
@@ -73,7 +73,7 @@ int	format_figureouter(va_list va_ptr, char *type_str, int *char_count)
 		else if (type_str[0] == 's')
 			toprint = print_str(va_arg(va_ptr, char *));
 		else if (type_str[0] == 'p')
-			toprint = print_ptr(va_arg(va_ptr, void *));
+			toprint = print_ptr(va_arg(va_ptr,unsigned long long));
 		else if (type_str[0] == 'd'
 			|| type_str[0] == 'i')
 			toprint = print_int(va_arg(va_ptr, int));
