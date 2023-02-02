@@ -1,60 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nroth <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/13 13:31:31 by nroth             #+#    #+#             */
+/*   Updated: 2023/01/13 13:31:32 by nroth            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	print_char(int i)
+char *print_char(int i)
 {
 	char c;
 
 	c = (char) i;
-	write(1, &c, 1);
-	return (1);
+	return (ft_strdup(&c));
 }
 
-int	print_str(char *s)
+char *print_str(char *s)
 {
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		write(1, &s[i], 1);
-		i++;
-	}
-	return (i);
+	return (ft_strdup(s));
 }
 
-int	print_ptr(unsigned long long ptr)
+char *print_int(int num)
 {
-	printf("%p", ptr);
-	return (0);
+	return (ft_itoa(num));
 }
 
-int	print_int(int num)
+char *print_unsigned_int(unsigned int num)
 {
-	char	*itoed;
-	int		res;
-
-	itoed = ft_itoa(num);
-	res = print_str(itoed);
-	free(itoed);
-	return (res);
-}
-
-int	print_unsigned_int(unsigned int num)
-{
-	char	*itoed;
-	int		res;
-
-	itoed = ft_unsigned_itoa(num);
-	res = print_str(itoed);
-	free(itoed);
-	return (res);
-
-}
-
-int	print_hex(unsigned int num, char type)
-{
-	(void) num;
-	(void) type; // Xcaps or x small
-	return (0);
+	return (unsigned_itoa(num));
 }

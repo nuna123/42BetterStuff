@@ -17,7 +17,9 @@ LIBFT = libft.a
 LIBFT_FOL = ./Libft/
 LIBFT_PATH = $(addprefix $(LIBFT_FOL), $(LIBFT))
 
-SRCS = ft_printf.c printing_funcs.c ft_utilities.c
+SRCS =	ft_printf.c\
+		ft_utilities.c len_functions.c\
+		printing_funcs.c print_hex.c print_ptr.c
 
 
 HEADER = $(NAME:.a=.h)
@@ -41,7 +43,7 @@ ${NAME}:	${LIBFT} ${OBJS_PREFIXED}
 	echo "${NAME} created!" 
 
 ${LIBFT}:
-	make -C ${LIBFT_FOL} all bonus extras
+	make -C ${LIBFT_FOL} all bonus extras clean
 	cp $(LIBFT_PATH) ${LIBFT}
 
 

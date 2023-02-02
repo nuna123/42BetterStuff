@@ -1,6 +1,16 @@
 #include "ft_printf.h"
 
-size_t	ft_unsigned_pow(size_t nb, int power)
+unsigned int	ft_unsigned_pow(size_t nb, int power)
+{
+	if (power < 0)
+		return (0);
+	if (power == 1)
+		return (nb);
+	if (power == 0)
+		return (1);
+	return (nb * ft_unsigned_pow(nb, power - 1));
+}
+int	ft_pow(int nb, int power)
 {
 	if (power < 0)
 		return (0);

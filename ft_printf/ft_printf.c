@@ -2,16 +2,70 @@
 #include "ft_printf.h"
 #include "Libft/libft.h"
 
+int	add_sign(char type, char *typestr, char **toprint)
+{
+	char *newstr;
+
+	if (type != 'd'
+		&& type != 'i')
+			return (-1);
+
+	if(ft_isdigit(**toprint))
+	{
+		if (ft_strchr(typestr, '+'))
+			newstr = ft_strjoin("+", *toprint);
+		else
+			newstr = ft_strjoin(" ", *toprint);
+		free(toprint);
+		*toprint = newstr;
+	}
+	return (0);
+}
+
+int	add_hex_pre(char type, char **toprint)
+{
+	char *newstr;
+
+	if (type != 'x' && type != 'X')
+		return (-1);
+	if (!ft_memcmp(*toprint, "0", 2))
+		return (0);
+	if (type == 'X')
+		newstr = ft_strjoin("0X", *toprint);
+	else
+		newstr = ft_strjoin("0x", *toprint);
+	free(*toprint);
+	*toprint = newstr;
+	return (0);
+}
+
 /*
 	gets cut str from grab_str, has to free it. 
 	figures out where to send the argument
 */
-int	printer(va_list va_ptr, char *type_str, int *char_count)
+
+int	print(char type, char *typestr, char *toprint)
 {
-	int		tot_len;
+	int status_code;
+
+	status_code = 0;
+	if (ft_strchr(typestr, '+')
+		|| ft_strchr(typestr, ' '))
+		status_code += add_sign(type, typestr, &toprint);
+
+	if (ft_strchr(typestr, '#'))
+		status_code += add_hex_pre(type, &toprint);
+	
+	return (0);
+}
+
+
+int	format_figureouter(va_list va_ptr, char *type_str, int *char_count)
+{
 	char	*toprint;
 	if (!type_str)
 		return (-1);
+	toprint = NULL;
 	if (ft_strlen(type_str) == 1)
 	{
 		if (type_str[0] == 'c')
@@ -19,7 +73,7 @@ int	printer(va_list va_ptr, char *type_str, int *char_count)
 		else if (type_str[0] == 's')
 			toprint = print_str(va_arg(va_ptr, char *));
 		else if (type_str[0] == 'p')
-			toprint = print_ptr(va_arg(va_ptr, unsigned long long));
+			toprint = print_ptr(va_arg(va_ptr,unsigned long long));
 		else if (type_str[0] == 'd'
 			|| type_str[0] == 'i')
 			toprint = print_int(va_arg(va_ptr, int));
@@ -32,6 +86,7 @@ int	printer(va_list va_ptr, char *type_str, int *char_count)
 			toprint = print_char('%');
 	}
 	free(type_str);
+	print(type_str[ft_strlen(toprint) - 1],type_str, toprint);
 	*char_count += ft_strlen(toprint);
 	free(toprint);
 	return (1);
@@ -72,7 +127,7 @@ int	ft_printf(const char *str, ...)
 	{
 		if (str[i] == '%')
 		{
-			stat_code = printer(va_ptr, grab_str((char *)&str[i + 1]), &char_counter);
+			stat_code = format_figureouter(va_ptr, grab_str((char *)&str[i + 1]), &char_counter);
 			if(stat_code == -1)
 				return (0);
 			i += stat_code;
@@ -85,7 +140,7 @@ int	ft_printf(const char *str, ...)
 	return (0);
 }
 
-
+/* 
 int main(void)
 {
 	int i = 4;
@@ -94,3 +149,4 @@ int main(void)
 	printf("\n\n\n");
 	return 0;
 }
+ */
