@@ -13,56 +13,11 @@
 #include "ft_printf.h"
 #include "Libft/libft.h"
 
-int	add_sign(char type, char *typestr, char **toprint)
-{
-	char	*newstr;
-
-	if (type != 'd'
-		&& type != 'i')
-		return (-1);
-	if (ft_isdigit(**toprint))
-	{
-		if (ft_strchr(typestr, '+'))
-			newstr = ft_strjoin("+", *toprint);
-		else
-			newstr = ft_strjoin(" ", *toprint);
-		free(toprint);
-		*toprint = newstr;
-	}
-	return (0);
-}
-
-int	add_hex_pre(char type, char **toprint)
-{
-	char	*newstr;
-
-	if (type != 'x' && type != 'X')
-		return (-1);
-	if (!ft_memcmp(*toprint, "0", 2))
-		return (0);
-	if (type == 'X')
-		newstr = ft_strjoin("0X", *toprint);
-	else
-		newstr = ft_strjoin("0x", *toprint);
-	free(*toprint);
-	*toprint = newstr;
-	return (0);
-}
-
 /*
 	gets cut str from grab_str, has to free it. 
 	figures out where to send the argument
 */
 
-int	flagifier(char type, char *typestr, char **toprint)
-{
-	if (ft_strchr(typestr, '+')
-		|| ft_strchr(typestr, ' '))
-		add_sign(type, typestr, toprint);
-	if (ft_strchr(typestr, '#'))
-		add_hex_pre(type, toprint);
-	return (0);
-}
 
 char	*get_string(va_list va_ptr, char *type_str, int type_len)
 {
@@ -163,8 +118,10 @@ int main(void)
 	int i = 4;
 
 
-	int ret = ft_printf("HI{%#x}\n", i);
-	ft_printf("ret: {%i}\n", ret);
+	//int ret = ft_printf("HI{%#rx}\n", i);
+	int ret2 = printf("HI{%#x}\n", i);
+	//ft_printf("ret: {%i}\n", ret);
+	ft_printf("ret2: {%i}\n", ret2);
 
 	//printf("ME{%s}", );
 	//printf("\n\n\n");
