@@ -26,14 +26,13 @@ typedef struct s_format{
 	int	zero;		// zero padding
 	int	pnt;		// .
 	int	dash;   	// -
-	int	sign;   	// pos or neg number
+	int	hash;   	// -
+	int	sign_pref;   	// 0 = none; 1 = add '+'; 2 = add ' '
 	int	is_zero;	// is number zero
-	int	perc;   	// %
-	int	sp;	 	// space flag ' '
 }t_format;
 
 #define F_TYPS "cspdiuxX%"
-#define F_FLGS "0123456789#-. "
+#define F_FLGS "0#-+. "
 
 #define HEX_CAP	"0123456789ABCDEF"
 #define HEX_SMOL	"0123456789abcdef"
@@ -59,8 +58,8 @@ unsigned int	ft_unsigned_pow(size_t nb, int power);
 unsigned int	unsigned_len(unsigned long long num);
 unsigned int	num_len(int	num);
 
+t_format	*flagifier(char *typestr, char *toprint)
 
-int	flagifier(char type, char *typestr, char **toprint);
 //flagifier funcs
 int	add_sign(char type, char *typestr, char **toprint);
 int	add_hex_pre(char type, char **toprint);

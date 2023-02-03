@@ -71,9 +71,12 @@ char	*grab_str(char *str)
 
 	s_len = 0;
 	while (str[s_len]
-		&& ft_strchr(F_FLGS, str[s_len]))
+		&& (ft_strchr(F_FLGS, str[s_len])
+			|| !ft_isdigit(str[s_len])))
 		s_len++;
-	if (!ft_strchr(F_FLGS, str[s_len]) && !ft_strchr(F_TYPS, str[s_len]))
+	if (!ft_strchr(F_FLGS, str[s_len]) 
+		&& !ft_strchr(F_TYPS, str[s_len])
+		&& !ft_isdigit(str[s_len]))
 		return (NULL);
 	if (ft_strchr(F_TYPS, str[s_len]))
 		s_len++;
