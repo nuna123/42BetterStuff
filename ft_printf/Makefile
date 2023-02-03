@@ -19,7 +19,8 @@ LIBFT_PATH = $(addprefix $(LIBFT_FOL), $(LIBFT))
 
 SRCS =	ft_printf.c\
 		ft_utilities.c len_functions.c\
-		printing_funcs.c print_hex.c print_ptr.c
+		printing_funcs.c print_hex.c print_ptr.c\
+		flagifier.c
 
 
 HEADER = $(NAME:.a=.h)

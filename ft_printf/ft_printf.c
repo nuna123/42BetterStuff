@@ -57,7 +57,8 @@ int	printer(va_list va_ptr, char *type_str, int *char_count)
 	if (!toprint)
 		return (-1);
 	if (ft_strlen(type_str) > 1)
-		flagifier(type_str[type_len], type_str, &toprint);
+		if (formatify(type_str, &toprint) == -1)
+			return (-1);
 	ft_putstr_fd(toprint, 1);
 	*char_count += ft_strlen(toprint);
 	free(toprint);

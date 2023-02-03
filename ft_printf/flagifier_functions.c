@@ -12,7 +12,7 @@
 
 #include "./ft_printf.h"
 
-int	add_sign(char type, char *typestr, char **toprint)
+int	add_sign(char type, int sign_pref, char **toprint)
 {
 	char	*newstr;
 
@@ -21,7 +21,7 @@ int	add_sign(char type, char *typestr, char **toprint)
 		return (-1);
 	if (ft_isdigit(**toprint))
 	{
-		if (ft_strchr(typestr, '+'))
+		if (sign_pref == 1)
 			newstr = ft_strjoin("+", *toprint);
 		else
 			newstr = ft_strjoin(" ", *toprint);

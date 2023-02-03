@@ -26,7 +26,7 @@ typedef struct s_format{
 	int	zero;		// zero padding
 	int	pnt;		// .
 	int	dash;   	// -
-	int	hash;   	// -
+	int	hash;   	// #
 	int	sign_pref;   	// 0 = none; 1 = add '+'; 2 = add ' '
 	int	is_zero;	// is number zero
 }t_format;
@@ -52,17 +52,19 @@ char			*print_hex(unsigned int num, char type);
 int				ft_pow(int nb, int power);
 char			*unsigned_itoa(size_t num);
 unsigned int	ft_unsigned_pow(size_t nb, int power);
-
+void	ft_strappend(char **s1, char const *s2);
 
 //len functions
 unsigned int	unsigned_len(unsigned long long num);
 unsigned int	num_len(int	num);
 
-t_format	*flagifier(char *typestr, char *toprint)
 
 //flagifier funcs
-int	add_sign(char type, char *typestr, char **toprint);
 int	add_hex_pre(char type, char **toprint);
+int	add_sign(char type, int sign_pref, char **toprint);
+
+t_format	*flagifier(char *typestr, char *toprint);
+int	formatify(char *typestr, char **toprint);
 
 
 #endif
