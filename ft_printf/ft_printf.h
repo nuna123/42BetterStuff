@@ -21,14 +21,14 @@
 #include "Libft/libft.h"
 
 typedef struct s_format{
-	int	wdt;		// width
-	int	prc;		// precision
-	int	zero;		// zero padding
-	int	pnt;		// .
-	int	dash;   	// -
-	int	hash;   	// #
-	int	sign_pref;   	// 0 = none; 1 = add '+'; 2 = add ' '
-	int	is_zero;	// is number zero
+	size_t	wdt;		// width
+	int		prc;		// precision
+	int		zero;		// zero padding
+	int		pnt;		// .
+	int		dash;		// -
+	int		hash;		// #
+	int		sign_pref;		// 0 = none; 1 = add '+'; 2 = add ' '
+	int		sign;		// 0 = is zero; 1 = pos; -1 = neg
 }t_format;
 
 #define F_TYPS "cspdiuxX%"
@@ -65,6 +65,9 @@ int	add_sign(char type, int sign_pref, char **toprint);
 
 t_format	*flagifier(char *typestr, char *toprint);
 int	formatify(char *typestr, char **toprint);
+
+//format applier
+int	apply_formats(t_format print_format, char type, char **toprint);
 
 
 #endif

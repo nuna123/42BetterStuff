@@ -12,10 +12,14 @@
 
 #include "./ft_printf.h"
 
-static void	flagifier_2(char *typestr, t_format *print_format)
+static void	flagifier_2(char *typestr, t_format *print_format, char *toprint)
 {
 	int	i;
 
+	if (ft_atoi(toprint) < 0)
+		print_format->sign = -1;
+	else if (ft_atoi(toprint) > 0)
+		print_format->sign = 1;
 	i = -1;
 	while (ft_isdigit(typestr[++i]) || typestr[i] == '.')
 	{
@@ -36,6 +40,9 @@ static void	flagifier_2(char *typestr, t_format *print_format)
 		}
 	}
 }
+/*
+	builds the t_format object with all the formatting properties
+*/
 
 t_format	*flagifier(char *typestr, char *toprint)
 {
@@ -46,7 +53,6 @@ t_format	*flagifier(char *typestr, char *toprint)
 	print_format = ft_calloc(1, sizeof(t_format));
 	if (!print_format)
 		return (NULL);
-	print_format->is_zero = !ft_strncmp("0", toprint, 2);
 	while (ft_strchr(F_FLGS, typestr[++i]))
 	{
 		if (typestr[i] == '0')
@@ -62,24 +68,25 @@ t_format	*flagifier(char *typestr, char *toprint)
 		if (typestr[i] == '.')
 			print_format->pnt = 1;
 	}
-	flagifier_2(&typestr[i], print_format);
+	flagifier_2(&typestr[i], print_format, toprint);
 	return (print_format);
 }
 
-int check_if_ok(t_format *print_format)
+int	check_if_ok(t_format *print_format)
 {
-	(void *)print_format;
+	(void)print_format;
 	return (0);
 }
 
 int	formatify(char *typestr, char **toprint)
 {
-	t_format *print_format;
+	t_format	*print_format;
 
-	print_format = flagifier(typestr, toprint);
+	print_format = flagifier(typestr, *toprint);
 	if (!print_format || check_if_ok(print_format) == -1)
 		return (-1);
-	apply_formats(print_format,
+	apply_formats(*print_format,
 		typestr[ft_strlen(typestr) - 1],
 		toprint);
+	return (0);
 }
