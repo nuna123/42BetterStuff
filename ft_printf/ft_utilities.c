@@ -58,7 +58,7 @@ char	*unsigned_itoa(size_t num)
 	add_digit(res, num, num_len);
 	return (res);
 }
-/* 
+
 void	ft_strappend(char **s1, char const *s2)
 {
 	char	*ret_str;
@@ -82,4 +82,3 @@ void	ft_strappend(char **s1, char const *s2)
 		free(*s1);
 	*s1 = ret_str;
 }
- */

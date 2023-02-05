@@ -25,7 +25,7 @@ int	add_sign(char type, int sign_pref, char **toprint)
 			newstr = ft_strjoin("+", *toprint);
 		else
 			newstr = ft_strjoin(" ", *toprint);
-		free(toprint);
+		free(*toprint);
 		*toprint = newstr;
 	}
 	return (0);

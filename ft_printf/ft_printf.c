@@ -58,7 +58,12 @@ int	printer(va_list va_ptr, char *type_str, int *char_count)
 		return (-1);
 	if (ft_strlen(type_str) > 1)
 		if (formatify(type_str, &toprint) == -1)
+		{
+			free(toprint);
+			free(type_str);
 			return (-1);
+		}
+			
 	ft_putstr_fd(toprint, 1);
 	*char_count += ft_strlen(toprint);
 	free(toprint);
@@ -73,7 +78,7 @@ char	*grab_str(char *str)
 	s_len = 0;
 	while (str[s_len]
 		&& (ft_strchr(F_FLGS, str[s_len])
-			|| !ft_isdigit(str[s_len])))
+			|| ft_isdigit(str[s_len])))
 		s_len++;
 	if (!ft_strchr(F_FLGS, str[s_len]) 
 		&& !ft_strchr(F_TYPS, str[s_len])
@@ -104,7 +109,7 @@ int	ft_printf(const char *str, ...)
 		{
 			s_code = printer(va_ptr, grab_str((char *)&str[i + 1]), &char_cnt);
 			if (s_code == -1)
-				return (0);
+				return (-1);
 			i += s_code;
 		}
 		else
@@ -123,9 +128,9 @@ int main(void)
 
 
 	//int ret = ft_printf("HI{%#rx}\n", i);
-	int ret2 = printf("HI{%#x}\n", i);
+	//int ret2 = printf("HI{%#x}\n", i);
 	//ft_printf("ret: {%i}\n", ret);
-	ft_printf("ret2: {%i}\n", ret2);
+	ft_printf("ret2: {%#+i}\n", i);
 
 	//printf("ME{%s}", );
 	//printf("\n\n\n");

@@ -45,12 +45,12 @@ int	apply_formats(t_format print_format, char type, char **toprint)
 	stat_code = 0;
 	if (print_format.sign_pref && print_format.sign > 0)
 		stat_code += add_sign(type, print_format.sign_pref, toprint);
-	if (print_format.hash && !print_format.sign)
+	if (print_format.hash && print_format.sign)
 		stat_code += add_hex_pre(type, toprint);
 	if (print_format.wdt)
 		stat_code += add_padding(print_format, type, toprint);
 
-	if (stat_code < 0)
+	if (stat_code < 1)
 		return (-1);
 	return (0);
 }

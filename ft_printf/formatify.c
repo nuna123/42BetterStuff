@@ -85,8 +85,9 @@ int	formatify(char *typestr, char **toprint)
 	print_format = flagifier(typestr, *toprint);
 	if (!print_format || check_if_ok(print_format) == -1)
 		return (-1);
-	apply_formats(*print_format,
+	if (apply_formats(*print_format,
 		typestr[ft_strlen(typestr) - 1],
-		toprint);
+		toprint) == -1)
+		return (-1);
 	return (0);
 }
