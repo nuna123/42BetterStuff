@@ -121,18 +121,3 @@ int	ft_printf(const char *str, ...)
 	va_end(va_ptr);
 	return (char_cnt);
 }
-
-int main(void)
-{
-	int i = 4;
-
-
-	//int ret = ft_printf("HI{%#rx}\n", i);
-	//int ret2 = printf("HI{%#x}\n", i);
-	//ft_printf("ret: {%i}\n", ret);
-	ft_printf("ret2: {%#+i}\n", i);
-
-	//printf("ME{%s}", );
-	//printf("\n\n\n");
-	return 0;
-}

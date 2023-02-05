@@ -18,6 +18,7 @@ int	add_padding(t_format print_format, char type, char **toprint)
 	char	*padding;
 	char	*padded_toprint;
 
+	padding = NULL;
 	if (print_format.wdt > ft_strlen(*toprint))
 	{
 		padding_len = print_format.wdt - ft_strlen(*toprint);
@@ -50,7 +51,7 @@ int	apply_formats(t_format print_format, char type, char **toprint)
 	if (print_format.wdt)
 		stat_code += add_padding(print_format, type, toprint);
 
-	if (stat_code < 1)
+	if (stat_code < 0)
 		return (-1);
 	return (0);
 }

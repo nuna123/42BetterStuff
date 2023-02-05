@@ -89,5 +89,6 @@ int	formatify(char *typestr, char **toprint)
 		typestr[ft_strlen(typestr) - 1],
 		toprint) == -1)
 		return (-1);
+	free(print_format);
 	return (0);
 }
