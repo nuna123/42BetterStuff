@@ -1,82 +1,69 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: nroth <marvin@42.fr>                       +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/01/10 10:00:32 by nroth             #+#    #+#              #
-#    Updated: 2023/01/10 10:00:35 by nroth            ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+
+NAME		=	libftprintf.a
+LIBFT_FOL	=	Libft/
+LIBFT_PATH	=	$(addprefix $(LIBFT_FOL), libft.a)
+SRC_DIR		=	ft_printf/
+BONUS_DIR	=	ft_printf_BONUS/
+OBJ_DIR		=	objs/
+CFLAGS		=	-Wall -Werror -Wextra 
+
+#Sources
+SRC_FILES	=	ft_printf ft_utilities ft_utilities2 len_functions\
+				printing_funcs print_hex print_ptr formatify\
+				format_applier flagifier_functions
 
 
-NAME = libftprintf.a
+# Colors
 
-LIBFT = libft.a
-LIBFT_FOL = ./Libft/
-LIBFT_PATH = $(addprefix $(LIBFT_FOL), $(LIBFT))
+NRM_COLOR = \033[0;39m
 
-SRCS =	ft_printf.c\
-		ft_utilities.c ft_utilities2.c len_functions.c\
-		printing_funcs.c print_hex.c print_ptr.c\
-		formatify.c format_applier.c flagifier_functions.c
-
-SRCS_BONUS =	ft_printf_bonus.c\
-		ft_utilities_bonus.c ft_utilities2_bonus.c len_functions_bonus.c\
-		printing_funcs_bonus.c print_hex_bonus.c print_ptr_bonus.c\
-		formatify_bonus.c format_applier_bonus.c flagifier_functions_bonus.c
-
-SRCS_DIR = ./ft_printf/
-SRCS_DIR_BONUS = ./ft_printf_BONUS/
-
-APPENDED_SRCS= $(addprefix $(SRCS_DIR), $(SRCS))
-APPENDED_SRCS_BONUS= $(addprefix $(SRCS_DIR_BONUS), $(SRCS_BONUS))
-
-HEADER = $(NAME:.a=.h)
-
-OBJS_DIR = objs/
-OBJS = $(SRCS:.c=.o)
-OBJS_PREFIXED = $(addprefix $(OBJS_DIR), $(OBJS))
-
-BONUS_OBJS = $(SRCS_BONUS:.c=.o)
-BONUS_OBJS_PREFIXED = $(addprefix $(OBJS_DIR), $(BONUS_OBJS))
-
-CC_FLAGS = -Wall -Wextra -Werror
-CC = cc
+GREEN = \033[0;92m
+YELLOW = \033[0;93m
 
 
 
 
-all: ${NAME}
+B_FILES		=	$(addsuffix  _bonus, $(SRC_FILES))
 
-$(OBJS_PREFIXED) : $(APPENDED_SRCS)
-	@ mkdir -p $(OBJS_DIR)
-	$(CC) $(CC_FLAGS) -c $($@:.o=.c) -o $@
+SRC 		=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
+OBJ 		=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
 
-$(BONUS_OBJS_PREFIXED) : $(APPENDED_SRCS_BONUS)
-	@ mkdir -p $(OBJS_DIR)
-	@ $(CC) $(CC_FLAGS) -c $< -o $@
+SRC_B 		=	$(addprefix $(BONUS_DIR), $(addsuffix .c, $(B_FILES)))
+OBJ_B 		=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(B_FILES)))
 
-${NAME}:	${LIBFT_PATH} ${OBJS_PREFIXED}
-	cp ${LIBFT_PATH} ${NAME}
-	ar -rs ${NAME} ${OBJS_PREFIXED}
-	@ echo "${NAME} created!" 
+###
 
-bonus:	${LIBFT_PATH} ${BONUS_OBJS_PREFIXED}
-	cp ${LIBFT_PATH} ${NAME}
-	ar -rs ${NAME} ${BONUS_OBJS_PREFIXED}
-	@ echo "${NAME} created!" 
+all:		$(NAME)
 
-${LIBFT_PATH}:
-	make -C ${LIBFT_FOL} all bonus extras clean
+$(NAME):	$(LIBFT_PATH) $(OBJ)
+			@mv $(LIBFT_PATH) $(NAME)
+			@ar rs $(NAME) $(OBJ)
+			@echo "$(GREEN)ft_printf compiled!$(NRM_COLOR)"
 
+bonus:		clean $(LIBFT_PATH) $(OBJ_B)
+			@mv $(LIBFT_PATH) $(NAME)
+			@ar rs $(NAME) $(OBJ_B)
+			@echo "$(GREEN)ft_printf BONUS compiled!$(NRM_COLOR)"
+
+$(LIBFT_PATH):
+			@make -C $(LIBFT_FOL)
+
+$(OBJ_DIR)%.o:	$(SRC_DIR)%.c
+			@mkdir -p $(OBJ_DIR)
+			@echo "$(YELLOW)Compiling: $< $(NRM_COLOR)"
+			@cc $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR)%.o: $(BONUS_DIR)%.c
+			@mkdir -p $(OBJ_DIR)
+			@echo "$(YELLOW)Compiling: $< $(NRM_COLOR)"
+			@cc $(CFLAGS) -c $< -o $@
 clean:
-	rm -rf ${OBJS_DIR}
+			rm -rf $(OBJ_DIR)
+			rm -rf $(LIBFT_FOL)$(OBJ_DIR)
 
-fclean: clean
-	rm -f ${NAME}
+fclean:		clean
+			rm -f $(NAME)
 
-re: fclean all
+re:		fclean all
 
-.PHONY: all clean fclean re bonus extras
+.PHONY:		all clean fclean re bonus
