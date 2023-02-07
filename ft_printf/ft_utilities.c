@@ -10,6 +10,7 @@ unsigned int	ft_unsigned_pow(size_t nb, int power)
 		return (1);
 	return (nb * ft_unsigned_pow(nb, power - 1));
 }
+
 int	ft_pow(int nb, int power)
 {
 	if (power < 0)

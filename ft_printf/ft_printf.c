@@ -17,7 +17,12 @@
 	gets cut str from grab_str, has to free it. 
 	figures out where to send the argument
 */
-
+int	evacuate(void *ptr, void *ptr2)
+{
+	free(ptr);
+	free(ptr2);
+	return (-1);
+}
 
 char	*get_string(va_list va_ptr, char *type_str, int type_len)
 {
@@ -49,25 +54,22 @@ int	printer(va_list va_ptr, char *type_str, int *char_count)
 {
 	char	*toprint;
 	int		type_len;
+	int		to_print_len;
 
 	if (!type_str)
 		return (-1);
+	
 	type_len = ft_strlen(type_str) - 1;
 	toprint = get_string(va_ptr, type_str, type_len);
-	if (!toprint)
-		return (-1);
+	to_print_len = ft_special_strlen(toprint, type_str[type_len]);
 	if (ft_strlen(type_str) > 1)
-		if (formatify(type_str, &toprint) == -1)
-		{
-			free(toprint);
-			free(type_str);
-			return (-1);
-		}
-			
-	ft_putstr_fd(toprint, 1);
-	*char_count += ft_strlen(toprint);
-	free(toprint);
-	free(type_str);
+	{
+		if (formatify(type_str, &toprint, &to_print_len) == -1)
+			return (evacuate(toprint, type_str));
+	}
+	ft_write(toprint, to_print_len);
+	*char_count += to_print_len;
+	evacuate(toprint, type_str);
 	return (type_len + 1);
 }
 
@@ -80,7 +82,7 @@ char	*grab_str(char *str)
 		&& (ft_strchr(F_FLGS, str[s_len])
 			|| ft_isdigit(str[s_len])))
 		s_len++;
-	if (!ft_strchr(F_FLGS, str[s_len]) 
+	if (!ft_strchr(F_FLGS, str[s_len])
 		&& !ft_strchr(F_TYPS, str[s_len])
 		&& !ft_isdigit(str[s_len]))
 		return (NULL);

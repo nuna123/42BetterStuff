@@ -46,6 +46,8 @@ char	*print_ptr(unsigned long long ptr)
 	int		num_len;
 	char	*res;
 
+	if (!ptr)
+		return(ft_strdup("(nil)"));
 	num_len = ptr_len(ptr);
 	res = ft_calloc(num_len + 3, sizeof(char));
 	if (!res)

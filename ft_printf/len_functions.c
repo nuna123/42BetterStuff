@@ -28,3 +28,15 @@ unsigned int	num_len(int	num)
 		n_len++;
 	return(n_len);
 }
+
+size_t	ft_special_strlen(char *s, char type)
+{
+	int	i;
+
+	i = 0;
+	if (!*s && type == 'c')
+		return (1);
+	while (s[i])
+		i++;
+	return (i);
+}

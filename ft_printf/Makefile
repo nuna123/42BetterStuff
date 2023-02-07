@@ -37,15 +37,13 @@ $(OBJS_DIR)%.o : %.c
 	@ mkdir -p $(OBJS_DIR)
 	@ $(CC) $(CC_FLAGS) -c $< -o $@
 
-${NAME}:	${LIBFT} ${OBJS_PREFIXED}
-	mv ${LIBFT} ${NAME}
+${NAME}:	${LIBFT_PATH} ${OBJS_PREFIXED}
+	cp ${LIBFT_PATH} ${NAME}
 	ar -rs ${NAME} ${OBJS_PREFIXED}
-	echo "${NAME} created!" 
+	@ echo "${NAME} created!" 
 
-${LIBFT}:
+${LIBFT_PATH}:
 	make -C ${LIBFT_FOL} all bonus extras clean
-	cp $(LIBFT_PATH) ${LIBFT}
-
 
 clean:
 	rm -rf ${OBJS_DIR}

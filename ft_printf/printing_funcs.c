@@ -14,14 +14,18 @@
 
 char *print_char(int i)
 {
-	char c;
+	char	*res;
 
-	c = (char) i;
-	return (ft_strdup(&c));
+	res = ft_strdup(" ");
+	res[0] = i;
+
+	return (res);
 }
 
 char *print_str(char *s)
 {
+	if (!s)
+		return(ft_strdup("(null)"));
 	return (ft_strdup(s));
 }
 
@@ -33,4 +37,17 @@ char *print_int(int num)
 char *print_unsigned_int(unsigned int num)
 {
 	return (unsigned_itoa(num));
+}
+
+void	ft_write(char *s, int s_len)
+{
+	while (s_len)
+	{
+/* 		if(!*s)
+			write(1, "\\0", 2); */
+		
+		write(1, s, 1);
+		s++;
+		s_len--;
+	}
 }

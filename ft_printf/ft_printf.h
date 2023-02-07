@@ -21,6 +21,7 @@
 #include "Libft/libft.h"
 
 typedef struct s_format{
+	size_t	print_len;		// strlen of the printable
 	size_t	wdt;		// width
 	int		prc;		// precision
 	int		zero;		// zero padding
@@ -47,27 +48,27 @@ char			*print_ptr(unsigned long long ptr);
 char			*print_int(int num);
 char			*print_unsigned_int(unsigned int num);
 char			*print_hex(unsigned int num, char type);
-
+void			ft_write(char *s, int s_len);
 //utilities file
 int				ft_pow(int nb, int power);
 char			*unsigned_itoa(size_t num);
 unsigned int	ft_unsigned_pow(size_t nb, int power);
-void	ft_strappend(char **s1, char const *s2);
+void			ft_strappend(char **s1, char const *s2);
 
 //len functions
 unsigned int	unsigned_len(unsigned long long num);
 unsigned int	num_len(int	num);
+size_t			ft_special_strlen(char *s, char type);
 
 
 //flagifier funcs
-int	add_hex_pre(char type, char **toprint);
-int	add_sign(char type, int sign_pref, char **toprint);
+int				add_hex_pre(char type, char **toprint);
+int				add_sign(char type, int sign_pref, char **toprint);
 
-t_format	*flagifier(char *typestr, char *toprint);
-int	formatify(char *typestr, char **toprint);
-
+t_format		*flagifier(char *typestr, char *toprint);
+int				formatify(char *typestr, char **toprint, int *toprint_len);
 //format applier
-int	apply_formats(t_format print_format, char type, char **toprint);
+int				apply_formats(t_format print_format, char type, char **toprint);
 
 
 #endif
