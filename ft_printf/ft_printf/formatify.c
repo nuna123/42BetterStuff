@@ -14,7 +14,7 @@
 
 static void	flagifier_2(char *typestr, t_format **print__format, char *toprint)
 {
-	int	i;
+	int			i;
 	t_format	*print_format;
 	char		type;
 
@@ -24,8 +24,8 @@ static void	flagifier_2(char *typestr, t_format **print__format, char *toprint)
 		print_format->sign = -1;
 	else if (ft_strchr("uXx", type) || ft_atoi(toprint) > 0)
 		print_format->sign = 1;
-	i = 0;
-	while (ft_isdigit(typestr[i]) || typestr[i] == '.')
+	i = -1;
+	while (ft_isdigit(typestr[++i]) || typestr[i] == '.')
 	{
 		if (typestr[i] == '.')
 		{
@@ -38,10 +38,8 @@ static void	flagifier_2(char *typestr, t_format **print__format, char *toprint)
 			print_format->wdt = ft_atoi(&typestr[i]);
 			i += num_len(print_format->wdt) - 1;
 		}
-		i++;
 	}
 }
-
 
 t_format	*flagifier(char *typestr, char *toprint)
 {
@@ -73,13 +71,13 @@ int	check_if_ok(t_format **print_format, char **toprint)
 {
 	char	*newstr;
 
-	if ((*print_format)->sign < 0 && ((*print_format)->prc || (*print_format)->zero))
+	if ((*print_format)->sign < 0
+		&& ((*print_format)->prc || (*print_format)->zero))
 	{
 		newstr = ft_substr(*toprint, 1, ft_strlen(*toprint) - 1);
 		free(*toprint);
 		*toprint = newstr;
 	}
-
 	return (0);
 }
 
@@ -90,7 +88,6 @@ int	formatify(char *typestr, char **toprint, int *toprint_len)
 	char		type;
 
 	type = typestr[ft_strlen(typestr) - 1];
-
 	*toprint_len = 0;
 	print_format = flagifier(typestr, *toprint);
 	if (!print_format || check_if_ok(&print_format, toprint) == -1)
@@ -101,12 +98,9 @@ int	formatify(char *typestr, char **toprint, int *toprint_len)
 		free(*toprint);
 		*toprint = ft_strdup("");
 	}
-	stat = apply_formats(*print_format,
-		type,
-		toprint);
+	stat = apply_formats(*print_format, type, toprint);
 	if (stat == -1)
 		return (-1);
-
 	*toprint_len += stat;
 	free(print_format);
 	return (0);

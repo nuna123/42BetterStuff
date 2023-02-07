@@ -1,53 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_utilities2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nroth <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/13 13:31:31 by nroth             #+#    #+#             */
-/*   Updated: 2023/01/13 13:31:32 by nroth            ###   ########.fr       */
+/*   Created: 2023/02/07 16:52:31 by nroth             #+#    #+#             */
+/*   Updated: 2023/02/07 16:52:33 by nroth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char *print_char(int i)
+int	evacuate(void *ptr, void *ptr2)
 {
-	char	*res;
-
-	res = ft_strdup(" ");
-	res[0] = i;
-
-	return (res);
+	free(ptr);
+	free(ptr2);
+	return (-1);
 }
 
-char *print_str(char *s)
+void	reset_to_0(int *n1, int *n2)
 {
-	if (!s)
-		return(ft_strdup("(null)"));
-	return (ft_strdup(s));
+	*n1 = 0;
+	*n2 = 0;
 }
 
-char *print_int(int num)
+void	add_neg_back(t_format *print_format, char **toprint)
 {
-	return (ft_itoa(num));
-}
+	char	*newstr;
 
-char *print_unsigned_int(unsigned int num)
-{
-	return (unsigned_itoa(num));
-}
-
-void	ft_write(char *s, int s_len)
-{
-	while (s_len)
+	if (print_format->sign < 0)
 	{
-/* 		if(!*s)
-			write(1, "\\0", 2); */
-		
-		write(1, s, 1);
-		s++;
-		s_len--;
+		newstr = ft_strjoin("-", *toprint);
+		free(*toprint);
+		*toprint = newstr;
+		print_format->sign = 1;
 	}
 }

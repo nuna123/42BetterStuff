@@ -10,20 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include "Libft/libft.h"
-
-/*
-	gets cut str from grab_str, has to free it. 
-	figures out where to send the argument
-*/
-int	evacuate(void *ptr, void *ptr2)
-{
-	free(ptr);
-	free(ptr2);
-	return (-1);
-}
-
+#include "ft_printf_bonus.h"
 char	*get_string(va_list va_ptr, char *type_str, int type_len)
 {
 	char	*toprint;
@@ -58,7 +45,6 @@ int	printer(va_list va_ptr, char *type_str, int *char_count)
 
 	if (!type_str)
 		return (-1);
-	
 	type_len = ft_strlen(type_str) - 1;
 	toprint = get_string(va_ptr, type_str, type_len);
 	to_print_len = ft_special_strlen(toprint, type_str[type_len]);

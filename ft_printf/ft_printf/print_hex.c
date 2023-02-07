@@ -12,11 +12,12 @@
 
 #include "ft_printf.h"
 
-static void	hex_add_digit(unsigned int num, char cap, char *res_ptr, int num_len)
+static void	hex_add_digit(unsigned int num, char cap,
+	char *res_ptr, int num_len)
 {
 	unsigned int	div;
 	unsigned int	mod;
-	char	*last;
+	char			*last;
 
 	div = num / 16;
 	mod = num % 16;
@@ -42,6 +43,7 @@ static void	hex_add_digit(unsigned int num, char cap, char *res_ptr, int num_len
 /*
 	type is X if capital, x if small
 */
+
 char	*print_hex(unsigned int num, char type)
 {
 	int		num_len;

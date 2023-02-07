@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_printf_bonus.h"
 
 static void	ptr_add_digits(unsigned long long num, char *res_ptr)
 {
-	char			*last;
+	char	*last;
 
 	if (num >= 16)
 	{
@@ -47,7 +47,7 @@ char	*print_ptr(unsigned long long ptr)
 	char	*res;
 
 	if (!ptr)
-		return(ft_strdup("(nil)"));
+		return (ft_strdup("(nil)"));
 	num_len = ptr_len(ptr);
 	res = ft_calloc(num_len + 3, sizeof(char));
 	if (!res)
