@@ -82,5 +82,6 @@ t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
 
 //EXTRAS
 char			*get_next_line(int fd);
+int				ft_printf(const char *s, ...);
 
 #endif
