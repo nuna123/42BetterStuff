@@ -15,6 +15,7 @@
 size_t	ft_strlen(const char *s)
 {
 	unsigned long	length;
+
 	if (!s)
 		return (0);
 	length = 0;

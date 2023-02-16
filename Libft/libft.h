@@ -16,7 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
-#include <fcntl.h>
+# include <fcntl.h>
 
 //For get_next_line
 # ifndef BUFFER_SIZE
