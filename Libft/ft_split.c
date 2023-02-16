@@ -17,6 +17,8 @@ static int	get_wc(char *s, char c)
 	int	wc;
 
 	wc = 0;
+	if (!c || !s || !*s)
+		return (0);
 	while (s && *s)
 	{
 		if (*s != c)
@@ -50,7 +52,7 @@ static int	write_split(char **res_arr, char *s, char c)
 
 	i = 0;
 	res_ctr = 0;
-	while (s[i])
+	while (s && s[i])
 	{
 		while (s[i] == c)
 			i++;
