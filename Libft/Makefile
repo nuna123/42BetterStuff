@@ -78,7 +78,7 @@ ${FT_PRINTF}:
 
 extras:${FT_PRINTF} ${EXTRA_OBJS_PREFIXED} ${NAME}
 	@ ar -rs ${NAME} ${EXTRA_OBJS_PREFIXED}
-	@ ar -rs ${NAME} ${FT_PRINTF}
+	@ ar -rs ${NAME} ${addprefix ${addprefix  ${FT_PRINTF_FOL}, ${OBJS_DIR}}, *}
 	@ echo "${GREEN}EXTRAS added to ${NAME}!${NRM_COLOR}" 
 
 extra: extras
