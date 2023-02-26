@@ -40,7 +40,7 @@ int	apply_rotate(t_list **stack_a, t_list **stack_b, char *action)
 		else if (ft_strncmp(action, "rr\n", 3) == 0)
 			ps_rot(stack_a, stack_b, WHICH_BOTH);
 		else
-			return (ft_printf("rot err"));
+			return (ERR);
 		return (OK);
 	}
 	else if (ft_strlen(action) == 4)
@@ -52,10 +52,10 @@ int	apply_rotate(t_list **stack_a, t_list **stack_b, char *action)
 		else if (ft_strncmp(action, "rrr\n", 4) == 0)
 			ps_revrot(stack_a, stack_b, WHICH_BOTH);
 		else
-			return (ft_printf("revrot errinput : {%s}\n", action));
+			return (ERR);
 		return (OK);
 	}
-	return (ft_printf("errerr, input : {%s}\n", action));
+	return (ERR);
 }
 
 int	apply_action(t_list **stack_a, t_list **stack_b, char *action)
@@ -69,7 +69,7 @@ int	apply_action(t_list **stack_a, t_list **stack_b, char *action)
 		else if (ft_strncmp(action, "ss\n", 3) == 0)
 			ps_swap(stack_a, stack_b, WHICH_BOTH);
 		else
-			return (ft_printf("swap err"));
+			return (ERR);
 		return (OK);
 	}
 	else if (action[0] == 'p')
@@ -79,21 +79,13 @@ int	apply_action(t_list **stack_a, t_list **stack_b, char *action)
 		else if (ft_strncmp(action, "pb\n", 3) == 0)
 			ps_push(stack_a, stack_b, WHICH_B);
 		else
-			return (ft_printf("push err"));
+			return (ERR);
 		return (OK);
 	}
 	else if (action[0] == 'r')
 		return (apply_rotate(stack_a, stack_b, action));
-	return (ft_printf("errerr, input : {%s}\n", action));
+	return (ERR);
 }
-
-
-
-
-
-
-
-
 
 int	main(int argc, char *argv[])
 {
@@ -110,16 +102,16 @@ int	main(int argc, char *argv[])
 		stacks[0] = lst_from_arr(&argv[1]);
 	if (!stacks[0])
 	{
-		ft_printf("some err in stacks creation :(\n");
+		//ft_printf("some err in stacks creation :(\n");
 		ft_lstclear(&stacks[0], free);
-		return (ft_printf("Error1\n") - 5);
+		return (print_stderr("Error\n"));
 	}
 	lst_size = ft_lstsize(stacks[0]);
 	while (buffer)
 	{
 		buffer = get_next_line(STDIN_FILENO);
 		if (apply_action(&stacks[0], &stacks[1], buffer) != OK)
-			return (ft_printf("Error\n") - 5);
+			return (print_stderr("Error\n"));
 		free(buffer);
 	}
 	free(buffer);

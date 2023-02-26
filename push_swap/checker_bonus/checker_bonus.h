@@ -41,6 +41,7 @@ int		ps_revrot(t_list **stack_a, t_list **stack_b, char which);
 
 int		chek_if_lst_sorted(t_list *lst, int lst_size);
 t_list	*lst_from_arr(char *arr[]);
-int		lst_print(t_list *lst_a, t_list *lst_b);
+// int		lst_print(t_list *lst_a, t_list *lst_b);
+int		print_stderr(char *str);
 
 #endif

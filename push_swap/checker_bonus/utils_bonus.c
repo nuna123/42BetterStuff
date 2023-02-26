@@ -91,6 +91,13 @@ t_list	*lst_from_arr(char *arr[])
 	return (lst);
 }
 
+int	print_stderr(char *str)
+{
+	write(STDERR_FILENO, str, ft_strlen(str));
+	return (ERR);
+}
+
+/* 
 int	lst_print(t_list *lst_a, t_list *lst_b)
 {
 	ft_printf("-----------------\n");
@@ -114,3 +121,4 @@ int	lst_print(t_list *lst_a, t_list *lst_b)
 	ft_printf("-----------------\n\n");
 	return (OK);
 }
+ */
