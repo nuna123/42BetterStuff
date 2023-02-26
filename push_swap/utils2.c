@@ -30,10 +30,8 @@ int	get_val_index( t_list *lst, t_list *node)
 int	how_many_moves(t_list *stack_a, t_list *val)
 {
 	int		index;
-	int		alt_index;
 
 	index = get_val_index(stack_a, val);
-	alt_index = ft_lstsize(stack_a) - index;
 	if (index > (ft_lstsize(stack_a) - index))
 		return (ft_lstsize(stack_a) - index);
 	else
@@ -93,7 +91,7 @@ int	get_val_at_index(t_list *list, int index)
 	int	i;
 
 	i = 0;
-	if (list < 0)
+	if (index < 0)
 		return (WTF);
 	while (i < index)
 	{
