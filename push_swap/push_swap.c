@@ -12,41 +12,56 @@
 
 #include "push_swap.h"
 
+t_list	*lst_from_str(char *str)
+{
+	t_list	*lst_a;
+	char	**arr;
+	int		i;
+
+	arr = ft_split(str, ' ');
+	lst_a = lst_from_arr(arr);
+	i = 0;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
+	return (lst_a);
+}
+
+void	sort_stuff(t_list **lst_a)
+{
+	t_list	*sorted_lst;
+	t_list	*lst_b;
+
+	lst_b = NULL;
+	sorted_lst = ft_lstmap(*lst_a, dup_num, free);
+	dumb_sort(&sorted_lst);
+	if (ft_lstsize(*lst_a) <= 3)
+		sort_three(lst_a);
+	else if (ft_lstsize(*lst_a) <= 5)
+		sort_five(lst_a);
+	else
+		sort_alot(lst_a, &lst_b, sorted_lst);
+	ft_lstclear(&sorted_lst, free);
+}
+
 int	main(int argc, char *argv[])
 {
-	
-	t_list	*lst_a = NULL;
-	t_list	*sorted_lst = NULL;
-	t_list	*lst_b = NULL;
+	t_list	*lst_a;
 
-	if (argc > 1)
+	lst_a = NULL;
+	if (argc == 2)
+		lst_a = lst_from_str(argv[1]);
+	else if (argc > 1)
 		lst_a = lst_from_arr(&argv[1]);
 	else
-		lst_a = lst_from_arr((char *[]){"89", "76", "82", "11", "70", "88", "17", "8", "18", "38", "34", "41", "27", "23", "71", "39", "16", "90", "66", "100", "63", "99", "54", "30", "2", "78", "44", "36", "33", "5", "43", "21", "22", "84", "10", "73", "80", "25", "62", "86", "58", "7", "57", "31", "94", "60", "9", "35", "3", "77", "46", "48", "12", "91", "15", "65", "4", "1", "69", "28", "13", "92", "67", "61", "98", "56", "79", "68", "74", "37", "32", "97", "95", "40", "47", "29", "24", "42", "26", "52", "50", "59", "55", "20", "64", "85", "19", "75", "6", "83", "14", "81", "72", "93", "45", "51", "49", "53", "87", "96", NULL});
-	lst_b = lst_from_arr((char *[]){NULL});
-	
-	//lst_a = lst_from_arr((char *[]){"99", "98", "97", "96", "95", "94", "93", "92", "91", "90", "89", "88", "87", "86", "85", "84", "83", "82", "81", "80", "79", "78", "77", "76", "75", "74", "73", "72", "71", "70", "69", "68", "67", "66", "65", "64", "63", "62", "61", "60", "59", "58", "57", "56", "55", "54", "53", "52", "51", "50", "49", "48", "47", "46", "45", "44", "43", "42", "41", "40", "39", "38", "37", "36", "35", "34", "33", "32", "31", "30", "29", "28", "27", "26", "25", "24", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", "13", "12", "11", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1", "0", NULL});
-
+		return (1);
 	if (!lst_a)
 	{
 		ft_printf("some err in stacks creation :(\n");
 		ft_lstclear(&lst_a, free);
-		ft_lstclear(&lst_b, free);
 		return (ERR);
 	}
-	sorted_lst = ft_lstmap(lst_a,(void *) ft_strdup, free);
-	dumb_sort(&sorted_lst);
-	//dumb_sort(&lst_a);
-
-	//lst_print(lst_a, lst_b);
-	sort_hundred(&lst_a, &lst_b, sorted_lst);
-	lst_print(lst_a, lst_b);
-
-	ft_printf("\nis sorted A:\t{%i}\t(1 == TRUE; 0 == FALSE; -2 == WTF)\n", chek_if_lst_sorted(lst_a));
-	// ft_printf("is sorted B:\t{%i}\n", chek_if_lst_sorted(lst_b));
-
+	sort_stuff(&lst_a);
 	ft_lstclear(&lst_a, free);
-	ft_lstclear(&lst_b, free);
-	ft_lstclear(&sorted_lst, free);
 	return (OK);
 }

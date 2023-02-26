@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-int	ps_sa(t_list **stack_a, t_list **stack_b, int mode)
+int	ps_sa(t_list **stack_a, int mode)
 {
 	t_list	*temp;
 
@@ -20,7 +20,6 @@ int	ps_sa(t_list **stack_a, t_list **stack_b, int mode)
 		return (ERR);
 	if (mode == MODE_PRNT)
 		ft_printf("sa\n");
-	(void) stack_b;
 	temp = *stack_a;
 	*stack_a = (*stack_a)->next;
 	temp->next = (*stack_a)->next;
@@ -28,7 +27,7 @@ int	ps_sa(t_list **stack_a, t_list **stack_b, int mode)
 	return (OK);
 }
 
-int	ps_sb(t_list **stack_a, t_list **stack_b, int mode)
+int	ps_sb(t_list **stack_b, int mode)
 {
 	t_list	*temp;
 
@@ -36,7 +35,6 @@ int	ps_sb(t_list **stack_a, t_list **stack_b, int mode)
 		return (ERR);
 	if (mode == MODE_PRNT)
 		ft_printf("sb\n");
-	(void) stack_a;
 	temp = *stack_b;
 	*stack_b = (*stack_b)->next;
 	temp->next = (*stack_b)->next;
@@ -94,5 +92,3 @@ int	ps_pb(t_list **stack_a, t_list **stack_b, int mode)
 	ft_lstadd_front(stack_b, temp);
 	return (OK);
 }
-
-

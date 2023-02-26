@@ -18,7 +18,7 @@ static void	dumb_sort_expander(t_list **lst_p, t_list **lst, t_list	**prev_item)
 		*lst_p = (*lst)->next;
 	else
 		(*prev_item)->next = (*lst)->next;
-	ps_sa(lst, NULL, MODE_NOPRNT);
+	ps_sa(lst, MODE_NOPRNT);
 }
 
 int	dumb_sort(t_list **lst_p)

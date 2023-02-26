@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-int	ps_ra(t_list **stack_a, t_list **stack_b, int mode)
+int	ps_ra(t_list **stack_a, int mode)
 {
 	t_list	*temp;
 
@@ -20,7 +20,6 @@ int	ps_ra(t_list **stack_a, t_list **stack_b, int mode)
 		return (ERR);
 	if (mode == MODE_PRNT)
 		ft_printf("ra\n");
-	(void) stack_b;
 	temp = *stack_a;
 	*stack_a = (*stack_a)->next;
 	temp->next = NULL;
@@ -28,7 +27,7 @@ int	ps_ra(t_list **stack_a, t_list **stack_b, int mode)
 	return (OK);
 }
 
-int	ps_rb(t_list **stack_a, t_list **stack_b, int mode)
+int	ps_rb(t_list **stack_b, int mode)
 {
 	t_list	*temp;
 
@@ -36,7 +35,6 @@ int	ps_rb(t_list **stack_a, t_list **stack_b, int mode)
 		return (ERR);
 	if (mode == MODE_PRNT)
 		ft_printf("rb\n");
-	(void) stack_a;
 	temp = *stack_b;
 	*stack_b = (*stack_b)->next;
 	temp->next = NULL;
@@ -65,11 +63,11 @@ int	ps_rr(t_list **stack_a, t_list **stack_b, int mode)
 	return (OK);
 }
 
-int ps_rot(t_list **stack_a, t_list **stack_b, int mode, char which)
+int	ps_rot(t_list **stack_a, t_list **stack_b, int mode, char which)
 {
 	if (which == WHICH_A)
-		return (ps_ra(stack_a, stack_b, mode));
+		return (ps_ra(stack_a, mode));
 	if (which == WHICH_B)
-		return (ps_rb(stack_a, stack_b, mode));
+		return (ps_rb(stack_a, mode));
 	return (ps_rr(stack_a, stack_b, mode));
 }

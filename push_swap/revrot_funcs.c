@@ -21,7 +21,7 @@ static t_list	*find_bef_last(t_list *lst)
 	return (lst);
 }
 
-int	ps_rra(t_list **stack_a, t_list **stack_b, int mode)
+int	ps_rra(t_list **stack_a, int mode)
 {
 	t_list	*temp;
 
@@ -29,7 +29,6 @@ int	ps_rra(t_list **stack_a, t_list **stack_b, int mode)
 		return (ERR);
 	if (mode == MODE_PRNT)
 		ft_printf("rra\n");
-	(void) stack_b;
 	temp = ft_lstlast(*stack_a);
 	find_bef_last(*stack_a)->next = NULL;
 	ft_lstadd_front(stack_a, temp);
@@ -38,7 +37,7 @@ int	ps_rra(t_list **stack_a, t_list **stack_b, int mode)
 	return (OK);
 }
 
-int	ps_rrb(t_list **stack_a, t_list **stack_b, int mode)
+int	ps_rrb(t_list **stack_b, int mode)
 {
 	t_list	*temp;
 
@@ -46,7 +45,6 @@ int	ps_rrb(t_list **stack_a, t_list **stack_b, int mode)
 		return (ERR);
 	if (mode == MODE_PRNT)
 		ft_printf("rrb\n");
-	(void) stack_a;
 	temp = ft_lstlast(*stack_b);
 	find_bef_last(*stack_b)->next = NULL;
 	ft_lstadd_front(stack_b, temp);
@@ -78,11 +76,11 @@ int	ps_rrr(t_list **stack_a, t_list **stack_b, int mode)
 	return (OK);
 }
 
-int ps_revrot(t_list **stack_a, t_list **stack_b, int mode, char which)
+int	ps_revrot(t_list **stack_a, t_list **stack_b, int mode, char which)
 {
 	if (which == WHICH_A)
-		return (ps_rra(stack_a, stack_b, mode));
+		return (ps_rra(stack_a, mode));
 	if (which == WHICH_B)
-		return (ps_rrb(stack_a, stack_b, mode));
+		return (ps_rrb(stack_a, mode));
 	return (ps_rrr(stack_a, stack_b, mode));
 }

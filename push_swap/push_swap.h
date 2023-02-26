@@ -43,8 +43,8 @@
 # include "Libft/libft.h"
 
 // PUSHSWAP_FUNCS
-int			ps_sa(t_list **stack_a, t_list **stack_b, int mode);
-int			ps_sb(t_list **stack_a, t_list **stack_b, int mode);
+int			ps_sa(t_list **stack_a, int mode);
+int			ps_sb(t_list **stack_b, int mode);
 int			ps_ss(t_list **stack_a, t_list **stack_b, int mode);
 
 int			ps_pa(t_list **stack_a, t_list **stack_b, int mode);
@@ -53,22 +53,20 @@ int			ps_pb(t_list **stack_a, t_list **stack_b, int mode);
 int			ps_push(t_list **stack_a, t_list **stack_b, int mode, char which);
 int			ps_swap(t_list **stack_a, t_list **stack_b, int mode, char which);
 
-
 // ROT_FUNCS
-int			ps_ra(t_list **stack_a, t_list **stack_b, int mode);
-int			ps_rb(t_list **stack_a, t_list **stack_b, int mode);
+int			ps_ra(t_list **stack_a, int mode);
+int			ps_rb(t_list **stack_b, int mode);
 int			ps_rr(t_list **stack_a, t_list **stack_b, int mode);
 int			ps_rot(t_list **stack_a, t_list **stack_b, int mode, char which);
 
 // REVROT_FUNCS
-int			ps_rra(t_list **stack_a, t_list **stack_b, int mode);
-int			ps_rrb(t_list **stack_a, t_list **stack_b, int mode);
+int			ps_rra(t_list **stack_a, int mode);
+int			ps_rrb(t_list **stack_b, int mode);
 int			ps_rrr(t_list **stack_a, t_list **stack_b, int mode);
 int			ps_revrot(t_list **stack_a, t_list **stack_b, int mode, char which);
 
 // DUMB SORTER
 int			dumb_sort(t_list **lst_p);
-
 
 // UTILS
 int			lst_print(t_list *lst_a, t_list *lst_b);
@@ -81,12 +79,24 @@ void		get_val_pos_to_top(t_list **stack_a, t_list *val, int which);
 void		get_val_to_top(t_list **stack, t_list *val, int which);
 int			how_many_moves(t_list *stack_a, t_list *val);
 int			get_val_at_index(t_list *list, int index);
+
+// UTILS3
 t_list		*get_node_with_value(t_list *list, int val);
+t_list		*lst_min_val(t_list	*list);
+t_list		*lst_max_val(t_list	*list);
+void		push_into_b(t_list **stack_a, t_list **stack_b);
+
+// UTILS4
+void		*dup_num(void *num);
+t_list		*get_top_chunk_val(t_list *lst, int min, int max);
+t_list		*get_bottom_chunk_val(t_list *lst, int min, int max);
+int			*get_chunks(t_list *stack_a, int *num_of_chunks);
 
 //SORT 3_5
 int			sort_three(t_list **stack_a);
-int			sort_five(t_list **stack_a, t_list **stack_b);
-int			sort_hundred(t_list **stack_a, t_list **stack_b, t_list *sorted_lst);
-
+int			sort_five(t_list **stack_a);
+int			sort_alot(t_list **stack_a,
+				t_list **stack_b, t_list *sorted_lst);
+int			get_num_of_chunks(t_list *lst);
 
 #endif

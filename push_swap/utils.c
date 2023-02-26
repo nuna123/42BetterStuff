@@ -27,11 +27,25 @@ int	chek_if_lst_sorted(t_list *lst)
 	return (TRUE);
 }
 
-static int	str_isonlydigit(char *s)
+static int	str_isvalid(char *s)
 {
+	int	sign;
+
+	sign = 1;
+	if (*s == '-' || *s == '+')
+	{
+		sign = 44 - *s;
+		s++;
+	}
+	if (ft_strlen(s) > 10)
+		return (FALSE);
+	if (ft_strlen(s) == 10 && sign > 0 && ft_strncmp(s, "2147483647", 10) > 0)
+		return (FALSE);
+	if (ft_strlen(s) == 10 && sign < 0 && ft_strncmp(s, "2147483648", 10) > 0)
+		return (FALSE);
 	while (*s)
 	{
-		if (!ft_isdigit(*s) && *s != '-' && *s != '+')
+		if (!ft_isdigit(*s))
 			return (FALSE);
 		s++;
 	}
@@ -59,13 +73,13 @@ t_list	*lst_from_arr(char *arr[])
 	lst = NULL;
 	while (arr[i])
 	{
-		if (!str_isonlydigit(arr[i]))
+		if (!str_isvalid(arr[i]) || val_in_lst(ft_atoi(arr[i]), lst))
 		{
 			ft_lstclear(&lst, free);
 			return (NULL);
 		}
 		num = malloc(sizeof(int));
-		if (!num || val_in_lst(ft_atoi(arr[i]), lst))
+		if (!num)
 		{
 			ft_lstclear(&lst, free);
 			return (NULL);

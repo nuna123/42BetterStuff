@@ -8,6 +8,8 @@ SRCS =	push_swap\
 		rot_funcs\
 		utils\
 		utils2\
+		utils3\
+		utils4\
 		sort_3_5
 
 C_FLAGS = -Wall -Werror -Wextra
@@ -33,6 +35,6 @@ clean:
 fclean: clean
 	make -C ${LIBFT_FOL} fclean
 
-re: fclean all
+re: clean all
 
 .PHONY: clean fclean re all
