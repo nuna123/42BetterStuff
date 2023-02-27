@@ -19,7 +19,7 @@ BONUS_SRCS =	pushswap_bonus \
 				rev_rot_bonus
 
 
-C_FLAGS = -Wall -Werror -Wextra
+C_FLAGS = -Wall -Werror -Wextra -fsanitize=address -g
 OBJ_FOL = ./objs/
 LIBFT_FOL = ./Libft/
 LIBFT_PATH = ${addprefix ${LIBFT_FOL}, libft.a}
@@ -38,15 +38,15 @@ bonus:  ${LIBFT_PATH}
 	@ echo "...${BONUS_NAME} created!"
 
 ${LIBFT_PATH}:
-	@ make -C ${LIBFT_FOL} re bonus extra
+	@ make -C ${LIBFT_FOL} --no-print-directory all bonus extra
 
 clean:
 	rm -rf ${NAME}
 	rm -rf ${BONUS_NAME}
-	make -C ${LIBFT_FOL} clean
+	@ make -C ${LIBFT_FOL} clean
 
 fclean: clean
-	make -C ${LIBFT_FOL} fclean
+	@ make -C ${LIBFT_FOL} fclean
 
 re: clean all
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   sort_3_5.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nroth <nroth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 11:20:30 by nroth             #+#    #+#             */
-/*   Updated: 2023/02/23 12:09:40 by nroth            ###   ########.fr       */
+/*   Updated: 2023/02/27 17:45:16 by nroth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,9 @@ int	sort_five(t_list **stack_a)
 		ps_pb(stack_a, &stack_b, MODE_PRNT);
 		ps_pb(stack_a, &stack_b, MODE_PRNT);
 		sort_three(stack_a);
-		sort_three(&stack_b);
 		while (stack_b)
-		{
-			get_val_pos_to_top(stack_a, stack_b, WHICH_A);
-			ps_pa(stack_a, &stack_b, MODE_PRNT);
-		}
-		while (*((int *)(*stack_a)->content) >
-				*((int *)(*stack_a)->next->content))
-			ps_ra(stack_a, MODE_PRNT);
+			push_b_into_a(stack_a, &stack_b);
+		get_val_to_top(stack_a, lst_min_val(*stack_a), WHICH_A);
 	}
 	return (chek_if_lst_sorted(*stack_a));
 }
@@ -75,7 +69,7 @@ static void	sort_hun_extand(t_list **stack_a, t_list **stack_b,
 			get_val_to_top(stack_a, top_val, WHICH_A);
 		else
 			get_val_to_top(stack_a, butt_val, WHICH_A);
-		push_into_b(stack_a, stack_b);
+		push_a_into_b(stack_a, stack_b);
 	}
 }
 
@@ -97,10 +91,10 @@ int	sort_alot(t_list **stack_a, t_list **stack_b, t_list *sorted_lst)
 	t_list	*top_val;
 	t_list	*butt_val;
 
-	chunks = get_chunks(sorted_lst, &num_of_chunks);
 	i = 1;
 	if (chek_if_lst_sorted(*stack_a) != FALSE)
 		return (chek_if_lst_sorted(*stack_a));
+	chunks = get_chunks(sorted_lst, &num_of_chunks);
 	while (i < num_of_chunks)
 	{
 		while (get_top_chunk_val(*stack_a, chunks[i - 1], chunks[i]))

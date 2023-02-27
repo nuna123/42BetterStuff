@@ -6,7 +6,7 @@
 /*   By: nroth <nroth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 11:21:56 by nroth             #+#    #+#             */
-/*   Updated: 2023/02/23 12:00:17 by nroth            ###   ########.fr       */
+/*   Updated: 2023/02/27 18:12:29 by nroth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,16 +75,17 @@ int			chek_if_lst_sorted(t_list *lst);
 
 //UTILS2
 int			get_val_index(t_list *bloc, t_list *lst);
-void		get_val_pos_to_top(t_list **stack_a, t_list *val, int which);
 void		get_val_to_top(t_list **stack, t_list *val, int which);
 int			how_many_moves(t_list *stack_a, t_list *val);
 int			get_val_at_index(t_list *list, int index);
+int			print_stderr(char *str);
 
 // UTILS3
 t_list		*get_node_with_value(t_list *list, int val);
 t_list		*lst_min_val(t_list	*list);
 t_list		*lst_max_val(t_list	*list);
-void		push_into_b(t_list **stack_a, t_list **stack_b);
+void		push_a_into_b(t_list **stack_a, t_list **stack_b);
+void		push_b_into_a(t_list **stack_a, t_list **stack_b);
 
 // UTILS4
 void		*dup_num(void *num);

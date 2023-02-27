@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   function_fileA.c                                   :+:      :+:    :+:   */
+/*   pushswap_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nroth <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: nroth <nroth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 11:20:30 by nroth             #+#    #+#             */
-/*   Updated: 2023/02/21 11:20:31 by nroth            ###   ########.fr       */
+/*   Updated: 2023/02/27 18:17:06 by nroth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,12 @@ int	ps_push(t_list **stack_a, t_list **stack_b, char which)
 	if (which == WHICH_A)
 		return (ps_p(stack_a, stack_b));
 	return (ps_p(stack_b, stack_a));
+}
+
+int	free_and_leave(t_list *stacks[2])
+{
+	write(STDERR_FILENO, "Error\n", 6);
+	ft_lstclear(&stacks[0], free);
+	ft_lstclear(&stacks[1], free);
+	return (1);
 }

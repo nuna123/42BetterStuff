@@ -1,29 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nroth <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: nroth <nroth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 20:04:50 by nroth             #+#    #+#             */
-/*   Updated: 2023/02/22 20:04:52 by nroth            ###   ########.fr       */
+/*   Updated: 2023/02/27 13:55:35 by nroth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker_bonus.h"
 
-int	chek_if_lst_sorted(t_list *lst, int lst_size)
+int	chek_if_lst_sorted(t_list *lst_a, t_list *lst_b, int lst_size)
 {
-	if (!lst || ft_lstsize(lst) != lst_size)
+	t_list	*lst;
+
+	if (!lst_a || ft_lstsize(lst_a) != lst_size)
+	{
+		ft_lstclear(&lst_a, free);
+		ft_lstclear(&lst_b, free);
 		return (ft_printf("KO\n") - 2);
+	}
+	lst = lst_a;
 	while (lst)
 	{
 		if (!lst->next)
-			return (ft_printf("OK\n") - 2);
+		{
+			ft_lstclear(&lst_a, free);
+			return (ft_printf("OK\n") - 3);
+		}
 		if (*((int *)lst->content) > *((int *)lst->next->content))
+		{
+			ft_lstclear(&lst_a, free);
 			return (ft_printf("KO\n") - 2);
+		}
 		lst = lst->next;
 	}
+	ft_lstclear(&lst_a, free);
 	return (ft_printf("OK\n") - 2);
 }
 
@@ -91,6 +105,13 @@ t_list	*lst_from_arr(char *arr[])
 	return (lst);
 }
 
+int	print_stderr(char *str)
+{
+	write(STDERR_FILENO, str, ft_strlen(str));
+	return (ERR);
+}
+
+/* 
 int	lst_print(t_list *lst_a, t_list *lst_b)
 {
 	ft_printf("-----------------\n");
@@ -114,3 +135,4 @@ int	lst_print(t_list *lst_a, t_list *lst_b)
 	ft_printf("-----------------\n\n");
 	return (OK);
 }
+ */

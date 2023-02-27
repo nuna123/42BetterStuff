@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nroth <nroth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 11:20:30 by nroth             #+#    #+#             */
-/*   Updated: 2023/02/23 12:09:40 by nroth            ###   ########.fr       */
+/*   Updated: 2023/02/27 18:13:07 by nroth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,11 @@ int	main(int argc, char *argv[])
 	else if (argc > 1)
 		lst_a = lst_from_arr(&argv[1]);
 	else
-		return (1);
+		return (print_stderr("Error\n"));
 	if (!lst_a)
 	{
-		ft_printf("some err in stacks creation :(\n");
 		ft_lstclear(&lst_a, free);
-		return (ERR);
+		return (print_stderr("Error\n"));
 	}
 	sort_stuff(&lst_a);
 	ft_lstclear(&lst_a, free);
