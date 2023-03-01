@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <limits.h>
 
 # include "Libft/libft.h"
 
@@ -34,14 +35,14 @@
 # define EXIT		'E'
 # define START		'P'
 
-typedef struct	s_pos
+typedef struct s_pos
 {
 	int	x;
 	int	y;
 	int	is_last;
-} t_pos;
+}	t_pos;
 
-typedef struct	s_map
+typedef struct s_map
 {
 	char	**map_arr;
 	char	*map_path;
@@ -51,6 +52,6 @@ typedef struct	s_map
 	t_pos	start_pos;
 	t_pos	*collectibles;
 	int		collectibles_num;
-} t_map;
+}	t_map;
 
 #endif

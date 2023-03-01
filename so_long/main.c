@@ -12,37 +12,59 @@
 
 #include "so_long.h"
 //void f_fill(char **tab, t_point size, char target, int row, int col)
+// c = collectibles, val 100
+// e = exit, val 1
+// s = start, val 1
 
-int flood_check_vals(int *c_e_s, t_map *map, int row, int col)
+void	f_fill(char **tab, int *c_e_s, t_map *map, t_pos pos)
 {
-	if (row < 0 || col < 0 || row >= map->map_y || col >= map->map_x)
-		return;
-	if (map->map_arr[row][col] == EXIT)
-		c_e_s[1]++;
-	if (map->map_arr[row][col] == START)
-		c_e_s[2]++;
-	if (map->map_arr[row][col] == COLLECT)
-		c_e_s[0]++;
-
-	f_fill(c_e_s, map, row - 1, col);
-	f_fill(c_e_s, map, row + 1, col);
-	f_fill(c_e_s, map, row, col - 1);
-	f_fill(c_e_s, map, row, col + 1);
+	if (pos.y < 0 || pos.x < 0 || pos.y >= map->map_y
+		|| pos.x >= map->map_x || tab[pos.y][pos.x] == WALL)
+		return ;
+	if (map->map_arr[pos.y][pos.x] == EXIT)
+		*c_e_s += 1;
+	if (map->map_arr[pos.y][pos.x] == START)
+		*c_e_s += 1;
+	if (map->map_arr[pos.y][pos.x] == COLLECT)
+		*c_e_s += 100;
+	tab[pos.y][pos.x] = WALL;
+	f_fill(tab, c_e_s, map, (t_pos){pos.x, pos.y - 1, TRUE});
+	f_fill(tab, c_e_s, map, (t_pos){pos.x, pos.y + 1, TRUE});
+	f_fill(tab, c_e_s, map, (t_pos){pos.x - 1, pos.y, TRUE});
+	f_fill(tab, c_e_s, map, (t_pos){pos.x + 1, pos.y, TRUE});
 }
 
-void  flood_fill(char **tab, t_point size, t_point begin)
+int	flood_fill(t_map *map)
 {
-    char target = tab[begin.y][begin.x];
-    f_fill(tab, size, target, begin.y, begin.x);
-}
+	int		c_e_s;
+	char	**tab;
+	int		i;
 
-int	close_and_err(int fd)
-{
-	close (fd);
+	i = 0;
+	tab = ft_calloc(map->map_y + 1, sizeof(char *));
+	while (i < map->map_y)
+	{
+		tab[i] = ft_strdup(map->map_arr[i]);
+		i++;
+	}
+	c_e_s = 0;
+	f_fill(tab, &c_e_s, map, (t_pos){map->exit.x, map->exit.y, TRUE});
+	i--;
+	while (i > -1)
+		free(tab[i--]);
+	free (tab);
+	if (c_e_s / 100 == map->collectibles_num && c_e_s % 100 == 2)
+		return (OK);
 	return (ERR);
 }
 
-int	is_all_char(char *s, char c)
+int	close_and_return(int fd, int ret_val)
+{
+	close (fd);
+	return (ret_val);
+}
+
+int	is_all_char(char *s, char c, void (*f)(void *arg))
 {
 	int	i;
 
@@ -51,21 +73,27 @@ int	is_all_char(char *s, char c)
 	{
 		if (c != s[i])
 		{
-			free (s);
+			if (f)
+				free (s);
 			return (ERR);
 		}
 		i++;
 	}
-	free (s);
+	if (f)
+		f(s);
 	return (OK);
 }
 
 int	check_line_validity(char *map_line, int x)
 {
-	int	i;
+	int		i;
+	char	*trimmed_line;
 
 	i = 0;
-	if (ft_strlen(map_line) - 1 != x)
+	trimmed_line = ft_strtrim(map_line, "\n");
+	free(map_line);
+	map_line = trimmed_line;
+	if ((int) ft_strlen(map_line) != x)
 	{
 		free (map_line);
 		return (ERR);
@@ -75,10 +103,10 @@ int	check_line_validity(char *map_line, int x)
 		if (!ft_strchr(MAP_ALLOWED_CHARS, map_line[i])
 			|| map_line[0] != WALL
 			|| map_line[ft_strlen(map_line) - 1] != WALL)
-			{
-				free (map_line);
-				return (ERR);
-			}
+		{
+			free (map_line);
+			return (ERR);
+		}
 		i++;
 	}
 	free (map_line);
@@ -107,7 +135,7 @@ int	check_map_components(char *map_path)
 			close (map_fd);
 			if (exit_start <= 100 || exit_start % 100 != 2)
 				return (ERR);
-			return (is_all_char(map_line, WALL));
+			return (is_all_char(map_line, WALL, free));
 		}
 		map_line = get_next_line(map_fd);
 	}
@@ -123,30 +151,29 @@ int	check_map_validity(char *map_path)
 
 	stat = 0;
 	map_fd = open(map_path, O_RDONLY);
-	if (map_fd < 0)
-		return (ERR);
 	map_line = get_next_line(map_fd);
 	x = ft_strlen(map_line) - 1;
-	if (!map_line || is_all_char(map_line, WALL) == ERR)
-		return (close_and_err(map_fd));
+	if (!map_line || is_all_char(map_line, WALL, free) == ERR)
+		return (close_and_return(map_fd, ERR));
 	map_line = get_next_line(map_fd);
 	while (map_line)
 	{
 		if (!ft_strchr(map_line, '\n'))
 		{
 			close (map_fd);
-			return (is_all_char(map_line, WALL));
+			return (is_all_char(map_line, WALL, NULL)
+				+ check_line_validity(map_line, x) + stat);
 		}
 		stat += check_line_validity (map_line, x);
 		map_line = get_next_line(map_fd);
 	}
-	close(map_fd);
-	return (stat);
+	return (close_and_return(map_fd, stat));
 }
 
 t_map	*map_bzero(void)
 {
 	t_map	*map;
+
 	map = ft_calloc(1, sizeof(t_map));
 	if (!map)
 		return (NULL);
@@ -165,36 +192,49 @@ t_map	*map_bzero(void)
 	return (map);
 }
 
+void	free_arr(char **arr, int arr_size)
+{
+	int	i;
+
+	if (!arr_size)
+		arr_size = INT_MAX;
+	i = 0;
+	while (i < arr_size && arr[i])
+		free(arr[i++]);
+	free(arr);
+}
+
+int	arr_len(char **arr)
+{
+	int	cnt;
+
+	if (!arr)
+		return (0);
+	cnt = 0;
+	while (arr[cnt])
+		cnt++;
+	return (cnt);
+}
+
 int	count_char(char *path_to_file, char c)
 {
 	char	*line;
+	char	**line_arr;
 	int		char_count;
 	int		fd;
-	int		i;
 
 	fd = open(path_to_file, O_RDONLY);
-	if (fd < 0)
-		return (fd);
 	char_count = 0;
 	line = get_next_line(fd);
 	while (line)
 	{
-		i = 0;
-		while (i < ft_strlen(line))
-		{
-			if (ft_strchr(&line[i], c))
-			{
-				i += (ft_strchr(&line[i], c) - &line[i]) + 1;
-				char_count++;
-			}
-			else
-				i = ft_strlen(line);
-		}
+		line_arr = ft_split(line, c);
+		char_count += arr_len(line_arr) - 1;
+		free_arr (line_arr, 0);
 		free(line);
 		line = get_next_line(fd);
 	}
-	close(fd);
-	return (char_count);
+	return (close_and_return(fd, char_count));
 }
 
 int	count_lines(char *path)
@@ -214,48 +254,47 @@ int	count_lines(char *path)
 		free(line);
 		line = get_next_line(fd);
 	}
-	close(fd);
-	return (lc);
+	return (close_and_return(fd, lc));
+}
+
+int	collecties_expand(char *line, t_pos *x_y, t_pos *collecties)
+{
+	if (ft_strchr(&line[x_y->x], COLLECT))
+	{
+		x_y->x += (ft_strchr(&line[x_y->x], COLLECT) - &line[x_y->x]) + 1;
+		*collecties = (t_pos){x_y->x - 1, x_y->y, FALSE};
+		return (1);
+	}
+	else
+		x_y->x = ft_strlen(line);
+	return (0);
 }
 
 t_pos	*get_collectibles(char *map_path, int collectibles_num)
 {
-	t_pos	*collectibles;
+	t_pos	*collecties;
 	int		fd;
 	char	*line;
-	int		y;
-	int		x;
-	int		collect_count;
+	t_pos	x_y;
+	int		clct_cnt;
 
-	collectibles = ft_calloc(collectibles_num + 1, sizeof (t_pos));
+	collecties = ft_calloc(collectibles_num + 1, sizeof (t_pos));
 	fd = open(map_path, O_RDONLY);
-	if (fd < 0)
-		return (NULL);
-	collect_count = 0;
+	clct_cnt = 0;
 	line = get_next_line(fd);
-	y = 0;
-	while (line && collect_count <= collectibles_num)
+	x_y = (t_pos){0, 0, 0};
+	while (line && clct_cnt <= collectibles_num)
 	{
-		x = 0;
-		while (x < ft_strlen(line))
-		{
-			if (ft_strchr(&line[x], COLLECT))
-			{
-				x += (ft_strchr(&line[x], COLLECT) - &line[x]) + 1;
-				collectibles[collect_count].x = x - 1;
-				collectibles[collect_count].y = y;
-				collectibles[collect_count++].is_last = FALSE;
-			}
-			else
-				x = ft_strlen(line);
-		}
+		x_y.x = 0;
+		while (x_y.x < (int) ft_strlen(line))
+			clct_cnt += collecties_expand(line, &x_y, &collecties[clct_cnt]);
 		free(line);
 		line = get_next_line(fd);
-		y++;
+		x_y.y++;
 	}
-	collectibles[collectibles_num].is_last = TRUE;
+	collecties[collectibles_num].is_last = TRUE;
 	close(fd);
-	return (collectibles);
+	return (collecties);
 }
 
 void	print_map(t_map *map)
@@ -269,7 +308,6 @@ void	print_map(t_map *map)
 		ft_printf("\t%s\n", map->map_arr[i]);
 		i++;
 	}
-	
 	ft_printf("  MAP_PATH: %s\n", map->map_path);
 	ft_printf("  map_x: {%i} map_y: {%i}\n", map->map_x, map->map_y);
 	ft_printf("  EXIT: {%i , %i}\n", map->exit.x, map->exit.y);
@@ -279,7 +317,8 @@ void	print_map(t_map *map)
 	i = 1;
 	while (map->collectibles[i - 1].is_last != TRUE)
 	{
-		ft_printf("[%i, %i] ", map->collectibles[i - 1].x, map->collectibles[i - 1].y);
+		ft_printf("[%i, %i] ", map->collectibles[i - 1].x,
+			map->collectibles[i - 1].y);
 		if (i % 3 == 0 && i != 0)
 			ft_printf("\n    ");
 		i++;
@@ -326,7 +365,6 @@ void	fill_map_arr(t_map *map)
 	line = get_next_line(fd);
 	while (line)
 	{
-		ft_printf("{%s}\n", line);
 		map->map_arr[i] = ft_strtrim(line, "\t\n ");
 		i++;
 		free(line);
@@ -340,55 +378,60 @@ t_map	*map_fill(char *map_path)
 	int		map_fd;
 	char	*line;
 	t_map	*map;
-	int		x;
-	int		y;
 
 	map = map_bzero();
-	map->collectibles_num	= count_char(map_path, COLLECT);
-	map->collectibles		= get_collectibles(map_path,map->collectibles_num);
-	map->map_y				= count_lines(map_path);
-	map->exit				= get_char_pos(map_path, EXIT);
-	map->start_pos			= get_char_pos(map_path, START);
-	map->map_path			= ft_strdup(map_path);
+	map->collectibles_num = count_char(map_path, COLLECT);
+	map->collectibles = get_collectibles(map_path, map->collectibles_num);
+	map->map_y = count_lines(map_path);
+	map->exit = get_char_pos(map_path, EXIT);
+	map->start_pos = get_char_pos(map_path, START);
+	map->map_path = ft_strdup(map_path);
 	fill_map_arr(map);
-
 	map_fd = open(map_path, O_RDONLY);
 	line = get_next_line(map_fd);
-	map->map_x				= ft_strlen(line - 1);
+	map->map_x = (int) ft_strlen(line) - 1;
 	close(map_fd);
-
-	print_map(map);
+	free(line);
 	return (map);
+}
+
+void	*free_map(t_map *map)
+{
+	int	i;
+
+	i = 0;
+	while (i < map->map_y)
+		free(map->map_arr[i++]);
+	free(map->map_arr);
+	free(map->map_path);
+	free(map->collectibles);
+	free(map);
+	return (NULL);
 }
 
 t_map	*init_map(char *map_path)
 {
 	t_map	*map;
-	int		map_fd;
-	
-	map = map_bzero();
-	if (!map)
-		return (NULL);
-	map_fill(map_path);
-	
 
+	map = map_fill(map_path);
+	if (flood_fill(map) == ERR)
+		return (free_map(map));
 	return (map);
 }
 
 t_map	*process_map(char *map_path)
 {
-	int		stat;
 	t_map	*map;
 
 	if (check_map_validity(map_path) == OK)
 		map = init_map(map_path);
-
-	return (NULL);
+	return (map);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	char	*map_path;
+	t_map	*map;
 
 	if (argc == 2)
 		map_path = argv[1];
@@ -396,8 +439,14 @@ int main(int argc, char **argv)
 		map_path = "./maps/map.ber";
 	else
 		exit(1);
-	
-	process_map(map_path);
-
+	map = process_map(map_path);
+	if (!map)
+	{
+		ft_printf ("MAP NOT OK:(\n\n");
+		return (1);
+	}
+	ft_printf ("MAP OK!\n\n");
+	print_map(map);
+	free_map (map);
 	return (0);
 }

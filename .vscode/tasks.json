@@ -10,7 +10,8 @@
                 "*.c",
                 "libft.a",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
+                "${fileDirname}/${fileBasenameNoExtension}",
+				"-no-pie"
             ],
             "options": {
                 "cwd": "${fileDirname}"
