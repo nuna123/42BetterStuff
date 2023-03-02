@@ -17,12 +17,19 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-#include "minilibx-linux/mlx.h"
-# include "Libft/libft.a"
+# include "minilibx-linux/mlx.h"
+# include "Libft/libft.h"
 # include "map_handling/map_handling.h"
 
 # define OK 0
 # define ERR 1
+
+# define KEY_LEFT 97
+# define KEY_DOWN 115
+# define KEY_RIGHT 100
+# define KEY_UP 119
+
+# define KEY_ESC 65307
 
 typedef struct s_win
 {

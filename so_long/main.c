@@ -29,10 +29,21 @@ int	exit_nicely(t_win *window)
 	exit(OK);
 }
 
-int	keypress(int i, t_win *window)
+int	keypress(int keypress, t_win *window)
 {
-	printf("KEY: {%i}\n", i);
-	if (window && i == 65307)
+	if (keypress == KEY_DOWN)
+		ft_printf("DOWN KEY\n");
+	else if (keypress == KEY_UP)
+		ft_printf("UP KEY\n");
+	else if (keypress == KEY_RIGHT)
+		ft_printf("RIGHT KEY\n");
+	else if (keypress == KEY_LEFT)
+		ft_printf("LEFT KEY\n");
+	else if (keypress == KEY_ESC)
+		ft_printf("ESC KEY - leaving...\n");
+	else
+		printf("KEY: {%i}\n", keypress);
+	if (window && keypress == KEY_ESC)
 	{
 		mlx_destroy_window (window->mlx_ptr, window->win_ptr);
 		exit(OK);
@@ -43,7 +54,25 @@ int	keypress(int i, t_win *window)
 int main(void)
 {
 	t_win prog_ptr;
-	
+	/* char	*map_path;
+	t_map	*map;
+
+	if (argc == 2)
+		map_path = argv[1];
+	else if (argc == 1)
+		map_path = "./maps/map.ber";
+	else
+		exit(1);
+	map = process_map(map_path);
+	if (!map)
+	{
+		ft_printf ("MAP NOT OK:(\n\n");
+		return (1);
+	}
+	ft_printf ("MAP OK!\n\n");
+	print_map(map);
+	free_map (map);
+ */
 	prog_ptr = new_program(300, 300, "SO LONG");
 	if (!prog_ptr.mlx_ptr || !prog_ptr.win_ptr)
 		return (1);

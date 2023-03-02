@@ -1,4 +1,4 @@
-NAME = file_handling.a
+NAME = map_handling.a
 
 OBJ_FOL = obj/
 SRCS =	fill_and_check \
@@ -7,7 +7,7 @@ SRCS =	fill_and_check \
 		map_handling_utils
 
 
-C_FLAGS = -Wall -Werror -Wextra -fsanitize=address -g
+C_FLAGS = -Wall -Werror -Wextra
 
 C_FILES = $(addsuffix .c, $(SRCS))
 O_FILES = $(addprefix $(OBJ_FOL), $(addsuffix .o, $(SRCS)))
