@@ -1,30 +1,30 @@
-NAME		= so_long
+NAME = so_long
 
-SRC_FILES	= main
+SRCS = main.c
 
-SRCS		= $(addsuffix .c, $(SRC_FILES))
+MLX_FLAGS = -lbsd -lXext -lX11 -lm
 
-LIBFT_FOL	= ./Libft/
-LIBFT_PATH	= ./Libft/libft.a
+C_FLAGS = -Wall -Werror -Wextra ${MLX_FLAGS} -fsanitize=address -g
 
-CC_FLAGS	= -Wall -Wextra -Werror -no-pie -fsanitize=address -g
-CC			= cc
+MINILIBX_FOL = minilibx-linux/
+MINILIBX_PATH = $(addprefix $(MINILIBX_FOL), libmlx.a)
 
-all: $(NAME)
+###################################################################
 
-$(NAME): $(SRCS) $(LIBFT_PATH)
-	$(CC) $(CC_FLAGS) $(SRCS) $(LIBFT_PATH) -o $(NAME)
+$(NAME): all
 
-$(LIBFT_PATH):
-	make -C $(LIBFT_FOL) all bonus extra
+all: $(MINILIBX_PATH) $(SRCS)
+	cc ${C_FLAGS} $(SRCS)  $(MINILIBX_PATH) -o ${NAME}
+
+$(MINILIBX_PATH):
+	make -C $(MINILIBX_FOL) all --no-print-directory
 
 clean:
-	make -C $(LIBFT_FOL) clean
+	rm -rf ${NAME}
+	@ make -C ${MINILIBX_FOL} clean --no-print-directory
 
-fclean:
-	rm -rf $(NAME)
-	make -C $(LIBFT_FOL) fclean
+fclean: clean
 
-re: clean all
+re: fclean all
 
-.PHONY: clean fclean re
+.PHONY: clean fclean re all
