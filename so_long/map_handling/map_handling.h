@@ -20,6 +20,7 @@
 # include <limits.h>
 
 # include "../Libft/libft.h"
+# include "../includes/map_structs.h"
 
 # define OK			0
 # define ERR		1
@@ -33,26 +34,7 @@
 # define EMPTY		'0'
 # define COLLECT	'C'
 # define EXIT		'E'
-# define START		'P'
-
-typedef struct s_pos
-{
-	int	x;
-	int	y;
-	int	is_last;
-}	t_pos;
-
-typedef struct s_map
-{
-	char	**map_arr;
-	char	*map_path;
-	int		map_y;
-	int		map_x;
-	t_pos	exit;
-	t_pos	start_pos;
-	t_pos	*collectibles;
-	int		collectibles_num;
-}	t_map;
+# define PLAYER		'P'
 
 //	MAP HANDLING UTILS
 int			close_and_return(int fd, int ret_val);

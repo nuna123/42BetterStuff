@@ -20,7 +20,10 @@
 # include "minilibx-linux/mlx.h"
 # include "minilibx-linux/mlx_int.h"
 # include "Libft/libft.h"
+
 # include "map_handling/map_handling.h"
+
+# include "includes/mlx_structs.h"
 
 # define OK 0
 # define ERR 1
@@ -31,14 +34,6 @@
 # define KEY_UP 119
 
 # define KEY_ESC 65307
-
-typedef struct s_win
-{
-	void	*mlx_ptr;
-	void	*win_ptr;
-	int		height;
-	int		width;
-}		t_win;
 
 /* Events
 	KeyPress => 02

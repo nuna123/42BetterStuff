@@ -49,12 +49,12 @@ t_map	*map_bzero(void)
 	map->map_y = 0;
 	map->map_x = 0;
 	map->collectibles_num = 0;
-	map->exit.x = 0;
-	map->exit.y = 0;
-	map->exit.is_last = TRUE;
-	map->start_pos.x = 0;
-	map->start_pos.y = 0;
-	map->start_pos.is_last = TRUE;
+	map->exit_pos.x = 0;
+	map->exit_pos.y = 0;
+	map->exit_pos.is_last = TRUE;
+	map->player_pos.x = 0;
+	map->player_pos.y = 0;
+	map->player_pos.is_last = TRUE;
 	map->collectibles = NULL;
 	map->collectibles_num = 0;
 	return (map);

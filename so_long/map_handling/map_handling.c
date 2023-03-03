@@ -25,8 +25,8 @@ void	print_map(t_map *map)
 	}
 	ft_printf("  MAP_PATH: %s\n", map->map_path);
 	ft_printf("  map_x: {%i} map_y: {%i}\n", map->map_x, map->map_y);
-	ft_printf("  EXIT: {%i , %i}\n", map->exit.x, map->exit.y);
-	ft_printf("  START: {%i , %i}\n", map->start_pos.x, map->start_pos.y);
+	ft_printf("  EXIT: {%i , %i}\n", map->exit_pos.x, map->exit_pos.y);
+	ft_printf("  PLAYER: {%i , %i}\n", map->player_pos.x, map->player_pos.y);
 	ft_printf("  COLLECTIBLES: num: %i\n", map->collectibles_num);
 	ft_printf("    ");
 	i = 1;
@@ -71,8 +71,8 @@ t_map	*map_fill(char *map_path)
 	map->collectibles_num = count_char(map_path, COLLECT);
 	map->collectibles = get_collectibles(map_path, map->collectibles_num);
 	map->map_y = count_lines(map_path);
-	map->exit = get_char_pos(map_path, EXIT);
-	map->start_pos = get_char_pos(map_path, START);
+	map->exit_pos = get_char_pos(map_path, EXIT);
+	map->player_pos = get_char_pos(map_path, PLAYER);
 	map->map_path = ft_strdup(map_path);
 	fill_map_arr(map);
 	map_fd = open(map_path, O_RDONLY);

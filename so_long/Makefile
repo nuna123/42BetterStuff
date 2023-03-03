@@ -27,8 +27,9 @@ NONE='\033[0m'
 $(NAME): all
 
 all: ${LIBRARIES}
-	cc ${C_FLAGS} $(SRCS) ${LIBRARIES} ${MLX_FLAGS} -o ${NAME}
+	@ cc ${C_FLAGS} $(SRCS) ${LIBRARIES} ${MLX_FLAGS} -o ${NAME}
 	@ echo ${GREEN}"~~~~${NAME} compiled!~~~~\n"${NONE}
+	./${NAME}
 
 $(MINILIBX_PATH):
 	@ make -C $(MINILIBX_FOL) all --no-print-directory > /dev/null

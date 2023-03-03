@@ -24,7 +24,7 @@ void	f_fill(char **tab, int *c_e_s, t_map *map, t_pos pos)
 		return ;
 	if (map->map_arr[pos.y][pos.x] == EXIT)
 		*c_e_s += 1;
-	if (map->map_arr[pos.y][pos.x] == START)
+	if (map->map_arr[pos.y][pos.x] == PLAYER)
 		*c_e_s += 1;
 	if (map->map_arr[pos.y][pos.x] == COLLECT)
 		*c_e_s += 100;
@@ -49,7 +49,7 @@ int	flood_fill(t_map *map)
 		i++;
 	}
 	c_e_s = 0;
-	f_fill(tab, &c_e_s, map, (t_pos){map->exit.x, map->exit.y, TRUE});
+	f_fill(tab, &c_e_s, map, (t_pos){map->exit_pos.x, map->exit_pos.y, TRUE});
 	i--;
 	while (i > -1)
 		free(tab[i--]);
@@ -101,7 +101,7 @@ int	check_map_components(char *map_path)
 	exit_start = 0;
 	while (map_line)
 	{
-		if (ft_strchr(map_line, EXIT) || ft_strchr(map_line, START))
+		if (ft_strchr(map_line, EXIT) || ft_strchr(map_line, PLAYER))
 			exit_start++;
 		if (ft_strchr(map_line, COLLECT))
 			exit_start += 100;
