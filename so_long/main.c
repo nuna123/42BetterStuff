@@ -51,10 +51,9 @@ int	keypress(int keypress, t_win *window)
 	return (OK);
 }
 
-int main(void)
+t_map	*make_map(int argc, char *argv[])
 {
-	t_win prog_ptr;
-	/* char	*map_path;
+	char	*map_path;
 	t_map	*map;
 
 	if (argc == 2)
@@ -62,21 +61,28 @@ int main(void)
 	else if (argc == 1)
 		map_path = "./maps/map.ber";
 	else
-		exit(1);
+		exit(ERR);
 	map = process_map(map_path);
 	if (!map)
 	{
 		ft_printf ("MAP NOT OK:(\n\n");
-		return (1);
+		exit(ERR);
 	}
 	ft_printf ("MAP OK!\n\n");
+	return (map);
+}
+
+int main(int argc, char *argv[])
+{
+	t_win	prog_ptr;
+	t_map	*map;
+	
+	map = make_map(argc, argv);
 	print_map(map);
-	free_map (map);
- */
+	free_map(map);
 	prog_ptr = new_program(300, 300, "SO LONG");
 	if (!prog_ptr.mlx_ptr || !prog_ptr.win_ptr)
 		return (1);
-
 	mlx_hook(prog_ptr.win_ptr, 17, 1L<<0, exit_nicely, &prog_ptr);
 	mlx_hook(prog_ptr.win_ptr, 2, 1L<<0, keypress, &prog_ptr);
 	mlx_loop(prog_ptr.mlx_ptr);

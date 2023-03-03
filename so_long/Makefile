@@ -3,8 +3,7 @@ NAME = so_long
 SRCS = main.c
 
 MLX_FLAGS = -lbsd -lXext -lX11 -lm
-#####-Wall -Werror -Wextra 
-C_FLAGS = ${MLX_FLAGS}
+C_FLAGS = -Wall -Werror -Wextra -fsanitize=address -g
 
 MINILIBX_FOL = minilibx-linux/
 MINILIBX_PATH = $(addprefix $(MINILIBX_FOL), libmlx.a)
@@ -15,11 +14,9 @@ MAP_HAND_PATH = $(addprefix $(MAP_HAND_FOL), map_handling.a)
 LIBFT_FOL = Libft/
 LIBFT_PATH = $(addprefix $(LIBFT_FOL), libft.a)
 
-LIBRARIES =	${LIBFT_PATH} \
-			${MINILIBX_PATH}
-			
-
-
+LIBRARIES =	${MINILIBX_PATH} \
+			${MAP_HAND_PATH} \
+			${LIBFT_PATH}
 
 
 ###################################################################
@@ -30,7 +27,7 @@ NONE='\033[0m'
 $(NAME): all
 
 all: ${LIBRARIES}
-	cc ${C_FLAGS} $(SRCS) ${LIBRARIES} -o ${NAME}
+	cc ${C_FLAGS} $(SRCS) ${LIBRARIES} ${MLX_FLAGS} -o ${NAME}
 	@ echo ${GREEN}"~~~~${NAME} compiled!~~~~\n"${NONE}
 
 $(MINILIBX_PATH):
