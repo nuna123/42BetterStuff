@@ -12,24 +12,35 @@
 
 #include "so_long.h"
 
-t_win new_program(int window_width, int window_height, char *str)
-{
-	void	*mlx_ptr;
-	void	*win_ptr;
 
-	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, window_width, window_height, str);
-	return ((t_win) {mlx_ptr, win_ptr, window_width, window_height});
+
+void	move(t_game *game, int dir_x, int dir_y)
+{
+	t_pos	player;
+	char	chosen_one;
+
+	player = game->map->player_pos;
+	chosen_one = game->map->map_arr[player.y + dir_y][player.x + dir_x];
+	if (chosen_one != WALL)
+	{
+			// IF collectible, collect
+			/*
+			collect func needs to remove from collect arr, 
+			remove from collect num
+				if last collectible, activate exit
+			*/
+		if (chosen_one == COLLECT)
+		{
+			//do the do
+		}
+		// update map arr, update player position in t_map
+		// if exit && exit active, exit nicely
+		if (chosen_one == EXIT && game->map->exit_pos.is_last)
+
+	}
 }
 
-int	exit_nicely(t_win *window)
-{
-	if (window)
-		mlx_destroy_window (window->mlx_ptr, window->win_ptr);
-	exit(OK);
-}
-
-int	keypress(int keypress, t_win *window)
+int	keypress(int keypress, t_game *game)
 {
 	if (keypress == KEY_DOWN)
 		ft_printf("DOWN KEY\n");
@@ -43,48 +54,33 @@ int	keypress(int keypress, t_win *window)
 		ft_printf("ESC KEY - leaving...\n");
 	else
 		printf("KEY: {%i}\n", keypress);
-	if (window && keypress == KEY_ESC)
-	{
-		mlx_destroy_window (window->mlx_ptr, window->win_ptr);
-		exit(OK);
-	}
+	if (game && keypress == KEY_ESC)
+		exit_nicely(game);
 	return (OK);
-}
-
-t_map	*make_map(int argc, char *argv[])
-{
-	char	*map_path;
-	t_map	*map;
-
-	if (argc == 2)
-		map_path = argv[1];
-	else if (argc == 1)
-		map_path = "./maps/map.ber";
-	else
-		exit(ERR);
-	map = process_map(map_path);
-	if (!map)
-	{
-		ft_printf ("MAP NOT OK:(\n\n");
-		exit(ERR);
-	}
-	ft_printf ("MAP OK!\n\n");
-	return (map);
 }
 
 int main(int argc, char *argv[])
 {
-	t_win	prog_ptr;
+	t_game	*game;
 	t_map	*map;
-	
+
 	map = make_map(argc, argv);
-	print_map(map);
-	free_map(map);
-	prog_ptr = new_program(300, 300, "SO LONG");
-	if (!prog_ptr.mlx_ptr || !prog_ptr.win_ptr)
+	if (!map)
 		return (1);
-	mlx_hook(prog_ptr.win_ptr, 17, 1L<<0, exit_nicely, &prog_ptr);
-	mlx_hook(prog_ptr.win_ptr, 2, 1L<<0, keypress, &prog_ptr);
-	mlx_loop(prog_ptr.mlx_ptr);
+	game = new_game(map->map_x * IMG_SIZE, map->map_y * IMG_SIZE,  "SO LONG");
+	if (!game->mlx_ptr || !game->win_ptr)
+		return (1);
+	game->map = map;
+	print_map(game->map);
+
+	game->imgs = make_imgs(game);
+	put_map(game);
+
+	mlx_hook(game->win_ptr, 17, 1L<<0, exit_nicely, game); // X button
+	mlx_hook(game->win_ptr, 2, 1L<<0, keypress, game); // keypress
+
+	mlx_loop(game->mlx_ptr);
+
+	free_map(game->map);
 	return (OK);
 }

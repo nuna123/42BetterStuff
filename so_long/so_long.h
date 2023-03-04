@@ -13,27 +13,41 @@
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-
 # include <stdio.h>
 # include <stdlib.h>
 
 # include "minilibx-linux/mlx.h"
-# include "minilibx-linux/mlx_int.h"
 # include "Libft/libft.h"
 
 # include "map_handling/map_handling.h"
-
+# include "includes/vars_and_defins.h"
 # include "includes/mlx_structs.h"
 
-# define OK 0
-# define ERR 1
+//////////// INIT STUFF //////////////////////////////
 
-# define KEY_LEFT 97
-# define KEY_DOWN 115
-# define KEY_RIGHT 100
-# define KEY_UP 119
+//init the game struct, which holds all the pointers and structs needed
+t_game	*new_game(int window_width, int window_height, char *str);
+//starts the right map based on argc and argv, the actual map filing and allocation is in map_handling folder&lib
+t_map	*make_map(int argc, char *argv[]);
+//img struct which holds all the info needed about an image. wtf is endian
+t_img	*make_img(void *mlx, char *img_path);
+// imgs struct holds t_img pointers to wall, player, collectible and exit imgs
+t_imgs	*make_imgs(t_game *game);
 
-# define KEY_ESC 65307
+//////////// PUT STUFF //////////////////////////////
+
+//puts image on window smh
+void	put_img(t_game *game, void *img_ptr, int x, int y);
+//puts the map on window based on the game->map->arr. uses put_img()
+void	put_map(t_game *game);
+
+///////// UTILS ///////////////
+
+//frees the game struct and all allocated stuff in it (hopefully)
+void	free_game(t_game *game);
+// frees everything, destroyes window, exits with status 0
+int	exit_nicely(t_game *game);
+
 
 /* Events
 	KeyPress => 02

@@ -10,36 +10,35 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MLX_STRUCTS_H
-# define MLX_STRUCTS_H
+#ifndef VARS_AND_DEFINS_H
+# define VARS_AND_DEFINS_H
 
-typedef struct s_img
-{
-	void	*img_ptr;
-	char	*addr;
-	int		h;
-	int		w;
-	int		bpp;
-	int		endian;
-	int		line_len;
-}	t_img;
+# define OK					0
+# define ERR				1
 
-typedef struct s_imgs
-{
-	t_img	*player;
-	t_img	*wall;
-	t_img	*collect;
-	t_img	*exit;
-}	t_imgs;
+# define FALSE				0
+# define TRUE				1
 
-typedef struct s_game
-{
-	void	*mlx_ptr;
-	void	*win_ptr;
-	t_map	*map;
-	t_imgs	*imgs;
-	int		height;
-	int		width;
-}		t_game;
+# define IMG_SIZE			32
+
+# define MAP_ALLOWED_CHARS	"01CEP"
+
+# define WALL				'1'
+# define EMPTY				'0'
+# define COLLECT			'C'
+# define EXIT				'E'
+# define PLAYER				'P'
+
+# define KEY_LEFT			97
+# define KEY_DOWN			115
+# define KEY_RIGHT			100
+# define KEY_UP				119
+# define KEY_ESC			65307
+
+# define PLAYER_IMG_PATH	"./imgs/rock.xpm"
+# define WALL_IMG_PATH		"./imgs/wall.xpm"
+# define EXIT_IMG_PATH		"./imgs/exit.xpm"
+# define COLLECT_IMG_PATH	"./imgs/collectible.xpm"
+
 
 #endif

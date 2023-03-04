@@ -37,7 +37,7 @@ t_pos	*get_collectibles(char *map_path, int collectibles_num)
 	fd = open(map_path, O_RDONLY);
 	clct_cnt = 0;
 	line = get_next_line(fd);
-	x_y = (t_pos){0, 0, 0};
+	x_y = (t_pos){0, 0, FALSE};
 	while (line && clct_cnt <= collectibles_num)
 	{
 		x_y.x = 0;
@@ -76,6 +76,7 @@ t_pos	get_char_pos(char *path_to_file, char c)
 			pos.y++;
 	}
 	close(fd);
+	pos.is_last = TRUE;
 	return (pos);
 }
 

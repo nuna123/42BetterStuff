@@ -10,36 +10,35 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MLX_STRUCTS_H
-# define MLX_STRUCTS_H
+#include "so_long.h"
 
-typedef struct s_img
+void	put_img(t_game *game, void *img_ptr, int x, int y)
 {
-	void	*img_ptr;
-	char	*addr;
-	int		h;
-	int		w;
-	int		bpp;
-	int		endian;
-	int		line_len;
-}	t_img;
+	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr,
+		img_ptr, x * IMG_SIZE, y * IMG_SIZE);
+}
 
-typedef struct s_imgs
+void	put_map(t_game *game)
 {
-	t_img	*player;
-	t_img	*wall;
-	t_img	*collect;
-	t_img	*exit;
-}	t_imgs;
+	int	x;
+	int	y;
 
-typedef struct s_game
-{
-	void	*mlx_ptr;
-	void	*win_ptr;
-	t_map	*map;
-	t_imgs	*imgs;
-	int		height;
-	int		width;
-}		t_game;
-
-#endif
+	y = 0;
+	while (y < game->map->map_y)
+	{
+		x = 0;
+		while (x < game->map->map_x)
+		{
+			if (game->map->map_arr[y][x] == WALL)
+				put_img(game, game->imgs->wall->img_ptr, x, y);
+			else if (game->map->map_arr[y][x] == PLAYER)
+				put_img(game, game->imgs->player->img_ptr, x, y);
+			else if (game->map->map_arr[y][x] == EXIT)
+				put_img(game, game->imgs->exit->img_ptr, x, y);
+			else if (game->map->map_arr[y][x] == COLLECT)
+				put_img(game, game->imgs->collect->img_ptr, x, y);
+			x ++;
+		}
+		y ++;
+	}
+}

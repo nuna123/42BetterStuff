@@ -1,12 +1,15 @@
 NAME = so_long
 
-SRCS = main.c
+SRCS = main.c utils.c init_stuff.c put_stuff.c
+
+
+TEST_SRCS = IMIGtest.c
 
 MLX_FLAGS = -lbsd -lXext -lX11 -lm
-C_FLAGS = -Wall -Werror -Wextra -fsanitize=address -g
+# C_FLAGS = 
 
 MINILIBX_FOL = minilibx-linux/
-MINILIBX_PATH = $(addprefix $(MINILIBX_FOL), libmlx.a)
+MINILIBX_PATH =./$(addprefix $(MINILIBX_FOL), libmlx.a)
 
 MAP_HAND_FOL = map_handling/
 MAP_HAND_PATH = $(addprefix $(MAP_HAND_FOL), map_handling.a)
@@ -27,9 +30,12 @@ NONE='\033[0m'
 $(NAME): all
 
 all: ${LIBRARIES}
-	@ cc ${C_FLAGS} $(SRCS) ${LIBRARIES} ${MLX_FLAGS} -o ${NAME}
+	cc ${C_FLAGS} $(SRCS) ${LIBRARIES} ${MLX_FLAGS} -o ${NAME}
 	@ echo ${GREEN}"~~~~${NAME} compiled!~~~~\n"${NONE}
-	./${NAME}
+
+test: ${TEST_SRCS} ${MINILIBX_PATH}
+	clear
+	cc $(TEST_SRCS) -fsanitize=address -g ${MINILIBX_PATH} ${MLX_FLAGS} -o test
 
 $(MINILIBX_PATH):
 	@ make -C $(MINILIBX_FOL) all --no-print-directory > /dev/null

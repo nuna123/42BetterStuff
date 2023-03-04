@@ -21,20 +21,7 @@
 
 # include "../Libft/libft.h"
 # include "../includes/map_structs.h"
-
-# define OK			0
-# define ERR		1
-
-# define FALSE		0
-# define TRUE		1
-
-# define MAP_ALLOWED_CHARS	"01CEP"
-
-# define WALL		'1'
-# define EMPTY		'0'
-# define COLLECT	'C'
-# define EXIT		'E'
-# define PLAYER		'P'
+# include "../includes/vars_and_defins.h"
 
 //	MAP HANDLING UTILS
 int			close_and_return(int fd, int ret_val);

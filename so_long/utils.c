@@ -10,36 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MLX_STRUCTS_H
-# define MLX_STRUCTS_H
+#include "so_long.h"
 
-typedef struct s_img
+void	free_game(t_game *game)
 {
-	void	*img_ptr;
-	char	*addr;
-	int		h;
-	int		w;
-	int		bpp;
-	int		endian;
-	int		line_len;
-}	t_img;
+	free_map(game->map);
+	free(game->imgs->collect);
+	free(game->imgs->player);
+	free(game->imgs->exit);
+	free(game->imgs->wall);
+	free(game->imgs);
+	free(game);
+}
 
-typedef struct s_imgs
+int	exit_nicely(t_game *game)
 {
-	t_img	*player;
-	t_img	*wall;
-	t_img	*collect;
-	t_img	*exit;
-}	t_imgs;
-
-typedef struct s_game
-{
-	void	*mlx_ptr;
-	void	*win_ptr;
-	t_map	*map;
-	t_imgs	*imgs;
-	int		height;
-	int		width;
-}		t_game;
-
-#endif
+	if (game)
+	{
+		mlx_destroy_window (game->mlx_ptr, game->win_ptr);
+		free_game(game);
+	}
+	exit(OK);
+}

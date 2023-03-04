@@ -78,8 +78,12 @@ t_map	*map_fill(char *map_path)
 	map_fd = open(map_path, O_RDONLY);
 	line = get_next_line(map_fd);
 	map->map_x = (int) ft_strlen(line) - 1;
+	while (line)
+	{
+		free(line);
+		line = get_next_line(map_fd);
+	}
 	close(map_fd);
-	free(line);
 	return (map);
 }
 
@@ -136,7 +140,7 @@ int	main(int argc, char **argv)
 	if (argc == 2)
 		map_path = argv[1];
 	else if (argc == 1)
-		map_path = "./maps/map.ber";
+		map_path = "../maps/map.ber";
 	else
 		exit(1);
 	map = process_map(map_path);
