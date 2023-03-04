@@ -23,22 +23,21 @@ void	put_map(t_game *game)
 	int	x;
 	int	y;
 
-	y = 0;
-	while (y < game->map->map_y)
+	y = -1;
+	mlx_clear_window(game->mlx_ptr, game->win_ptr);
+	while (++y < game->map->map_y)
 	{
-		x = 0;
-		while (x < game->map->map_x)
+		x = -1;
+		while (++x < game->map->map_x)
 		{
 			if (game->map->map_arr[y][x] == WALL)
 				put_img(game, game->imgs->wall->img_ptr, x, y);
-			else if (game->map->map_arr[y][x] == PLAYER)
-				put_img(game, game->imgs->player->img_ptr, x, y);
 			else if (game->map->map_arr[y][x] == EXIT)
 				put_img(game, game->imgs->exit->img_ptr, x, y);
 			else if (game->map->map_arr[y][x] == COLLECT)
 				put_img(game, game->imgs->collect->img_ptr, x, y);
-			x ++;
 		}
-		y ++;
 	}
+	put_img(game, game->imgs->player->img_ptr,
+			game->map->player_pos.x, game->map->player_pos.y);
 }

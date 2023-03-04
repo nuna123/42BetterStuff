@@ -27,7 +27,7 @@ void	print_map(t_map *map)
 	ft_printf("  map_x: {%i} map_y: {%i}\n", map->map_x, map->map_y);
 	ft_printf("  EXIT: {%i , %i}\n", map->exit_pos.x, map->exit_pos.y);
 	ft_printf("  PLAYER: {%i , %i}\n", map->player_pos.x, map->player_pos.y);
-	ft_printf("  COLLECTIBLES: num: %i\n", map->collectibles_num);
+	ft_printf("  COLLECTIBLES: num: %i\n", map->collect_num);
 	ft_printf("    ");
 	i = 1;
 	while (map->collectibles[i - 1].is_last != TRUE)
@@ -45,6 +45,7 @@ void	fill_map_arr(t_map *map)
 {
 	char	*line;
 	int		i;
+	int		j;
 	int		fd;
 
 	fd = open(map->map_path, O_RDONLY);
@@ -53,6 +54,12 @@ void	fill_map_arr(t_map *map)
 	line = get_next_line(fd);
 	while (line)
 	{
+		j = -1;
+		while (line[++j] && line[j] != '\n')
+		{
+			if(line[j] == PLAYER)
+				line[j] = EMPTY;
+		}
 		map->map_arr[i] = ft_strtrim(line, "\t\n ");
 		i++;
 		free(line);
@@ -68,8 +75,8 @@ t_map	*map_fill(char *map_path)
 	t_map	*map;
 
 	map = map_bzero();
-	map->collectibles_num = count_char(map_path, COLLECT);
-	map->collectibles = get_collectibles(map_path, map->collectibles_num);
+	map->collect_num = count_char(map_path, COLLECT);
+	map->collectibles = get_collectibles(map_path, map->collect_num);
 	map->map_y = count_lines(map_path);
 	map->exit_pos = get_char_pos(map_path, EXIT);
 	map->player_pos = get_char_pos(map_path, PLAYER);
@@ -130,7 +137,6 @@ int	map_handling(char *map_path)
 	free_map (map);
 	return (OK);
 }
-
 /* 
 int	main(int argc, char **argv)
 {

@@ -12,8 +12,6 @@
 
 #include "so_long.h"
 
-
-
 void	move(t_game *game, int dir_x, int dir_y)
 {
 	t_pos	player;
@@ -23,23 +21,45 @@ void	move(t_game *game, int dir_x, int dir_y)
 	chosen_one = game->map->map_arr[player.y + dir_y][player.x + dir_x];
 	if (chosen_one != WALL)
 	{
-			// IF collectible, collect
-			/*
-			collect func needs to remove from collect arr, 
-			remove from collect num
-				if last collectible, activate exit
-			*/
-		if (chosen_one == COLLECT)
+		ft_printf("moves: %i\n", ++game->moves);
+		if (chosen_one == COLLECT && game->map->collect_num > 0)
 		{
-			//do the do
+			game->map->map_arr[player.y + dir_y][player.x + dir_x] = EMPTY;
+			game->map->collect_num--;
 		}
-		// update map arr, update player position in t_map
-		// if exit && exit active, exit nicely
-		if (chosen_one == EXIT && game->map->exit_pos.is_last)
-
+		if (game->map->collect_num == 0)
+		{
+			mlx_destroy_image(game->mlx_ptr, game->imgs->exit->img_ptr);
+			free(game->imgs->exit);
+			game->imgs->exit = make_img(game->mlx_ptr, EXIT_O_IMG_PATH);
+		}
+		game->map->player_pos.x = player.x + dir_x;
+		game->map->player_pos.y = player.y + dir_y;
+		if (chosen_one == EXIT && !game->map->collect_num)
+			exit_nicely(game);
+		put_map(game);
 	}
 }
 
+int	keypress(int keypress, t_game *game)
+{
+	if (keypress == KEY_DOWN)
+		move(game, 0, 1);
+	else if (keypress == KEY_UP)
+		move(game, 0, -1);
+	else if (keypress == KEY_RIGHT)
+		move(game, 1, 0);
+	else if (keypress == KEY_LEFT)
+		move(game, -1, 0);
+	else if (keypress == KEY_ESC)
+		ft_printf("ESC KEY - leaving...\n");
+	else
+		printf("KEY: {%i}\n", keypress);
+	if (game && keypress == KEY_ESC)
+		exit_nicely(game);
+	return (OK);
+}
+/* 
 int	keypress(int keypress, t_game *game)
 {
 	if (keypress == KEY_DOWN)
@@ -58,7 +78,7 @@ int	keypress(int keypress, t_game *game)
 		exit_nicely(game);
 	return (OK);
 }
-
+ */
 int main(int argc, char *argv[])
 {
 	t_game	*game;
@@ -71,8 +91,6 @@ int main(int argc, char *argv[])
 	if (!game->mlx_ptr || !game->win_ptr)
 		return (1);
 	game->map = map;
-	print_map(game->map);
-
 	game->imgs = make_imgs(game);
 	put_map(game);
 

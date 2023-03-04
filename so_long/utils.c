@@ -15,20 +15,31 @@
 void	free_game(t_game *game)
 {
 	free_map(game->map);
-	free(game->imgs->collect);
-	free(game->imgs->player);
-	free(game->imgs->exit);
-	free(game->imgs->wall);
-	free(game->imgs);
+	free_imgs(game);
+	mlx_destroy_window(game->mlx_ptr, game->win_ptr);
+	mlx_destroy_display(game->mlx_ptr);
+	free(game->mlx_ptr);
 	free(game);
 }
 
 int	exit_nicely(t_game *game)
 {
 	if (game)
-	{
-		mlx_destroy_window (game->mlx_ptr, game->win_ptr);
 		free_game(game);
-	}
 	exit(OK);
+}
+
+void	free_img(void *mlx_ptr, t_img *img)
+{
+	mlx_destroy_image(mlx_ptr, img->img_ptr);
+	free(img);
+}
+
+void	free_imgs(t_game *game)
+{
+	free_img(game->mlx_ptr, game->imgs->collect);
+	free_img(game->mlx_ptr, game->imgs->wall);
+	free_img(game->mlx_ptr, game->imgs->player);
+	free_img(game->mlx_ptr, game->imgs->exit);
+	free (game->imgs);
 }

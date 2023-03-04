@@ -64,7 +64,7 @@ t_imgs	*make_imgs(t_game *game)
 	imgs = ft_calloc(1, sizeof(t_imgs));
 	imgs->player = make_img(game->mlx_ptr, PLAYER_IMG_PATH);
 	imgs->wall = make_img(game->mlx_ptr, WALL_IMG_PATH);
-	imgs->exit = make_img(game->mlx_ptr, EXIT_IMG_PATH);
+	imgs->exit = make_img(game->mlx_ptr, EXIT_C_IMG_PATH);
 	imgs->collect = make_img(game->mlx_ptr, COLLECT_IMG_PATH);
 	return (imgs);
 }

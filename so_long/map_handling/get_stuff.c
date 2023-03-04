@@ -25,7 +25,7 @@ int	collecties_expand(char *line, t_pos *x_y, t_pos *collecties)
 	return (0);
 }
 
-t_pos	*get_collectibles(char *map_path, int collectibles_num)
+t_pos	*get_collectibles(char *map_path, int collect_num)
 {
 	t_pos	*collecties;
 	int		fd;
@@ -33,12 +33,12 @@ t_pos	*get_collectibles(char *map_path, int collectibles_num)
 	t_pos	x_y;
 	int		clct_cnt;
 
-	collecties = ft_calloc(collectibles_num + 1, sizeof (t_pos));
+	collecties = ft_calloc(collect_num + 1, sizeof (t_pos));
 	fd = open(map_path, O_RDONLY);
 	clct_cnt = 0;
 	line = get_next_line(fd);
 	x_y = (t_pos){0, 0, FALSE};
-	while (line && clct_cnt <= collectibles_num)
+	while (line && clct_cnt <= collect_num)
 	{
 		x_y.x = 0;
 		while (x_y.x < (int) ft_strlen(line))
@@ -47,7 +47,7 @@ t_pos	*get_collectibles(char *map_path, int collectibles_num)
 		line = get_next_line(fd);
 		x_y.y++;
 	}
-	collecties[collectibles_num].is_last = TRUE;
+	collecties[collect_num].is_last = TRUE;
 	close(fd);
 	return (collecties);
 }

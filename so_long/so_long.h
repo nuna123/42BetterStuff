@@ -48,6 +48,11 @@ void	free_game(t_game *game);
 // frees everything, destroyes window, exits with status 0
 int	exit_nicely(t_game *game);
 
+// theres an mlx_destrpy_img function??? i am using it but should probably research more
+void	free_img(void *mlx_ptr, t_img *img);
+//uses free_img on each thingy in the struct, frees struct
+void	free_imgs(t_game *game);
+
 
 /* Events
 	KeyPress => 02

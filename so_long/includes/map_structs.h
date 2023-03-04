@@ -33,7 +33,7 @@ typedef struct s_map
 	t_pos	exit_pos;
 	t_pos	player_pos;
 	t_pos	*collectibles;
-	int		collectibles_num;
+	int		collect_num;
 }	t_map;
 
 #endif

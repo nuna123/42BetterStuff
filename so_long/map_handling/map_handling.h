@@ -32,7 +32,7 @@ int			arr_len(char **arr);
 
 // GET STUFF
 int			collecties_expand(char *line, t_pos *x_y, t_pos *collecties);
-t_pos		*get_collectibles(char *map_path, int collectibles_num);
+t_pos		*get_collectibles(char *map_path, int collect_num);
 t_pos		get_char_pos(char *path_to_file, char c);
 int			count_char(char *path_to_file, char c);
 int			count_lines(char *path);

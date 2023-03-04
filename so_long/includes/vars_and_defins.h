@@ -37,7 +37,8 @@
 
 # define PLAYER_IMG_PATH	"./imgs/rock.xpm"
 # define WALL_IMG_PATH		"./imgs/wall.xpm"
-# define EXIT_IMG_PATH		"./imgs/exit.xpm"
+# define EXIT_C_IMG_PATH	"./imgs/exit_closed.xpm"
+# define EXIT_O_IMG_PATH	"./imgs/exit_open.xpm"
 # define COLLECT_IMG_PATH	"./imgs/collectible.xpm"
 
 

@@ -12,7 +12,6 @@
 
 #include "map_handling.h"
 
-//void f_fill(char **tab, t_point size, char target, int row, int col)
 // c = collectibles, val 100
 // e = exit, val 1
 // s = start, val 1
@@ -22,12 +21,13 @@ void	f_fill(char **tab, int *c_e_s, t_map *map, t_pos pos)
 	if (pos.y < 0 || pos.x < 0 || pos.y >= map->map_y
 		|| pos.x >= map->map_x || tab[pos.y][pos.x] == WALL)
 		return ;
-	if (map->map_arr[pos.y][pos.x] == EXIT)
+	else if (map->map_arr[pos.y][pos.x] == EXIT)
 		*c_e_s += 1;
-	if (map->map_arr[pos.y][pos.x] == PLAYER)
-		*c_e_s += 1;
-	if (map->map_arr[pos.y][pos.x] == COLLECT)
+	else if (map->map_arr[pos.y][pos.x] == COLLECT)
 		*c_e_s += 100;
+	else if (pos.y == map->player_pos.y && pos.x == map->player_pos.x)
+		*c_e_s += 1000;
+
 	tab[pos.y][pos.x] = WALL;
 	f_fill(tab, c_e_s, map, (t_pos){pos.x, pos.y - 1, TRUE});
 	f_fill(tab, c_e_s, map, (t_pos){pos.x, pos.y + 1, TRUE});
@@ -54,7 +54,8 @@ int	flood_fill(t_map *map)
 	while (i > -1)
 		free(tab[i--]);
 	free (tab);
-	if (c_e_s / 100 == map->collectibles_num && c_e_s % 100 == 2)
+	if (c_e_s > 1000 && (c_e_s - 1000) / 100 == map->collect_num
+			&& (c_e_s - 1000) % 100 == 1)
 		return (OK);
 	return (ERR);
 }

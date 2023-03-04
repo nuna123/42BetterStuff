@@ -48,7 +48,7 @@ t_map	*map_bzero(void)
 	map->map_arr = NULL;
 	map->map_y = 0;
 	map->map_x = 0;
-	map->collectibles_num = 0;
+	map->collect_num = 0;
 	map->exit_pos.x = 0;
 	map->exit_pos.y = 0;
 	map->exit_pos.is_last = TRUE;
@@ -56,7 +56,7 @@ t_map	*map_bzero(void)
 	map->player_pos.y = 0;
 	map->player_pos.is_last = TRUE;
 	map->collectibles = NULL;
-	map->collectibles_num = 0;
+	map->collect_num = 0;
 	return (map);
 }
 

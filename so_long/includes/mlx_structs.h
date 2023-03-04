@@ -40,6 +40,7 @@ typedef struct s_game
 	t_imgs	*imgs;
 	int		height;
 	int		width;
+	int		moves;
 }		t_game;
 
 #endif
