@@ -27,7 +27,8 @@
 
 //init the game struct, which holds all the pointers and structs needed
 t_game	*new_game(int window_width, int window_height, char *str);
-//starts the right map based on argc and argv, the actual map filing and allocation is in map_handling folder&lib
+//starts the right map based on argc and argv, the actual map filing and
+//allocation is in map_handling folder&lib
 t_map	*make_map(int argc, char *argv[]);
 //img struct which holds all the info needed about an image. wtf is endian
 t_img	*make_img(void *mlx, char *img_path);
@@ -40,19 +41,22 @@ t_imgs	*make_imgs(t_game *game);
 void	put_img(t_game *game, void *img_ptr, int x, int y);
 //puts the map on window based on the game->map->arr. uses put_img()
 void	put_map(t_game *game);
+//updates player image for the fake animation thingy
+int		update_player(t_game *game);
+//when collectibles is 0 this is activated, updates exit img ptr to open
+void	open_exit(t_game *game);
 
 ///////// UTILS ///////////////
 
 //frees the game struct and all allocated stuff in it (hopefully)
 void	free_game(t_game *game);
 // frees everything, destroyes window, exits with status 0
-int	exit_nicely(t_game *game);
-
-// theres an mlx_destrpy_img function??? i am using it but should probably research more
+int		exit_nicely(t_game *game);
+// theres an mlx_destrpy_img function??? i am using it,
+//but should probably research more
 void	free_img(void *mlx_ptr, t_img *img);
 //uses free_img on each thingy in the struct, frees struct
 void	free_imgs(t_game *game);
-
 
 /* Events
 	KeyPress => 02

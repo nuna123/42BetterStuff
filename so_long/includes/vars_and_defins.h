@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef VARS_AND_DEFINS_H
 # define VARS_AND_DEFINS_H
 
@@ -44,6 +43,5 @@
 # define EXIT_C_IMG_PATH	"./imgs/exit_closed.xpm"
 # define EXIT_O_IMG_PATH	"./imgs/exit_open.xpm"
 # define COLLECT_IMG_PATH	"./imgs/collectible.xpm"
-
 
 #endif

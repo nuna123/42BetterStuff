@@ -28,11 +28,7 @@ void	move(t_game *game, int dir_x, int dir_y)
 			game->map->collect_num--;
 		}
 		if (game->map->collect_num == 0)
-		{
-			mlx_destroy_image(game->mlx_ptr, game->imgs->exit->img_ptr);
-			free(game->imgs->exit);
-			game->imgs->exit = make_img(game->mlx_ptr, EXIT_O_IMG_PATH);
-		}
+			open_exit(game);
 		game->map->player_pos.x = player.x + dir_x;
 		game->map->player_pos.y = player.y + dir_y;
 		if (chosen_one == EXIT && !game->map->collect_num)
@@ -61,20 +57,15 @@ int	keypress(int keypress, t_game *game)
 	return (OK);
 }
 
-int update_player(t_game *game)
+void	hooker(t_game *game)
 {
-	static int	frame;
-
-	frame ++;
-	if (frame % 15000 == 0)
-	{
-		game->imgs->player = game->imgs->player->next_img;
-		put_img(game, game->imgs->player->img_ptr,
-				game->map->player_pos.x, game->map->player_pos.y);
-	}
+	mlx_hook(game->win_ptr, 17, 1L << 0, exit_nicely, game);
+	mlx_hook(game->win_ptr, 2, 1L << 0, keypress, game);
+	mlx_loop_hook(game->mlx_ptr, update_player, game);
+	mlx_loop(game->mlx_ptr);
 }
 
-int main(int argc, char *argv[])
+int	main(int argc, char *argv[])
 {
 	t_game	*game;
 	t_map	*map;
@@ -82,18 +73,12 @@ int main(int argc, char *argv[])
 	map = make_map(argc, argv);
 	if (!map)
 		return (1);
-	game = new_game(map->map_x * IMG_SIZE, map->map_y * IMG_SIZE,  "SO LONG");
+	game = new_game(map->map_x * IMG_SIZE, map->map_y * IMG_SIZE, "SO LONG");
 	if (!game->mlx_ptr || !game->win_ptr)
 		return (1);
 	game->map = map;
 	game->imgs = make_imgs(game);
 	put_map(game);
-
-	mlx_hook(game->win_ptr, 17, 1L<<0, exit_nicely, game); // X button
-	mlx_hook(game->win_ptr, 2, 1L<<0, keypress, game); // keypress
-	mlx_loop_hook(game->mlx_ptr, update_player, game);
-	mlx_loop(game->mlx_ptr);
-
-	free_map(game->map);
+	hooker(game);
 	return (OK);
 }

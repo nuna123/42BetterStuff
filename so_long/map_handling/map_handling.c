@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "map_handling.h"
-
+/* 
 void	print_map(t_map *map)
 {
 	int	i;
@@ -29,7 +29,7 @@ void	print_map(t_map *map)
 	ft_printf("  COLLECTIBLES: %i\n", map->collect_num);
 	ft_printf("\n--------------------\n");
 }
-
+ */
 void	fill_map_arr(char *map_path, t_map *map)
 {
 	char	*line;
@@ -115,13 +115,7 @@ int	map_handling(char *map_path)
 		map_path = "./maps/map.ber";
 	map = process_map(map_path);
 	if (!map)
-	{
-		ft_printf ("MAP NOT OK:(\n\n");
 		return (ERR);
-	}
-	ft_printf ("MAP OK!\n\n");
-	print_map(map);
-	free_map (map);
 	return (OK);
 }
 /* 

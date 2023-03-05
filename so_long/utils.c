@@ -45,7 +45,6 @@ void	free_img(void *mlx_ptr, t_img *img)
 		}
 		free(img);
 	}
-	
 }
 
 void	free_imgs(t_game *game)

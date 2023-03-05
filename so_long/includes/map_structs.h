@@ -13,9 +13,6 @@
 #ifndef MAP_STRUCTS_H
 # define MAP_STRUCTS_H
 
-//is_last is used for 2 things = mark a 'NULL' at the end of collecties arr in game map, 
-// and to check if the exit is active, eg all collectibles have been collected.
-// is_last == FALSE = exit inactive; is_last == TRUE = hooray
 typedef struct s_pos
 {
 	int	x;

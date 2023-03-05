@@ -15,13 +15,13 @@
 
 typedef struct s_img
 {
-	void	*img_ptr;
-	char	*addr;
-	int		h;
-	int		w;
-	int		bpp;
-	int		endian;
-	int		line_len;
+	void			*img_ptr;
+	char			*addr;
+	int				h;
+	int				w;
+	int				bpp;
+	int				endian;
+	int				line_len;
 	struct s_img	*next_img;
 }	t_img;
 

@@ -39,5 +39,25 @@ void	put_map(t_game *game)
 		}
 	}
 	put_img(game, game->imgs->player->img_ptr,
+		game->map->player_pos.x, game->map->player_pos.y);
+}
+
+int	update_player(t_game *game)
+{
+	static int	frame;
+
+	frame ++;
+	if (frame % 15000 == 0)
+	{
+		game->imgs->player = game->imgs->player->next_img;
+		put_img(game, game->imgs->player->img_ptr,
 			game->map->player_pos.x, game->map->player_pos.y);
+	}
+}
+
+void	open_exit(t_game *game)
+{
+	mlx_destroy_image(game->mlx_ptr, game->imgs->exit->img_ptr);
+	free(game->imgs->exit);
+	game->imgs->exit = make_img(game->mlx_ptr, EXIT_O_IMG_PATH);
 }
