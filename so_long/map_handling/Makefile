@@ -6,8 +6,7 @@ SRCS =	fill_and_check \
 		map_handling \
 		map_handling_utils
 
-
-C_FLAGS = -Wall -Werror -Wextra
+C_FLAGS = -Wall -Werror -Wextra -fsanitize=address -g
 
 C_FILES = $(addsuffix .c, $(SRCS))
 O_FILES = $(addprefix $(OBJ_FOL), $(addsuffix .o, $(SRCS)))

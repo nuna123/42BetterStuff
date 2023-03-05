@@ -6,7 +6,7 @@ SRCS = main.c utils.c init_stuff.c put_stuff.c
 TEST_SRCS = IMIGtest.c
 
 MLX_FLAGS = -lbsd -lXext -lX11 -lm
-# C_FLAGS = 
+C_FLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 
 MINILIBX_FOL = minilibx-linux/
 MINILIBX_PATH =./$(addprefix $(MINILIBX_FOL), libmlx.a)

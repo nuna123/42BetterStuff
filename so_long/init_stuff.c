@@ -23,24 +23,25 @@ t_game	*new_game(int window_width, int window_height, char *str)
 	return (game);
 }
 
+/* 	else if (argc == 1)
+		map_path = "./maps/map.ber"; */
 t_map	*make_map(int argc, char *argv[])
 {
 	char	*map_path;
 	t_map	*map;
 
+	if (argc == 1)
+	{
+		ft_printf("Error\nMap file missing.\n");
+		exit(1);
+	}
 	if (argc == 2)
 		map_path = argv[1];
-	else if (argc == 1)
-		map_path = "./maps/map.ber";
 	else
-		exit(ERR);
+		return (NULL);
 	map = process_map(map_path);
 	if (!map)
-	{
-		ft_printf ("MAP NOT OK:(\n\n");
-		exit(ERR);
-	}
-	ft_printf ("MAP OK!\n\n");
+		return (NULL);
 	return (map);
 }
 

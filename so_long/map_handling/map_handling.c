@@ -56,7 +56,6 @@ void	fill_map_arr(char *map_path, t_map *map)
 		i++;
 	}
 	close(fd);
-	ft_printf("yay\n");
 }
 
 t_map	*map_fill(char *map_path)
@@ -99,7 +98,7 @@ t_map	*process_map(char *map_path)
 {
 	t_map	*map;
 
-	if (check_map_validity(map_path) == ERR)
+	if (check_map_validity(map_path) != OK)
 		return (NULL);
 	map = map_fill(map_path);
 	if (flood_fill(map) == ERR)
@@ -107,17 +106,6 @@ t_map	*process_map(char *map_path)
 	return (map);
 }
 
-int	map_handling(char *map_path)
-{
-	t_map	*map;
-
-	if (!map_path)
-		map_path = "./maps/map.ber";
-	map = process_map(map_path);
-	if (!map)
-		return (ERR);
-	return (OK);
-}
 /* 
 int	main(int argc, char **argv)
 {
@@ -127,7 +115,7 @@ int	main(int argc, char **argv)
 	if (argc == 2)
 		map_path = argv[1];
 	else if (argc == 1)
-		map_path = "../more_maps/classic.ber";
+		map_path = "../maps/map2.ber";
 	else
 		exit(1);
 	map = process_map(map_path);
@@ -137,7 +125,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	ft_printf ("MAP OK!\n\n");
-	print_map(map);
+	//print_map(map);
 	free_map (map);
 	return (0);
 }

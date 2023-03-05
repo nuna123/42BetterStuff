@@ -72,7 +72,11 @@ int	main(int argc, char *argv[])
 
 	map = make_map(argc, argv);
 	if (!map)
+	{
+		ft_printf("Error\n");
+		ft_printf("Map no bueno :(\n");
 		return (1);
+	}
 	game = new_game(map->map_x * IMG_SIZE, map->map_y * IMG_SIZE, "SO LONG");
 	if (!game->mlx_ptr || !game->win_ptr)
 		return (1);

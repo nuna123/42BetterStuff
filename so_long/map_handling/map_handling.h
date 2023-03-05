@@ -52,7 +52,6 @@ t_map		*map_fill(char *map_path);
 void		*free_map(t_map *map);
 t_map		*process_map(char *map_path);
 
-//MAIN FUNC, DELETE PRINTMAAP FOR NORM
-int			map_handling(char *map_path);
+// int			map_handling(char *map_path);
 
 #endif

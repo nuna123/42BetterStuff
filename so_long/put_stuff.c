@@ -53,6 +53,7 @@ int	update_player(t_game *game)
 		put_img(game, game->imgs->player->img_ptr,
 			game->map->player_pos.x, game->map->player_pos.y);
 	}
+	return (OK);
 }
 
 void	open_exit(t_game *game)
