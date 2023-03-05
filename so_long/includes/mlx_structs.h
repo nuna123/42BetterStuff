@@ -22,6 +22,7 @@ typedef struct s_img
 	int		bpp;
 	int		endian;
 	int		line_len;
+	struct s_img	*next_img;
 }	t_img;
 
 typedef struct s_imgs

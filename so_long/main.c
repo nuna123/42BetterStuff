@@ -36,7 +36,10 @@ void	move(t_game *game, int dir_x, int dir_y)
 		game->map->player_pos.x = player.x + dir_x;
 		game->map->player_pos.y = player.y + dir_y;
 		if (chosen_one == EXIT && !game->map->collect_num)
+		{
+			ft_printf("~~~~~~YOU WON! (yay)\n");
 			exit_nicely(game);
+		}
 		put_map(game);
 	}
 }
@@ -58,6 +61,19 @@ int	keypress(int keypress, t_game *game)
 	return (OK);
 }
 
+int update_player(t_game *game)
+{
+	static int	frame;
+
+	frame ++;
+	if (frame % 15000 == 0)
+	{
+		game->imgs->player = game->imgs->player->next_img;
+		put_img(game, game->imgs->player->img_ptr,
+				game->map->player_pos.x, game->map->player_pos.y);
+	}
+}
+
 int main(int argc, char *argv[])
 {
 	t_game	*game;
@@ -75,7 +91,7 @@ int main(int argc, char *argv[])
 
 	mlx_hook(game->win_ptr, 17, 1L<<0, exit_nicely, game); // X button
 	mlx_hook(game->win_ptr, 2, 1L<<0, keypress, game); // keypress
-
+	mlx_loop_hook(game->mlx_ptr, update_player, game);
 	mlx_loop(game->mlx_ptr);
 
 	free_map(game->map);

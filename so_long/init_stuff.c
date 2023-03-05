@@ -54,6 +54,7 @@ t_img	*make_img(void *mlx, char *img_path)
 	img->img_ptr = mlx_xpm_file_to_image(mlx, img_path, &img->w, &img->h);
 	img->addr = mlx_get_data_addr(img->img_ptr, &img->bpp,
 			&img->line_len, &img->endian);
+	img->next_img = NULL;
 	return (img);
 }
 
@@ -63,6 +64,8 @@ t_imgs	*make_imgs(t_game *game)
 
 	imgs = ft_calloc(1, sizeof(t_imgs));
 	imgs->player = make_img(game->mlx_ptr, PLAYER_IMG_PATH);
+	imgs->player->next_img = make_img(game->mlx_ptr, PLAYER_IMG2_PATH);
+	imgs->player->next_img->next_img = imgs->player;
 	imgs->wall = make_img(game->mlx_ptr, WALL_IMG_PATH);
 	imgs->exit = make_img(game->mlx_ptr, EXIT_C_IMG_PATH);
 	imgs->collect = make_img(game->mlx_ptr, COLLECT_IMG_PATH);

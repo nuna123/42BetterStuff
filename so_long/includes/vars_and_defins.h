@@ -10,8 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #ifndef VARS_AND_DEFINS_H
 # define VARS_AND_DEFINS_H
+
+# include "../so_long.h"
 
 # define OK					0
 # define ERR				1
@@ -36,6 +39,7 @@
 # define KEY_ESC			65307
 
 # define PLAYER_IMG_PATH	"./imgs/rock.xpm"
+# define PLAYER_IMG2_PATH	"./imgs/rock2.xpm"
 # define WALL_IMG_PATH		"./imgs/wall.xpm"
 # define EXIT_C_IMG_PATH	"./imgs/exit_closed.xpm"
 # define EXIT_O_IMG_PATH	"./imgs/exit_open.xpm"

@@ -31,8 +31,21 @@ int	exit_nicely(t_game *game)
 
 void	free_img(void *mlx_ptr, t_img *img)
 {
-	mlx_destroy_image(mlx_ptr, img->img_ptr);
-	free(img);
+	t_img	*next;
+
+	if (img->img_ptr)
+	{
+		mlx_destroy_image(mlx_ptr, img->img_ptr);
+		img->img_ptr = NULL;
+		if (img->next_img)
+		{
+			next = img->next_img;
+			img->next_img = NULL;
+			free_img(mlx_ptr, next);
+		}
+		free(img);
+	}
+	
 }
 
 void	free_imgs(t_game *game)
