@@ -46,7 +46,8 @@ int			check_map_validity(char *map_path);
 
 // MAP_HANDLING
 void		print_map(t_map *map);
-void		fill_map_arr(t_map *map);
+void		fill_map_arr(char *map_path, t_map *map);
+
 t_map		*map_fill(char *map_path);
 void		*free_map(t_map *map);
 t_map		*process_map(char *map_path);

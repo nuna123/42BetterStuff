@@ -17,15 +17,12 @@ NRM_COLOR = \033[0;39m
 GREEN = \033[0;92m
 YELLOW = \033[0;93m
 
-
-
-
 B_FILES		=	$(addsuffix  _bonus, $(SRC_FILES))
 
-SRC 		=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
+SRC 		=	$(addsuffix .c, $(SRC_FILES))
 OBJ 		=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
 
-SRC_B 		=	$(addprefix $(BONUS_DIR), $(addsuffix .c, $(B_FILES)))
+SRC_B 		=	$(addsuffix .c, $(B_FILES))
 OBJ_B 		=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(B_FILES)))
 
 ###

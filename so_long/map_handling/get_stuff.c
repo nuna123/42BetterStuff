@@ -38,7 +38,7 @@ t_pos	*get_collectibles(char *map_path, int collect_num)
 	clct_cnt = 0;
 	line = get_next_line(fd);
 	x_y = (t_pos){0, 0, FALSE};
-	while (line && clct_cnt <= collect_num)
+	while (line)
 	{
 		x_y.x = 0;
 		while (x_y.x < (int) ft_strlen(line))
@@ -83,7 +83,7 @@ t_pos	get_char_pos(char *path_to_file, char c)
 int	count_char(char *path_to_file, char c)
 {
 	char	*line;
-	char	**line_arr;
+	char	*lil_line;
 	int		char_count;
 	int		fd;
 
@@ -92,9 +92,12 @@ int	count_char(char *path_to_file, char c)
 	line = get_next_line(fd);
 	while (line)
 	{
-		line_arr = ft_split(line, c);
-		char_count += arr_len(line_arr) - 1;
-		free_arr (line_arr, 0);
+		lil_line = line;
+		while (ft_strchr(lil_line, c))
+		{
+			char_count++;
+			lil_line = ft_strchr(lil_line, c) + 1;
+		}
 		free(line);
 		line = get_next_line(fd);
 	}

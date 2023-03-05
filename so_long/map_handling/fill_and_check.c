@@ -21,13 +21,12 @@ void	f_fill(char **tab, int *c_e_s, t_map *map, t_pos pos)
 	if (pos.y < 0 || pos.x < 0 || pos.y >= map->map_y
 		|| pos.x >= map->map_x || tab[pos.y][pos.x] == WALL)
 		return ;
-	else if (map->map_arr[pos.y][pos.x] == EXIT)
+	if (map->map_arr[pos.y][pos.x] == EXIT)
 		*c_e_s += 1;
 	else if (map->map_arr[pos.y][pos.x] == COLLECT)
 		*c_e_s += 100;
 	else if (pos.y == map->player_pos.y && pos.x == map->player_pos.x)
 		*c_e_s += 1000;
-
 	tab[pos.y][pos.x] = WALL;
 	f_fill(tab, c_e_s, map, (t_pos){pos.x, pos.y - 1, TRUE});
 	f_fill(tab, c_e_s, map, (t_pos){pos.x, pos.y + 1, TRUE});
@@ -55,7 +54,7 @@ int	flood_fill(t_map *map)
 		free(tab[i--]);
 	free (tab);
 	if (c_e_s > 1000 && (c_e_s - 1000) / 100 == map->collect_num
-			&& (c_e_s - 1000) % 100 == 1)
+		&& (c_e_s - 1000) % 100 == 1)
 		return (OK);
 	return (ERR);
 }

@@ -53,32 +53,11 @@ int	keypress(int keypress, t_game *game)
 		move(game, -1, 0);
 	else if (keypress == KEY_ESC)
 		ft_printf("ESC KEY - leaving...\n");
-	else
-		printf("KEY: {%i}\n", keypress);
 	if (game && keypress == KEY_ESC)
 		exit_nicely(game);
 	return (OK);
 }
-/* 
-int	keypress(int keypress, t_game *game)
-{
-	if (keypress == KEY_DOWN)
-		ft_printf("DOWN KEY\n");
-	else if (keypress == KEY_UP)
-		ft_printf("UP KEY\n");
-	else if (keypress == KEY_RIGHT)
-		ft_printf("RIGHT KEY\n");
-	else if (keypress == KEY_LEFT)
-		ft_printf("LEFT KEY\n");
-	else if (keypress == KEY_ESC)
-		ft_printf("ESC KEY - leaving...\n");
-	else
-		printf("KEY: {%i}\n", keypress);
-	if (game && keypress == KEY_ESC)
-		exit_nicely(game);
-	return (OK);
-}
- */
+
 int main(int argc, char *argv[])
 {
 	t_game	*game;
