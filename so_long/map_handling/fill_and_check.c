@@ -90,31 +90,11 @@ int	check_line_validity(char *map_line, int x)
 
 int	check_map_components(char *map_path)
 {
-	int		map_fd;
-	char	*map_line;
-	int		exit_start;
-
-	map_fd = open(map_path, O_RDONLY);
-	if (map_fd < 0)
+	if (!get_char_pos(map_path, EXIT).is_last
+		|| !get_char_pos(map_path, PLAYER).is_last
+		|| !get_char_pos(map_path, COLLECT).is_last)
 		return (ERR);
-	map_line = get_next_line(map_fd);
-	exit_start = 0;
-	while (map_line)
-	{
-		if (ft_strchr(map_line, EXIT) || ft_strchr(map_line, PLAYER))
-			exit_start++;
-		if (ft_strchr(map_line, COLLECT))
-			exit_start += 100;
-		if (!ft_strchr(map_line, '\n'))
-		{
-			close (map_fd);
-			if (exit_start <= 100 || exit_start % 100 != 2)
-				return (ERR);
-			return (is_all_char(map_line, WALL, free));
-		}
-		map_line = get_next_line(map_fd);
-	}
-	return (ERR);
+	return (OK);
 }
 
 int	check_map_validity(char *map_path)
@@ -124,7 +104,7 @@ int	check_map_validity(char *map_path)
 	int		map_fd;
 	int		stat;
 
-	stat = 0;
+	stat = check_map_components(map_path);
 	map_fd = open(map_path, O_RDONLY);
 	map_line = get_next_line(map_fd);
 	x = ft_strlen(map_line) - 1;

@@ -27,12 +27,8 @@
 int			close_and_return(int fd, int ret_val);
 int			is_all_char(char *s, char c, void (*f)(void *arg));
 t_map		*map_bzero(void);
-void		free_arr(char **arr, int arr_size);
-int			arr_len(char **arr);
 
 // GET STUFF
-int			collecties_expand(char *line, t_pos *x_y, t_pos *collecties);
-t_pos		*get_collectibles(char *map_path, int collect_num);
 t_pos		get_char_pos(char *path_to_file, char c);
 int			count_char(char *path_to_file, char c);
 int			count_lines(char *path);
@@ -51,7 +47,5 @@ void		fill_map_arr(char *map_path, t_map *map);
 t_map		*map_fill(char *map_path);
 void		*free_map(t_map *map);
 t_map		*process_map(char *map_path);
-
-// int			map_handling(char *map_path);
 
 #endif

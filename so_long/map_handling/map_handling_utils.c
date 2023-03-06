@@ -59,27 +59,3 @@ t_map	*map_bzero(void)
 	map->collect_num = 0;
 	return (map);
 }
-
-void	free_arr(char **arr, int arr_size)
-{
-	int	i;
-
-	if (!arr_size)
-		arr_size = INT_MAX;
-	i = 0;
-	while (i < arr_size && arr[i])
-		free(arr[i++]);
-	free(arr);
-}
-
-int	arr_len(char **arr)
-{
-	int	cnt;
-
-	if (!arr)
-		return (0);
-	cnt = 0;
-	while (arr[cnt])
-		cnt++;
-	return (cnt);
-}

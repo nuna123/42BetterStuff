@@ -115,7 +115,7 @@ int	main(int argc, char **argv)
 	if (argc == 2)
 		map_path = argv[1];
 	else if (argc == 1)
-		map_path = "../maps/map2.ber";
+		map_path = "../maps/map.ber";
 	else
 		exit(1);
 	map = process_map(map_path);
