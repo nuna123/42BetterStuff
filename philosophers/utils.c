@@ -47,3 +47,23 @@ long	ft_atoi(const char *nptr)
 	}
 	return (res * sign);
 }
+
+unsigned long	get_timestamp_ms(t_time *time)
+{
+	unsigned long	ms_timestamp;
+	t_time			ts;
+
+	gettimeofday(&ts, NULL);
+	if (!time)
+		ms_timestamp = (1000 * ts.tv_sec) + (ts.tv_usec / 1000);
+	else
+		ms_timestamp = (1000 * time->tv_sec) + (time->tv_usec / 1000);
+/* 	printf("TIMESTAMP: %lu\n", ms_timestamp);
+	printf("TIMESTAMP:tv_sec %lu ; tv_usec %lu\n", ts.tv_sec, ts.tv_usec); */
+	return (ms_timestamp);
+}
+
+unsigned long	msleep(unsigned long ms)
+{
+	return (usleep(ms * 1000));
+}

@@ -12,7 +12,7 @@
 
 #include "./philosophers.h"
 
-t_prog *init_prog(int argc, char *argv[])
+t_prog	*init_prog(int argc, char *argv[])
 {
 	t_prog	*prog;
 	int		i;
@@ -20,39 +20,37 @@ t_prog *init_prog(int argc, char *argv[])
 	prog = malloc(sizeof(t_prog));
 	if (!prog)
 		return (NULL);
-	
 	prog->num_of_philos = (int) ft_atoi(argv[1]);
+	prog->prog_init = get_timestamp_ms(NULL);
+	prog->philos = malloc(sizeof(t_philo) * prog->num_of_philos);
 	prog->forks = malloc(sizeof(pthread_mutex_t) * prog->num_of_philos);
-
+	prog->philo_threads = malloc(sizeof(pthread_t) * prog->num_of_philos);
+	if (!prog->philos || !prog->forks || !prog->philo_threads)
+		return (free(prog->philos), free(prog->forks),free (prog->philo_threads), NULL);
 	i = -1;
 	while (++i < prog->num_of_philos)
 		pthread_mutex_init(&prog->forks[i], NULL);
-
-	prog->philo_threads = malloc(sizeof(pthread_t) * prog->num_of_philos);
-	if (!prog->philo_threads)
-		return (free(prog->forks), NULL);
-
-	prog->time_to_die = ft_atoi(argv[2]) * 1000;
-	prog->time_to_eat = ft_atoi(argv[3]) * 1000;
-	prog->time_to_sleep = ft_atoi(argv[4]) * 1000;
+	prog->time_to_die = ft_atoi(argv[2]);
+	prog->time_to_eat = ft_atoi(argv[3]);
+	prog->time_to_sleep = ft_atoi(argv[4]);
 	prog->num_to_eat = -1;
 	if (argc == 6)
 		prog->num_to_eat = (int) ft_atoi(argv[5]);
-
 	return (prog);
 }
 
 void	free_prog(t_prog *prog)
 {
-	int i;
+	int	i;
 
-	i = -1;
+/*  	i = -1;
 	while (++i < prog->num_of_philos)
-		pthread_join((prog->philo_threads[i]), NULL);
+		pthread_detach((prog->philo_threads[i])); */
 	i = -1;
 	while (++i < prog->num_of_philos)
 		pthread_mutex_destroy(&prog->forks[i]);
 	free (prog->forks);
 	free (prog->philo_threads);
-	free(prog);
+	free (prog->philos);
+	free (prog);
 }

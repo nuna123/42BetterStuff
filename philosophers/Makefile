@@ -5,7 +5,7 @@ SRCS =	philosophers.c \
 		funcs.c
 
 FLAGS = -pthread
-CC_FLAGS = -Wall -Werror -Wextra ${FLAGS}
+CC_FLAGS = -Wall -Werror -Wextra ${FLAGS} -fsanitize=address -g
 
 all:	${NAME}
 
