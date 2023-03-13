@@ -38,7 +38,7 @@ static void	forker2(int pipees[2], int file_fd,
 	exit(127);
 }
 
-static int wait_for_child(char **cmd, pid_t child)
+static int	wait_for_child(char **cmd, pid_t child)
 {
 	int		stat;
 
@@ -50,7 +50,6 @@ static int wait_for_child(char **cmd, pid_t child)
 	return (WEXITSTATUS(stat));
 }
 
-
 int	piper(char **cmds[2], char *env[],
 		char *infile_path, char *outfile_path)
 {
@@ -61,25 +60,19 @@ int	piper(char **cmds[2], char *env[],
 
 	file_fd = open(infile_path, O_RDONLY);
 	if (file_fd == -1 || pipe(pipees) != 0)
-	{
-		perror(infile_path);
-		return (release_all(cmds[0], cmds[1], NULL, NULL));
-	}
+		return (perror(infile_path), 1);
 	child = fork();
 	if (child == 0)
 		forker(pipees, file_fd, cmds, env);
 	wait_for_child(cmds[0], child);
-
 	close(file_fd);
 	close(pipees[1]);
 	file_fd = open(outfile_path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (file_fd == -1)
 		perror(outfile_path);
-
 	child = fork();
 	if (child == 0)
 		forker2(pipees, file_fd, cmds, env);
 	stat = wait_for_child(cmds[1], child);
-
 	return (stat);
 }
