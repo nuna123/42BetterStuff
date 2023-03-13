@@ -26,7 +26,7 @@ YELLOW			=	\033[0;93m
 
 all:		${NAME}
 
-${NAME}:	${SRC} ${LIBFT}
+${NAME}:	${SRCS} ${LIBFT}
 			@ cc ${CFLAGS} ${SRCS} ${LIBFT} -I${LIBFT_FOL} -o ${NAME}
 			@ echo "${GREEN}pipex compiled!${NRM_COLOR}"
 

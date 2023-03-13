@@ -40,25 +40,40 @@ void	printer(char **cmd1, char **cmd2, char *infile_path, char *outfile_path)
 }
  */
 
-int	main(int argc, char *argv[], char *env[])
+
+void pipe_the_stuff(int argc, char *argv[], char *env[])
 {
 	char	*infile_path;
 	char	*outfile_path;
 	char	**cmd1;
 	char	**cmd2;
+	int		i;
 
-	if (argc != 5)
+	infile_path = argv[1];
+	outfile_path = argv[argc - 1];
+
+	i = 1;
+	while (++i < argc - 2)
+	{
+		cmd1 = get_full_cmd(argv[i], env);
+		cmd2 = get_full_cmd(argv[i + 1], env);
+
+		piper((char **[2]){cmd1, cmd2}, env, infile_path, outfile_path);
+		release_cmds((char **[2]){cmd1, cmd2});
+		infile_path = outfile_path;
+	}
+}
+
+
+int	main(int argc, char *argv[], char *env[])
+{
+
+	// if (argc != 5)
+	if (argc < 5)
 	{
 		ft_printf("Invalid number of arguments.\n");
 		return (1);
 	}
-	else
-	{
-		infile_path = argv[1];
-		outfile_path = argv[4];
-		cmd1 = get_full_cmd(argv[2], env);
-		cmd2 = get_full_cmd(argv[3], env);
-	}
-	piper((char **[2]){cmd1, cmd2}, env, infile_path, outfile_path);
+	pipe_the_stuff(argc, argv, env);
 	return (0);
 }

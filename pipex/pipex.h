@@ -42,8 +42,8 @@ int		piper(char **cmds[2], char *env[],
 			char *infile_path, char *outfile_path);
 
 //PIPEX_UTILS
-void	*close_pipes_files(int pipees[2], int infile_fd, int outfile_fd);
 int		release_all(char **cmd1, char **cmd2,
 			char *infile_path, char *outfile_path);
+int		release_cmds(char **cmds[2]);
 
 #endif
