@@ -40,16 +40,13 @@ void	ft_bzero(void *s, size_t n)
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
-	char	*res;
+	void	*res;
 
-	if (nmemb && size)
-	{
-		if ((nmemb * size) / size != nmemb)
-			return (NULL);
-	}
+	if ((nmemb * size) / size != nmemb)
+		return (NULL);
 	res = malloc(size * nmemb);
 	if (!res)
-		return (NULL);
+		return (res);
 	ft_bzero(res, size * nmemb);
 	return (res);
 }
