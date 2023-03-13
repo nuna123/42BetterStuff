@@ -23,6 +23,9 @@
 #define OK	0
 #define ERR	1
 
+#define FALSE	0
+#define TRUE	1
+
 # define TOOK_FORK		"has taken a fork"
 # define IS_EATING		"is eating"
 # define IS_SLEEPING	"is sleeping"
@@ -48,18 +51,19 @@ typedef struct s_prog
 	int num_of_philos;			//also num of forks
 	struct s_philo *philos; //arr of philos 
 
-//NO	int *forks;					// an array, index tied to position on table, will be set to 0 if available, 1 if taken;
 	pthread_mutex_t *forks;			//each philo will lock the forks they use while eating, release when finished
+	pthread_mutex_t printing;
 
 	pthread_t	*philo_threads;
 
+	int alive;
 	unsigned long prog_init;		//start of program timestamp
 
 	unsigned long time_to_die;
 	unsigned long time_to_eat;
 	unsigned long time_to_sleep;
 
-	int num_to_eat;			//number_of_times_each_philosopher_must_eat, optional value, if not set will be -1
+	unsigned int num_to_eat;			//number_of_times_each_philosopher_must_eat, optional value, if not set will be -1
 } t_prog;
 
 typedef struct s_philo
@@ -72,6 +76,7 @@ typedef struct s_philo
 
 	char			currently;		// S = sleeping, E = eating, T = thinking
 
+	pthread_mutex_t	*forks[2];
 	t_prog			*prog;
 	/* struct s_philo *prev;
 	struct s_philo *next; */
@@ -85,7 +90,7 @@ int				ft_strlen(const char *s);
 long			ft_atoi(const char *nptr);
 unsigned long	get_timestamp_ms(t_time *time);
 unsigned long	msleep(unsigned long ms);
-
+int				ft_strncmp(const char *s1, const char *s2, size_t n);
 
 // FUNCS
 t_prog	*init_prog(int argc, char *argv[]);

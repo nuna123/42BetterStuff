@@ -12,6 +12,9 @@ all:	${NAME}
 ${NAME}:	${SRCS}
 	cc ${CC_FLAGS} ${SRCS} -o ${NAME}
 
+s:	clean ${SRCS}
+	cc -Wall -Werror -Wextra -pthread ${SRCS} -o ${NAME}
+
 clean:
 	rm -rf ${NAME}
 

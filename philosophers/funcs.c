@@ -20,6 +20,8 @@ t_prog	*init_prog(int argc, char *argv[])
 	prog = malloc(sizeof(t_prog));
 	if (!prog)
 		return (NULL);
+	prog->alive = TRUE;
+
 	prog->num_of_philos = (int) ft_atoi(argv[1]);
 	prog->prog_init = get_timestamp_ms(NULL);
 	prog->philos = malloc(sizeof(t_philo) * prog->num_of_philos);
@@ -30,12 +32,13 @@ t_prog	*init_prog(int argc, char *argv[])
 	i = -1;
 	while (++i < prog->num_of_philos)
 		pthread_mutex_init(&prog->forks[i], NULL);
+	pthread_mutex_init(&prog->printing, NULL);
 	prog->time_to_die = ft_atoi(argv[2]);
 	prog->time_to_eat = ft_atoi(argv[3]);
 	prog->time_to_sleep = ft_atoi(argv[4]);
-	prog->num_to_eat = -1;
+	prog->num_to_eat = (unsigned int) -1;
 	if (argc == 6)
-		prog->num_to_eat = (int) ft_atoi(argv[5]);
+		prog->num_to_eat = (unsigned int) ft_atoi(argv[5]);
 	return (prog);
 }
 
@@ -49,6 +52,7 @@ void	free_prog(t_prog *prog)
 	i = -1;
 	while (++i < prog->num_of_philos)
 		pthread_mutex_destroy(&prog->forks[i]);
+	pthread_mutex_destroy(&prog->printing);
 	free (prog->forks);
 	free (prog->philo_threads);
 	free (prog->philos);

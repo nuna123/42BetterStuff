@@ -67,3 +67,20 @@ unsigned long	msleep(unsigned long ms)
 {
 	return (usleep(ms * 1000));
 }
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t			counter;
+	unsigned char	chars[2];
+
+	counter = 0;
+	while (counter < n && (s1[counter] || s2[counter]))
+	{
+		chars[0] = s1[counter];
+		chars[1] = s2[counter];
+		if (chars[0] - chars[1])
+			return ((chars[0] - chars[1]));
+		counter++;
+	}
+	return (0);
+}
