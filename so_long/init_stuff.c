@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   init_stuff.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nroth <nroth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:04:30 by nroth             #+#    #+#             */
-/*   Updated: 2023/03/02 16:09:13 by nroth            ###   ########.fr       */
+/*   Updated: 2023/03/06 12:30:00 by nroth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ t_map	*make_map(int argc, char *argv[])
 	if (argc == 2)
 		map_path = argv[1];
 	else
-		return (NULL);
+	{
+		ft_printf("Error\nToo many arguments.\n");
+		exit(1);
+	}
 	map = process_map(map_path);
 	if (!map)
 		return (NULL);

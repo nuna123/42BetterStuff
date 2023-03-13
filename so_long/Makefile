@@ -3,8 +3,6 @@ NAME = so_long
 SRCS = main.c utils.c init_stuff.c put_stuff.c
 
 
-TEST_SRCS = IMIGtest.c
-
 MLX_FLAGS = -lbsd -lXext -lX11 -lm
 C_FLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 
@@ -14,7 +12,7 @@ MINILIBX_PATH =./$(addprefix $(MINILIBX_FOL), libmlx.a)
 MAP_HAND_FOL = map_handling/
 MAP_HAND_PATH = $(addprefix $(MAP_HAND_FOL), map_handling.a)
 
-LIBFT_FOL = Libft/
+LIBFT_FOL = ../Libft/
 LIBFT_PATH = $(addprefix $(LIBFT_FOL), libft.a)
 
 LIBRARIES =	${MINILIBX_PATH} \
@@ -30,12 +28,8 @@ NONE='\033[0m'
 $(NAME): all
 
 all: ${LIBRARIES}
-	cc ${C_FLAGS} $(SRCS) ${LIBRARIES} ${MLX_FLAGS} -o ${NAME}
+	cc ${C_FLAGS} $(SRCS) -I${LIBFT_FOL} ${LIBRARIES} ${MLX_FLAGS} -o ${NAME}
 	@ echo ${GREEN}"~~~~${NAME} compiled!~~~~\n"${NONE}
-
-test: ${TEST_SRCS} ${MINILIBX_PATH}
-	clear
-	cc $(TEST_SRCS) -fsanitize=address -g ${MINILIBX_PATH} ${MLX_FLAGS} -o test
 
 $(MINILIBX_PATH):
 	@ make -C $(MINILIBX_FOL) all --no-print-directory > /dev/null
@@ -46,7 +40,7 @@ $(LIBFT_PATH):
 	@ echo ${GREEN}">>>>>>>>>>>>MADE $@\n"${NONE}
 
 $(MAP_HAND_PATH):
-	@ make -C $(MAP_HAND_FOL) fclean all --no-print-directory > /dev/null
+	@ make -C $(MAP_HAND_FOL) -I ${LIBFT_FOL} fclean all --no-print-directory > /dev/null
 	@ echo ${GREEN}">>>>>>>>>>>>MADE $@\n"${NONE}
 
 clean:

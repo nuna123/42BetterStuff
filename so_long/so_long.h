@@ -17,7 +17,7 @@
 # include <stdlib.h>
 
 # include "minilibx-linux/mlx.h"
-# include "Libft/libft.h"
+# include "libft.h"
 
 # include "map_handling/map_handling.h"
 # include "includes/vars_and_defins.h"

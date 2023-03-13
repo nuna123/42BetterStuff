@@ -19,7 +19,7 @@
 # include <errno.h>
 # include <limits.h>
 
-# include "../Libft/libft.h"
+# include "libft.h"
 # include "../includes/map_structs.h"
 # include "../includes/vars_and_defins.h"
 

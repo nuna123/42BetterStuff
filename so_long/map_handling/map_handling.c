@@ -6,11 +6,12 @@
 /*   By: nroth <nroth@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 18:43:11 by nroth             #+#    #+#             */
-/*   Updated: 2023/03/02 17:00:49 by nroth            ###   ########.fr       */
+/*   Updated: 2023/03/06 12:29:10 by nroth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "map_handling.h"
+
 /* 
 void	print_map(t_map *map)
 {
@@ -30,6 +31,7 @@ void	print_map(t_map *map)
 	ft_printf("\n--------------------\n");
 }
  */
+
 void	fill_map_arr(char *map_path, t_map *map)
 {
 	char	*line;

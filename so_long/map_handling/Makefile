@@ -1,5 +1,6 @@
 NAME = map_handling.a
 
+LIBFT_FOL = ../../Libft
 OBJ_FOL = obj/
 SRCS =	fill_and_check \
 		get_stuff \
@@ -11,8 +12,6 @@ C_FLAGS = -Wall -Werror -Wextra -fsanitize=address -g
 C_FILES = $(addsuffix .c, $(SRCS))
 O_FILES = $(addprefix $(OBJ_FOL), $(addsuffix .o, $(SRCS)))
 
-# LIBFT_FOL = ../Libft/
-# LIBFT_PATH = $(addprefix $(LIBFT_FOL), libft.a)
 
 ###################################################################
 
@@ -22,13 +21,10 @@ ${OBJ_FOL}:
 	mkdir -p ${OBJ_FOL}
 
 ${OBJ_FOL}%.o : %.c
-	cc -c ${C_FLAGS} $< -o $@
+	cc -c ${C_FLAGS} -I${LIBFT_FOL} $< -o $@
 
-all: ${OBJ_FOL} $(O_FILES) $(LIBFT_PATH) 
+all: ${OBJ_FOL} $(O_FILES)
 	ar -crs ${NAME} $(O_FILES)
-
-# $(LIBFT_PATH):
-# 	make -C $(LIBFT_FOL) all bonus extra --no-print-directory
 
 clean:
 	rm -rf ${OBJ_FOL}
