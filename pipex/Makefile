@@ -1,17 +1,18 @@
 NAME			=	pipex
-LIBFT			=	./libft.a
 
 OBJ_DIR			=	objs/
-INCLUDES_DIR	=	includes/
-CFLAGS			=	-Wall -Werror -Wextra 
+CFLAGS			=	-Wall -Werror -Wextra
 
 #Sources
 SRC_FILES		=	pipex\
 					piper\
-					get_full_name\
+					get_full_cmd\
 					pipex_utils\
 
-SRC 			=	${addprefix ${SRC_DIR}, ${addsuffix .c, ${SRC_FILES}}}
+LIBFT_FOL		= ../Libft/
+LIBFT			= ${addprefix ${LIBFT_FOL}, libft.a}
+
+SRCS			=	${addprefix ${SRC_DIR}, ${addsuffix .c, ${SRC_FILES}}}
 
 # Colors
 NRM_COLOR		=	\033[0;39m
@@ -25,15 +26,27 @@ YELLOW			=	\033[0;93m
 
 all:		${NAME}
 
-${NAME}:	${SRC}
-			@ cc ${CFLAGS} -I ${INCLUDES_DIR} ${SRC} ${LIBFT} -o ${NAME}
+${NAME}:	${SRC} ${LIBFT}
+			@ cc ${CFLAGS} ${SRCS} ${LIBFT} -I${LIBFT_FOL} -o ${NAME}
 			@ echo "${GREEN}pipex compiled!${NRM_COLOR}"
 
-clean:
-			rm -rf ${OBJ_DIR}
+${LIBFT}:	
+			@ make -C ${LIBFT_FOL} re all bonus extra
+			@ echo "${GREEN}Libft compiled :))${NRM_COLOR}"
 
-fclean:		clean
-			rm -f ${NAME}
+clean:
+			@ make -C ${LIBFT_FOL} clean --no-print-directory --silent
+			@ echo "${YELLOW}cleaning Libft..."
+			@ rm -rf ${OBJ_DIR}
+			@ echo "deleting ${OBJ_DIR}..."
+
+fclean:
+			@ make -C ${LIBFT_FOL} fclean --no-print-directory --silent
+			@ echo "${YELLOW}cleaning Libft..."
+			@ rm -rf ${OBJ_DIR}
+			@ echo "deleting ${OBJ_DIR}..."
+			@ rm -f ${NAME}
+			@ echo "deleting ${NAME}..."
 
 re:		fclean all
 

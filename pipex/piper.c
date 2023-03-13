@@ -12,75 +12,121 @@
 
 #include "pipex.h"
 
-static int	nurse_infile(char **cmd, int pipees[2], int infile)
+static void	piper_extand(int pipees[2], char *outfile_path,
+						char **cmds[2], char *env[])
 {
-	int	child;
+	int	file_fd;
 
-	child = fork();
-	if (child == -1)
-		return (-1);
-	if (child == 0)
-	{
-		dup2(infile, STDIN_FILENO);
-		dup2(pipees[1], STDOUT_FILENO);
-		close_pipes_files(pipees, infile, 0);
-		if (execve(cmd[0], cmd, NULL) == -1)
-			exit(1);
-	}
-	return (0);
+	close(pipees[1]);
+	file_fd = open(outfile_path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	if (file_fd == -1)
+		perror(outfile_path);
+	dup2(pipees[0], STDIN_FILENO);
+	dup2(file_fd, STDOUT_FILENO);
+	execve(cmds[1][0], cmds[1], env);
+	write(STDERR_FILENO, "pipex: ", 7);
+	write(STDERR_FILENO, cmds[1][0], ft_strlen(cmds[1][0]));
+	write(STDERR_FILENO, ": command not found\n", 20);
+	release_all(cmds[0], cmds[1], NULL, NULL);
+	exit(127);
 }
 
-static int	nurse_outfile(char **cmd, int pipees[2], int outfile)
+static void	forker(int pipees[2], int file_fd,
+				char **cmds[2], char *env[])
 {
-	int	child;
-
-	child = fork();
-	if (child == -1)
-		return (-1);
-	if (child == 0)
-	{
-		dup2(pipees[0], STDIN_FILENO);
-		dup2(outfile, STDOUT_FILENO);
-		close_pipes_files(pipees, 0, outfile);
-		if (execve(cmd[0], cmd, NULL) == -1)
-			exit(1);
-	}
-	return (0);
+	close (pipees[0]);
+	dup2(file_fd, STDIN_FILENO);
+	dup2(pipees[1], STDOUT_FILENO);
+	close (file_fd);
+	close (pipees[1]);
+	execve(cmds[0][0], cmds[0], env);
+	release_all(cmds[0], cmds[1], NULL, NULL);
+	exit(127);
 }
 
-int	piper(char **cmd1, char **cmd2, char *infile_path, char *outfile_path)
+int	piper(char **cmds[2], char *env[],
+		char *infile_path, char *outfile_path)
 {
-	int	infile_fd;
-	int	outfile_fd;
-	int	pipees[2];
+	int		file_fd;
+	pid_t	child;
+	int		pipees[2];
+	int		stat;
 
-	infile_fd = open (infile_path, O_RDONLY);
-	if (infile_fd < 0)
-		return (-1);
-	if (pipe(pipees) < 0)
-		return (1);
-	nurse_infile(cmd1, pipees, infile_fd);
-	wait(NULL);
-	outfile_fd = open(outfile_path, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	if (outfile_fd < 0)
-		return (-1);
-	nurse_outfile(cmd2, pipees, outfile_fd);
-	close_pipes_files(pipees, infile_fd, outfile_fd);
-	while (wait(NULL) > -1)
-		wait(NULL);
+	file_fd = open(infile_path, O_RDONLY);
+	if (file_fd == -1 || pipe(pipees) != 0)
+	{
+		perror(infile_path);
+		return (release_all(cmds[0], cmds[1], NULL, NULL));
+	}
+	child = fork();
+	if (child == 0)
+		forker(pipees, file_fd, cmds, env);
+	waitpid(child, &stat, 0);
+	if (WEXITSTATUS(stat) == 127)
+		ft_printf("pipex: %s: %s\n", cmds[0][0], "command not found");
+	else if (WEXITSTATUS(stat))
+		perror("pipex");
+	close(file_fd);
+	piper_extand(pipees, outfile_path, cmds, env);
 	return (0);
 }
 
 /* 
-int main(void)
+#include "pipex.h"
+
+static void	piper_extand(int pipees[2], char *outfile_path,
+						char **cmd2, char *env[])
 {
-	char* argv[] = {"/bin/cat", NULL};
-	char* argv2[] = {"/usr/bin/grep", "piper", NULL};
+	int	file_fd;
 
-	// char* argv[] = {"/usr/bin/cat", NULL};
-	// char* argv2[] = {"/usr/bin/wc","-l",  NULL};
-	int i = piper(argv, argv2, "infile","outfile");
+	close(pipees[1]);
+	file_fd = open(outfile_path, O_CREAT | O_WRONLY | O_TRUNC);
+	if (file_fd == -1)
+		perror(outfile_path);
+	dup2(pipees[0], STDIN_FILENO);
+	dup2(file_fd, STDOUT_FILENO);
+	execve(cmd2[0], cmd2, env);
+	ft_printf("pipex: %s: %s\n", cmd2[0], "command not found");
+	exit(127);
+}
 
-	printf("ret: {%i}\n", i);
-	return 0;
-} */
+void	forker(int pipees[2], int file_fd,
+				char **cmd1, char *env[])
+{
+	close (pipees[0]);
+	dup2(file_fd, STDIN_FILENO);
+	dup2(pipees[1], STDOUT_FILENO);
+	close (file_fd);
+	close (pipees[1]);
+	execve(cmd1[0], cmd1, env);
+	exit(127);
+}
+
+int	piper(char **cmd1, char **cmd2, char *env[],
+		char *infile_path, char *outfile_path)
+{
+	int		file_fd;
+	pid_t	child;
+	int		pipees[2];
+	int		stat;
+
+
+	file_fd = open(infile_path, O_RDONLY);
+	if (file_fd == -1 || pipe(pipees) != 0)
+	{
+		perror(infile_path);
+		return (release_all(cmd1, cmd2, NULL, NULL));
+	}
+	child = fork();
+	if(child == 0)
+		forker(pipees, file_fd, cmd1, env);
+	waitpid(child, &stat, 0);
+	if(WEXITSTATUS(stat) == 127)
+		ft_printf("pipex: %s: %s\n", cmd1[0], "command not found");
+	else if(WEXITSTATUS(stat))
+		perror("pipex");
+	close(file_fd);
+	piper_extand(pipees, outfile_path, cmd2, env);
+	return (0);
+}
+ */

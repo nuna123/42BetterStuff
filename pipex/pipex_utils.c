@@ -23,7 +23,7 @@ void	*close_pipes_files(int pipees[2], int infile_fd, int outfile_fd)
 	return (NULL);
 }
 
-void	*release_all(char **cmd1, char **cmd2,
+int	release_all(char **cmd1, char **cmd2,
 			char *infile_path, char *outfile_path)
 {
 	int	i;
@@ -41,11 +41,12 @@ void	*release_all(char **cmd1, char **cmd2,
 		i = -1;
 		while (cmd2[++i])
 			free(cmd2[i]);
+		free(cmd2[i]);
 		free(cmd2);
 	}
 	if (infile_path)
 		free(infile_path);
 	if (outfile_path)
 		free(outfile_path);
-	return (NULL);
+	return (1);
 }
