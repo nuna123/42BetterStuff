@@ -51,7 +51,7 @@ char	**get_full_cmd(char *cmd, char **env)
 	}
 	split_path = ft_split(path, ':');
 	extander(split_path, splot);
-	release_all(split_path, NULL, NULL, NULL);
+	free_arr((void **) split_path);
 	return (splot);
 }
 /* 

@@ -42,8 +42,7 @@ int		piper(char **cmds[2], char *env[],
 			char *infile_path, char *outfile_path);
 
 //PIPEX_UTILS
-int		release_all(char **cmd1, char **cmd2,
-			char *infile_path, char *outfile_path);
+void	free_arr(void **arr);
 int		release_cmds(char **cmds[2]);
 
 #endif
