@@ -28,5 +28,7 @@ int	release_cmds(char **cmds[2])
 		free_arr((void **) cmds[0]);
 	if (cmds[1])
 		free_arr((void **) cmds[1]);
+	cmds[0] = NULL;
+	cmds[1] = NULL;
 	return (1);
 }

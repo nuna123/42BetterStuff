@@ -39,8 +39,7 @@ char	**get_full_cmd(char *cmd, char **env);
 
 //PIPER
 int		piper(char **cmds[2], char *env[],
-			char *infile_path, char *outfile_path);
-
+			int file_fds[2]);
 //PIPEX_UTILS
 void	free_arr(void **arr);
 int		release_cmds(char **cmds[2]);

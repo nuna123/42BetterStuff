@@ -12,7 +12,7 @@
 
 #include "pipex.h"
 /* 
-void	printer(char **cmd1, char **cmd2, char *infile_path, char *outfile_path)
+void	printeeer(char **cmd1, char **cmd2, char *infile_path, char *outfile_path)
 {
 	int	i;
 
@@ -42,22 +42,29 @@ void	printer(char **cmd1, char **cmd2, char *infile_path, char *outfile_path)
 
 void	pipe_the_stuff(int argc, char *argv[], char *env[])
 {
-	char	*infile_path;
-	char	*outfile_path;
+	int		file_fds[2];
 	char	**cmds[2];
 	int		i;
 	int		stat;
 
-	infile_path = argv[1];
-	outfile_path = argv[argc - 1];
-	i = 1;
-	while (++i < argc - 2)
+	i = 2;
+	while (i < argc - 1)
 	{
+		file_fds[0] = open(argv[1], O_RDONLY);
+		file_fds[1] = open(argv[argc - 1], O_CREAT | O_RDWR | O_TRUNC, 0666);
+		if (file_fds[0] < 0)
+			exit((perror(argv[1]), 1));
+		if (file_fds[1] < 0)
+			exit((perror(argv[argc - 1]), 1));
 		cmds[0] = get_full_cmd(argv[i], env);
-		cmds[1] = get_full_cmd(argv[i + 1], env);
-		stat = piper(cmds, env, infile_path, outfile_path);
+		if (i + 1 < argc - 1)
+			cmds[1] = get_full_cmd(argv[i + 1], env);
+		stat = piper(cmds, env, file_fds);
 		release_cmds(cmds);
-		infile_path = outfile_path;
+		dup2(file_fds[1], file_fds[0]);
+		close(file_fds[0]);
+		close(file_fds[1]);
+		i += 2;
 	}
 	exit (stat);
 }
@@ -72,3 +79,10 @@ int	main(int argc, char *argv[], char *env[])
 	pipe_the_stuff(argc, argv, env);
 	return (0);
 }
+/*
+	(void) argc;
+	(void) argv;
+	pipe_the_stuff(8,
+		(char *[]) {"./pipex", "infile", "cat",
+		 "cat", "cat", "cat", "wc -l", "out"}, env);
+*/
