@@ -13,28 +13,28 @@
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
-#include <stdio.h>
-#include <stdlib.h>
+# include <stdio.h>
+# include <stdlib.h>
 
-#include <sys/time.h>
-#include <pthread.h>
-#include <unistd.h>
+# include <sys/time.h>
+# include <pthread.h>
+# include <unistd.h>
 
-#define OK	0
-#define ERR	1
+# define OK				0
+# define ERR			1
 
-#define FALSE	0
-#define TRUE	1
+# define FALSE			0
+# define TRUE			1
 
 # define TOOK_FORK		"has taken a fork"
 # define IS_EATING		"is eating"
 # define IS_SLEEPING	"is sleeping"
 # define IS_THINKING	"is thinking"
-# define IS_DEAD		"has died :("
+# define IS_DEAD		"died"
 
-#define THINKING	'T'
-#define EATING		'E'
-#define SLEEPING	'S'
+# define THINKING		'T'
+# define EATING			'E'
+# define SLEEPING		'S'
 
 /* 
 //SET BY TIME.H
@@ -43,47 +43,44 @@ struct timeval {
 	suseconds_t	tv_usec;// timeval micro sec
 };
 */
-typedef struct timeval t_time;
+typedef struct timeval	t_time;
+struct					s_philo;
 
-struct s_philo;
 typedef struct s_prog
 {
-	int num_of_philos;			//also num of forks
-	struct s_philo *philos; //arr of philos 
+	int				num_of_philos;
+	struct s_philo	*philos;
 
-	pthread_mutex_t *forks;			//each philo will lock the forks they use while eating, release when finished
-	pthread_mutex_t printing;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	printing;
+	pthread_t		*philo_threads;
 
-	pthread_t	*philo_threads;
+	int				alive;
+	unsigned long	prog_init;
 
-	int alive;
-	unsigned long prog_init;		//start of program timestamp
+	unsigned long	time_to_die;
+	unsigned long	time_to_eat;
+	unsigned long	time_to_sleep;
 
-	unsigned long time_to_die;
-	unsigned long time_to_eat;
-	unsigned long time_to_sleep;
-
-	unsigned int num_to_eat;			//number_of_times_each_philosopher_must_eat, optional value, if not set will be -1
-} t_prog;
+	unsigned int	num_to_eat;
+}	t_prog;
 
 typedef struct s_philo
 {
-	int				which;			// from 1 to PHILOSOPHERS NUM
-	unsigned long	time_last_ate;	//start time last ate, initiate to program start
-	unsigned long	time_sleeping;	//will be set every time philosopher starts sleeping, to wake up once done
+	int				which;
+	unsigned long	time_last_ate;
+	unsigned long	time_sleeping;
 
-	int				eat_count;		//init to 0, should increment each time 
+	int				eat_count;
 
-	char			currently;		// S = sleeping, E = eating, T = thinking
+	char			currently;
 
 	pthread_mutex_t	*forks[2];
 	t_prog			*prog;
-	/* struct s_philo *prev;
-	struct s_philo *next; */
+}	t_philo;
 
-} t_philo;
-
-
+//MAIN
+void			unlock_forks(t_philo *philo);
 
 // UTILS
 int				ft_strlen(const char *s);
@@ -93,7 +90,9 @@ unsigned long	msleep(unsigned long ms);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 
 // FUNCS
-t_prog	*init_prog(int argc, char *argv[]);
-void	free_prog(t_prog *prog);
-
+t_prog			*init_prog(int argc, char *argv[]);
+void			free_prog(t_prog *prog);
+t_philo			*init_philo(int which, t_prog *prog);
+void			announcment(t_philo *philo, char *msg);
+int				check_pulse(t_philo *philo);
 #endif

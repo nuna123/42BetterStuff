@@ -28,7 +28,7 @@ long	ft_atoi(const char *nptr)
 {
 	long int	res;
 	int			sign;
-	int		counter;
+	int			counter;
 
 	res = 0;
 	sign = 1;
@@ -40,7 +40,7 @@ long	ft_atoi(const char *nptr)
 		|| nptr[counter] == '+')
 		sign = 44 - nptr[counter++];
 	while (counter < ft_strlen(nptr)
-	&& (nptr[counter] >= '0' &&nptr[counter] <= '9') )
+		&& (nptr[counter] >= '0' && nptr[counter] <= '9'))
 	{
 		res = (res * 10) + (nptr[counter] - '0');
 		counter++;
@@ -58,8 +58,6 @@ unsigned long	get_timestamp_ms(t_time *time)
 		ms_timestamp = (1000 * ts.tv_sec) + (ts.tv_usec / 1000);
 	else
 		ms_timestamp = (1000 * time->tv_sec) + (time->tv_usec / 1000);
-/* 	printf("TIMESTAMP: %lu\n", ms_timestamp);
-	printf("TIMESTAMP:tv_sec %lu ; tv_usec %lu\n", ts.tv_sec, ts.tv_usec); */
 	return (ms_timestamp);
 }
 

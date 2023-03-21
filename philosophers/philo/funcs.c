@@ -21,14 +21,13 @@ t_prog	*init_prog(int argc, char *argv[])
 	if (!prog)
 		return (NULL);
 	prog->alive = TRUE;
-
 	prog->num_of_philos = (int) ft_atoi(argv[1]);
 	prog->prog_init = get_timestamp_ms(NULL);
 	prog->philos = malloc(sizeof(t_philo) * prog->num_of_philos);
 	prog->forks = malloc(sizeof(pthread_mutex_t) * prog->num_of_philos);
 	prog->philo_threads = malloc(sizeof(pthread_t) * prog->num_of_philos);
 	if (!prog->philos || !prog->forks || !prog->philo_threads)
-		return (free(prog->philos), free(prog->forks),free (prog->philo_threads), NULL);
+		return (free_prog(prog), NULL);
 	i = -1;
 	while (++i < prog->num_of_philos)
 		pthread_mutex_init(&prog->forks[i], NULL);
@@ -46,9 +45,6 @@ void	free_prog(t_prog *prog)
 {
 	int	i;
 
-/*  	i = -1;
-	while (++i < prog->num_of_philos)
-		pthread_detach((prog->philo_threads[i])); */
 	i = -1;
 	while (++i < prog->num_of_philos)
 		pthread_mutex_destroy(&prog->forks[i]);
@@ -57,4 +53,42 @@ void	free_prog(t_prog *prog)
 	free (prog->philo_threads);
 	free (prog->philos);
 	free (prog);
+}
+
+t_philo	*init_philo(int which, t_prog *prog)
+{
+	t_philo	*philo;
+
+	philo = &prog->philos[which - 1];
+	philo->which = which;
+	philo->prog = prog;
+	philo->time_last_ate = prog->prog_init;
+	philo->currently = THINKING;
+	philo->eat_count = 0;
+	return (philo);
+}
+
+void	announcment(t_philo *philo, char *msg)
+{
+	if (philo->prog->alive == TRUE)
+	{
+		pthread_mutex_lock(&philo->prog->printing);
+		printf("%lu %i %s\n",
+			get_timestamp_ms(NULL), philo->which, msg);
+		pthread_mutex_unlock(&philo->prog->printing);
+	}
+	return ;
+}
+
+int	check_pulse(t_philo *philo)
+{
+	if (get_timestamp_ms(NULL) - philo->time_last_ate
+		>= philo->prog->time_to_die)
+	{
+		announcment(philo, IS_DEAD);
+		philo->prog->alive = FALSE;
+		unlock_forks(philo);
+		return (TRUE);
+	}
+	return (FALSE);
 }
