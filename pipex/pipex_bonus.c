@@ -87,14 +87,48 @@ void	pipe_the_stuff(int argc, char *argv[], char *env[], int in_fd)
 	exit (stat);
 }
 
+void	read_input(char *del, int out_fd)
+{
+	char	*line;
+	int		done;
+
+	done = 0;
+	ft_printf("heredoc>");
+	line = get_next_line(STDIN_FILENO);
+	while (line)
+	{
+		if (ft_strncmp(line, del, ft_strlen(del)) == 0
+			&& line[ft_strlen(del)] == '\n')
+		{
+			free (line);
+			break ;
+		}
+		write(out_fd, line, ft_strlen(line));
+		free(line);
+		if (done)
+			break ;
+		ft_printf("heredoc>");
+		line = get_next_line(STDIN_FILENO);
+	}
+	close(out_fd);
+}
+
 int	main(int argc, char *argv[], char *env[])
 {
+	int	pipees[2];
 	int	infile;
 
-	if (argc != 5)
+	if (argc < 4)
 	{
 		ft_printf("Invalid number of arguments.\n");
 		return (1);
+	}
+	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
+	{
+		if (pipe(pipees) == -1)
+			return (-1);
+		read_input(argv[2], pipees[1]);
+		pipe_the_stuff(argc - 1, &argv[1], env, pipees[0]);
 	}
 	infile = open(argv[1], O_RDONLY);
 	if (infile == -1)
@@ -107,16 +141,29 @@ int	main(int argc, char *argv[], char *env[])
 /*
 	(void) argc;
 	(void) argv;
-	pipe_the_stuff(8,
-		(char *[]) {"./pipex", "infile", "cat",
-		 "cat", "cat", "cat", "wc -l", "out"}, env);
+	pipe_the_stuff(4,
+		(char *[]) {"here_doc", "LIM" ,"wc", "catsa", "test.txt"}, env);
 */
 
 /* 
+		int	pipees[2];
+	int	infile;
+
 	if (argc < 4)
 	{
 		ft_printf("Invalid number of arguments.\n");
 		return (1);
 	}
-
-	pipe_the_stuff(argc, argv, env); */
+	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
+	{
+		if (pipe(pipees) == -1)
+			return (-1);
+		read_input(argv[2], pipees[1]);
+		pipe_the_stuff(argc - 1, &argv[1], env, pipees[0]);
+	}
+	infile = open(argv[1], O_RDONLY);
+	if (infile == -1)
+		exit((perror(argv[1]), 2));
+	close(infile);
+	pipe_the_stuff(argc, argv, env, -1);
+*/
