@@ -30,7 +30,7 @@
 # define IS_EATING		"is eating"
 # define IS_SLEEPING	"is sleeping"
 # define IS_THINKING	"is thinking"
-# define IS_DEAD		"died"
+# define IS_DEAD		"has very much died"
 
 # define THINKING		'T'
 # define EATING			'E'

@@ -20,7 +20,7 @@ void	unlock_forks(t_philo *philo)
 
 static void	philo_eat(t_philo *philo)
 {
-	if (philo->prog->alive == FALSE
+	if (check_pulse (philo) == TRUE
 		|| (unsigned int) philo->eat_count >= philo->prog->num_to_eat)
 	{
 		philo->prog->alive = FALSE;
@@ -36,27 +36,26 @@ static void	philo_eat(t_philo *philo)
 	if (check_pulse (philo) == TRUE)
 		return ;
 	announcment(philo, IS_EATING);
+	philo->time_last_ate = get_timestamp_ms(0);
 	msleep(philo->prog->time_to_eat);
-	if (philo->prog->alive == FALSE)
-		return ;
-	philo->time_last_ate = get_timestamp_ms(NULL);
 	unlock_forks(philo);
 	philo->eat_count++;
 }
 
 static void	philo_do(t_philo *philo, char action)
 {
+	check_pulse (philo);
 	if (philo->prog->alive == FALSE)
 		return ;
-	if (action == THINKING)
+	else if (action == THINKING)
 	{
 		announcment(philo, IS_THINKING);
-		msleep(2 * philo->prog->time_to_eat - philo->prog->time_to_sleep);
 	}
-	if (action == SLEEPING)
+	else if (action == SLEEPING)
 	{
 		announcment(philo, IS_SLEEPING);
 		msleep(philo->prog->time_to_sleep);
+		check_pulse (philo);
 	}
 }
 
@@ -69,8 +68,12 @@ static void	*philosophize(void *philo_v)
 		return (NULL);
 	philo = (t_philo *) philo_v;
 	prog = philo->prog;
+	if (philo->which % prog->num_of_philos == philo->which - 1)
+		return (NULL);
 	philo->forks[0] = &prog->forks[philo->which % prog->num_of_philos];
 	philo->forks[1] = &prog->forks[philo->which - 1];
+	if (prog->prog_init == 0)
+		prog->prog_init = get_timestamp_ms(NULL);
 	while (1 && prog->alive == TRUE)
 	{
 		if (philo->which % 2 == 1 && philo->eat_count == 0)
@@ -103,6 +106,5 @@ int	main(int argc, char *argv[])
 	i = -1;
 	while (++i < prog->num_of_philos)
 		pthread_join(prog->philo_threads[i], NULL);
-	free_prog(prog);
 	return (0);
 }
