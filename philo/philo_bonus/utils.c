@@ -48,16 +48,13 @@ long	ft_atoi(const char *nptr)
 	return (res * sign);
 }
 
-unsigned long	get_timestamp_ms(t_time *time)
+unsigned long	get_timestamp_ms(void)
 {
 	unsigned long	ms_timestamp;
 	t_time			ts;
 
 	gettimeofday(&ts, NULL);
-	if (!time)
-		ms_timestamp = (1000 * ts.tv_sec) + (ts.tv_usec / 1000);
-	else
-		ms_timestamp = (1000 * time->tv_sec) + (time->tv_usec / 1000);
+	ms_timestamp = (1000 * ts.tv_sec) + (ts.tv_usec / 1000);
 	return (ms_timestamp);
 }
 

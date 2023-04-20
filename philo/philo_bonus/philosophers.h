@@ -16,23 +16,30 @@
 # include <stdio.h>
 # include <stdlib.h>
 
+#include <sys/types.h>
 # include <sys/time.h>
 # include <unistd.h>
 # include <sys/time.h>
 # include <pthread.h>
 # include <stdio.h>
+# include <string.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <semaphore.h>
 # include <sys/stat.h>
 # include <fcntl.h>
+#include <signal.h>
+
 
 # define OK				0
 # define ERR			1
 
 # define FALSE			0
 # define TRUE			1
+
+# define FORK_NAME		"/focks"
+# define PRINT_NAME		"/printer"
 
 # define TOOK_FORK		"has taken a fork"
 # define IS_EATING		"is eating"
@@ -59,9 +66,9 @@ typedef struct s_prog
 	int				num_of_philos;
 	struct s_philo	*philos;
 
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	printing;
-	pthread_t		*philo_threads;
+	sem_t			*forks_sema;
+	sem_t			*print_sema;
+	pid_t			*philo_pids;
 
 	int				alive;
 	unsigned long	prog_init;
@@ -77,13 +84,9 @@ typedef struct s_philo
 {
 	int				which;
 	unsigned long	time_last_ate;
-	unsigned long	time_sleeping;
 
 	int				eat_count;
 
-	char			currently;
-
-	pthread_mutex_t	*forks[2];
 	t_prog			*prog;
 }	t_philo;
 
@@ -93,7 +96,7 @@ void			unlock_forks(t_philo *philo);
 // UTILS
 int				ft_strlen(const char *s);
 long			ft_atoi(const char *nptr);
-unsigned long	get_timestamp_ms(t_time *time);
+unsigned long	get_timestamp_ms(void);
 unsigned long	msleep(unsigned long ms);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 

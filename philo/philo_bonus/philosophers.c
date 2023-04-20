@@ -12,33 +12,33 @@
 
 #include "./philosophers.h"
 
-void	unlock_forks(t_philo *philo)
-{
-	pthread_mutex_unlock(philo->forks[1]);
-	pthread_mutex_unlock(philo->forks[0]);
-}
 
 static void	philo_eat(t_philo *philo)
 {
 	if (check_pulse (philo) == TRUE
 		|| (unsigned int) philo->eat_count >= philo->prog->num_to_eat)
 	{
-		philo->prog->alive = FALSE;
+		/* philo->prog->alive = FALSE;
 		unlock_forks(philo);
-		return ;
+		return ; */
+		free_prog(philo->prog);
+		exit(0);
 	}
-	pthread_mutex_lock((philo->forks[0]));
+	sem_wait(philo->prog->forks_sema);
 	announcment(philo, TOOK_FORK);
 	if (check_pulse (philo) == TRUE)
 		return ;
-	pthread_mutex_lock((philo->forks[1]));
+	sem_wait(philo->prog->forks_sema);
 	announcment(philo, TOOK_FORK);
 	if (check_pulse (philo) == TRUE)
 		return ;
 	announcment(philo, IS_EATING);
-	philo->time_last_ate = get_timestamp_ms(0);
+	philo->time_last_ate = get_timestamp_ms();
 	msleep(philo->prog->time_to_eat);
-	unlock_forks(philo);
+
+	sem_post(philo->prog->forks_sema);
+	sem_post(philo->prog->forks_sema);
+
 	philo->eat_count++;
 }
 
@@ -59,21 +59,17 @@ static void	philo_do(t_philo *philo, char action)
 	}
 }
 
-static void	*philosophize(void *philo_v)
+static void	philosophize(t_philo *philo)
 {
-	t_philo	*philo;
 	t_prog	*prog;
 
-	if (!philo_v)
-		return (NULL);
-	philo = (t_philo *) philo_v;
+/* 	if (!philo)
+		exit((free_prog(philo->prog),1));
 	prog = philo->prog;
-	if (philo->which % prog->num_of_philos == philo->which - 1)
-		return (NULL);
-	philo->forks[0] = &prog->forks[philo->which % prog->num_of_philos];
-	philo->forks[1] = &prog->forks[philo->which - 1];
+	if (prog->num_of_philos == 1)
+		exit((free_prog(philo->prog),1));
 	if (prog->prog_init == 0)
-		prog->prog_init = get_timestamp_ms(NULL);
+		prog->prog_init = get_timestamp_ms();
 	while (1 && prog->alive == TRUE)
 	{
 		if (philo->which % 2 == 1 && philo->eat_count == 0)
@@ -81,8 +77,9 @@ static void	*philosophize(void *philo_v)
 		philo_eat(philo);
 		philo_do(philo, SLEEPING);
 		philo_do(philo, THINKING);
-	}
-	return (NULL);
+	} */
+	printf ("HELLO FROM %i\n", philo->which);
+	exit((printf("exiting...\n"), free_prog(philo->prog),1));
 }
 
 int	main(int argc, char *argv[])
@@ -96,15 +93,25 @@ int	main(int argc, char *argv[])
 	else
 		return (printf("Invalid number of args."), 1);
 	i = 0;
+	printf("making philos...\n");
 	while (i < prog->num_of_philos)
 	{
 		philo = init_philo(i + 1, prog);
-		pthread_create(&(prog->philo_threads[i]),
-			NULL, philosophize, (void *) philo);
+		printf("making philo %i...\n", i+ 1);
+
+		prog->philo_pids[i] = fork();
+		printf("PID %i...\n", prog->philo_pids[i]);
+
+		if (prog->philo_pids[i] == 0)
+		{
+			philosophize(philo);
+			exit (2);
+		}
+		msleep(200);
 		i++;
 	}
-	i = -1;
-	while (++i < prog->num_of_philos)
-		pthread_join(prog->philo_threads[i], NULL);
+	// wait(NULL);
+	
+	free_prog(prog);
 	return (0);
 }
