@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "./philosophers.h"
-
+#include <errno.h>
 t_prog	*init_prog(int argc, char *argv[])
 {
 	t_prog	*prog;
@@ -24,8 +24,10 @@ t_prog	*init_prog(int argc, char *argv[])
 	prog->prog_init = 0;
 	prog->forks_sema = malloc(sizeof(sem_t));
 	prog->print_sema = malloc(sizeof(sem_t));
+
 	prog->philos = malloc(sizeof(t_philo) * prog->num_of_philos);
 	memset(prog->philos, 0, sizeof(t_philo) * prog->num_of_philos);
+	
 	prog->philo_pids = malloc(sizeof(pid_t) * prog->num_of_philos);
 	if (!prog->philos || !prog->philo_pids)
 		return (free_prog(prog), NULL);
@@ -35,35 +37,55 @@ t_prog	*init_prog(int argc, char *argv[])
 	prog->num_to_eat = (unsigned int) -1;
 	if (argc == 6)
 		prog->num_to_eat = (unsigned int) ft_atoi(argv[5]);
-
-	prog->forks_sema = sem_open(FORK_NAME, O_CREAT, 0666, prog->num_of_philos);
-	prog->print_sema = sem_open(PRINT_NAME, O_CREAT, 0666, 1);
 	return (prog);
 }
 
+void	open_semis(t_prog *prog)
+{
+	sem_t *sem = sem_open(FORK_NAME, O_CREAT, S_IRWXU, 1);
+	printf("opening semis...fork val: %i\n", errno);
+
+	// prog->forks_sema = sem_open(FORK_NAME, O_CREAT, 0666, 1);
+	if (sem == SEM_FAILED)
+	{
+		printf("AAAAAAAAAAAAA\n");
+		return ;
+	}
+
+printf("FORKS: waiting\n");
+	sem_wait(sem);
+	
+	printf("FORKS: NICE!\n");
+	printf("FORKS: posting sem\n");
+	sem_post(sem);
+
+	// prog->print_sema = sem_open(PRINT_NAME, O_CREAT, 0666, 1);
+}
+
+
 void	free_prog(t_prog *prog)
 {
-/* 	int	i;
-
-	i = -1;
-	while (++i < prog->num_of_philos)
-		kill(prog->philo_pids[i], SIGQUIT); */
-
 	free (prog->philos);
-	free(prog->print_sema);
 
 	sem_close(prog->print_sema);
-
-	sem_unlink(PRINT_NAME);
+	free(prog->print_sema);
 
 	sem_close(prog->forks_sema);
-	sem_unlink(FORK_NAME);
-	// free(prog->forks_sema);
-	
+	free(prog->forks_sema);
 
 	free (prog->philo_pids);
 
 	free (prog);
+}
+
+
+void	terminate_philos(t_prog *prog)
+{
+	int	i;
+
+	i = -1;
+	while (++i < prog->num_of_philos)
+		kill(prog->philo_pids[i], SIGKILL);
 }
 
 t_philo	*init_philo(int which, t_prog *prog)

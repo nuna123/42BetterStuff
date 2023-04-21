@@ -24,6 +24,7 @@ static void	philo_eat(t_philo *philo)
 		free_prog(philo->prog);
 		exit(0);
 	}
+	printf("waiting for fork...\n");
 	sem_wait(philo->prog->forks_sema);
 	announcment(philo, TOOK_FORK);
 	if (check_pulse (philo) == TRUE)
@@ -63,7 +64,7 @@ static void	philosophize(t_philo *philo)
 {
 	t_prog	*prog;
 
-/* 	if (!philo)
+	if (!philo)
 		exit((free_prog(philo->prog),1));
 	prog = philo->prog;
 	if (prog->num_of_philos == 1)
@@ -77,9 +78,9 @@ static void	philosophize(t_philo *philo)
 		philo_eat(philo);
 		philo_do(philo, SLEEPING);
 		philo_do(philo, THINKING);
-	} */
+	}
 	printf ("HELLO FROM %i\n", philo->which);
-	exit((printf("exiting...\n"), free_prog(philo->prog),1));
+	exit((printf("exiting...\n"), free_prog(prog), 0));
 }
 
 int	main(int argc, char *argv[])
@@ -92,26 +93,45 @@ int	main(int argc, char *argv[])
 		prog = init_prog(argc, argv);
 	else
 		return (printf("Invalid number of args."), 1);
-	i = 0;
-	printf("making philos...\n");
+
+	// open_semis(prog);
+
+	printf("fork name: {%s}\n", FORK_NAME);
+	sem_t *sema = sem_open(FORK_NAME, O_CREAT, S_IRWXU, 1);
+
+	printf("MAIN: waiting for semi...\n");
+	sem_wait(sema);
+	
+	printf("MAIN: NICE!\n");
+	printf("MAIN: posting sem\n");
+	sem_post(sema);
+
+	// i = 0;
+/* 	printf("making philos...\n");+
 	while (i < prog->num_of_philos)
 	{
 		philo = init_philo(i + 1, prog);
-		printf("making philo %i...\n", i+ 1);
+		printf("\nmaking philo %i...\n", i+ 1);
 
 		prog->philo_pids[i] = fork();
 		printf("PID %i...\n", prog->philo_pids[i]);
 
 		if (prog->philo_pids[i] == 0)
 		{
+			open_semis(prog);
 			philosophize(philo);
 			exit (2);
 		}
-		msleep(200);
+		msleep(1);
 		i++;
 	}
-	// wait(NULL);
-	
-	free_prog(prog);
+
+	int exit_stat;
+	printf("%sPHILO PID: %i\nExit stat: %i%s\n",Purple , wait(&exit_stat), exit_stat, Black); //wait for any proc to exit
+
+	terminate_philos(prog); //close all remaining processes */
+
+	free_prog(prog); //free space
+
 	return (0);
 }

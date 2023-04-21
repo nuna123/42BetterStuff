@@ -32,14 +32,24 @@
 #include <signal.h>
 
 
+#define Black	"\033[0;30m"
+#define Red		"\033[0;31m"
+#define Green	"\033[0;32m"
+#define Yellow	"\033[0;33m"
+#define Blue	"\033[0;34m"
+#define Purple	"\033[0;35m"
+#define Cyan	"\033[0;36m"
+#define White	"\033[0;37m"
+
+
 # define OK				0
 # define ERR			1
 
 # define FALSE			0
 # define TRUE			1
 
-# define FORK_NAME		"/focks"
-# define PRINT_NAME		"/printer"
+# define FORK_NAME		"/ofcks"
+# define PRINT_NAME		"printer"
 
 # define TOOK_FORK		"has taken a fork"
 # define IS_EATING		"is eating"
@@ -106,4 +116,7 @@ void			free_prog(t_prog *prog);
 t_philo			*init_philo(int which, t_prog *prog);
 void			announcment(t_philo *philo, char *msg);
 int				check_pulse(t_philo *philo);
+void			terminate_philos(t_prog *prog);
+void			open_semis(t_prog *prog);
+
 #endif
