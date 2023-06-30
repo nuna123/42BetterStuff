@@ -1,8 +1,6 @@
 #include "./microshell.h"
 
 
-
-
 void printerr(char *s)
 {
 	while (s && *s)
@@ -17,7 +15,6 @@ void	fatality (void)
 	printerr("error: fatal\n");
 	exit(1);
 }
-
 
 void	run_execve(int in_fd, int out_fd, char **command, char *envp[])
 {
@@ -38,6 +35,7 @@ void	run_execve(int in_fd, int out_fd, char **command, char *envp[])
 		printerr("error: cannot execute ");
 		printerr(command[0]);
 		printerr("\n");
+		exit (errno);
 	}
 	waitpid(child, NULL, 0);
 }
@@ -51,7 +49,7 @@ int main(int argc, char *argv[], char *envp[])
 	int		out_fd;
 	int		pipees[2];
 
-	if(!argv[1])
+	if(argc < 2)
 		return (1);
 
 	in_fd = dup(STDIN_FILENO);
@@ -60,14 +58,12 @@ int main(int argc, char *argv[], char *envp[])
 	argv++;
 	while (argv[0])
 	{
-		// Get to the end of command
+		// A command is not one arg long, get to the end of command
 		argv_end = 0;
 		while (argv[argv_end]
 			&& strcmp(argv[argv_end], "|") != 0
 			&& strcmp(argv[argv_end], ";") != 0)
-			{
 				argv_end++;
-			}
 		if (argv_end == 0)
 			argv_end = 1;
 		else if (!strcmp(argv[0], "cd"))
@@ -110,7 +106,6 @@ int main(int argc, char *argv[], char *envp[])
 				dup2(STDIN_FILENO, in_fd);
 				dup2(STDOUT_FILENO, out_fd);
 			}
-
 			if (!argv[argv_end])
 			{
 				close (in_fd);
