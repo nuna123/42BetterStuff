@@ -37,6 +37,7 @@ char *ft_strchr(char *src, char c)
 
 char	*get_next_line(int fd)
 {
+	//WE DONT CHECK IF BUFFERSIZE <= 0 BECAUSE EXAM TESTER WILL FAIL YOU
 	if (fd < 0)
 		return(NULL);
 

@@ -72,7 +72,7 @@ int main(int argc, char *argv[], char *env[])
 					close(pipees[0]);
 					close(pipees[1]);
 					if (exec_cmd(in_fd, argv, env))
-						exit ((print_err("fataliy!\n"), 1));
+						exit ((print_err("fatality!\n"), 1));
 				}
 				else
 				{
