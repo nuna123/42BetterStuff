@@ -42,10 +42,15 @@ Docker
 	Cgroups:
 		limtation and control of the resources each process is using
 
-	DOCKER IMAGES: lightweight executable packages that include everything needed to run some software.
-		built with DOCKER FILES - instructions for creating the image.
+	Dockerfiles:
+			basically a makefile for creating Docker Images.
 			Dockerfile ref: https://docs.docker.com/engine/reference/builder/
-
+	Docker Image:
+		A Docker image is a pre-packaged, read-only template that contains everything needed to run an application, including the application code, dependencies, and any system libraries or configuration files. Images are created from a Dockerfile, which specifies the configuration and steps needed to build the image.
+	Docker Container:
+		A Docker container is a running instance of a Docker image. Containers are isolated environments that run an application and its dependencies, but with their own isolated file system, network, and resources. Containers are created from Docker images, and multiple containers can run from the same image.
+	Docker Volume:
+		A Docker volume is a persistent data storage area that can be used by one or more containers. Volumes are used to store data that needs to persist beyond the life of a container, such as application configuration files or user data. Volumes can be created and managed independently of containers and can be shared between containers.
 
 	|----docker-compose.yml---------------------------------------------|
 	|	A docker-compose.yml is a config file for Docker Compose.		|
@@ -72,8 +77,10 @@ $$$$$$$$\ $$\                        $$$$$$\                       $$\          
 
 • NGINX with TLSv1.2 or TLSv1.3 only.
 	Nginx is a webserver which stores hmtl, js, images files and use http request to display a website. Nginx conf documents will be used to config our server and the right proxy connexion.
-	TLS - Transport Layer Sec
+	TLS - Transport Layer Security protocol
+
 • WordPress + php-fpm (it must be installed and configured) - without nginx.
+ 	php-fpm - (FastCGI Process Manager)
 • MariaDB  -  without nginx.
 • A volume that contains your WordPress database.
 • A second volume that contains your WordPress website files.
