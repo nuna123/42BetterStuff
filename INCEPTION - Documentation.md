@@ -60,8 +60,10 @@ Docker
 	|	The advantage of Docker Compose is easy configuration.			|
 	|		You don't have to write a big bunch of commands into Bash,	|
 	|		You can predefine it in the docker-compose.yml.				|
-	|																	|
-	|	Basically makefile for Docker containers						|
+	|	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!		|
+	|	The key difference between the Dockerfile and docker-compose	|
+	|	is that the Dockerfile describes how to build Docker images,	|
+	|	while docker-compose is used to run Docker containers.			|
 	|-------------------------------------------------------------------|
 
 
