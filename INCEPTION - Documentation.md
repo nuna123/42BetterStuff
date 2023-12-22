@@ -4,7 +4,7 @@ hopefully to help me understand what to
 /*
 
 Docker tutorial, goes over basic docker commands, terminology, images and dockefiles
-https://docker-curriculum.com/
+	https://docker-curriculum.com/
 
 Containers vs VMs: What's the difference?
 IBM Technology
@@ -70,6 +70,29 @@ Docker
 										|	is that the Dockerfile describes how to build Docker images,	|
 										|	while docker-compose is used to run Docker containers.			|
 										|-------------------------------------------------------------------|
+
+
+Docker commands:
+	- run [img]	: run a docker image
+		--rm	: delete the container after it closes
+		-it		: attach the container to an interactive terminal.
+		-d		: detach from current terminal, container ID gets printed and container runs in background.
+
+
+	- pull [img]: pull a docker image from the registry.
+					if [RUN] doesn't find the image locally, it runs pull to search for it in online.
+
+	- ps		: list all running docker containers
+		-a		: lists all running and exited containers that were not deleted
+
+	- rm		: when a container exits, it doesnt delete. a buildup of closed cotainers can take up space.
+					the rm command takes either the container name or id.
+					[docker rm $(docker ps -a -q -f status=exited)] will close all exited containers.
+
+	- rmi		: can be used to delete images
+
+
+
 
 
 $$$$$$$$\ $$\                        $$$$$$\                       $$\               $$\
