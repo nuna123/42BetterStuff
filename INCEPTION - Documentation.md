@@ -78,6 +78,7 @@ Docker commands:
 		-it		: attach the container to an interactive terminal.
 		-d		: detach from current terminal, container ID gets printed and container runs in background.
 
+	- stop		: stops a detached container. takes it's ID or name.
 
 	- pull [img]: pull a docker image from the registry.
 					if [RUN] doesn't find the image locally, it runs pull to search for it in online.
@@ -122,3 +123,68 @@ ________________________________________________________________________________
 
 NOTES:
 	-only users in the 'docker' user grouo have access to the Docker deamon socket. by default only sudo and docker are added, personal user might need to be added with [sudo usermod -aG docker $USER] then either reset ubuntu, or run [newgrp docker] which will open a new terminal, iin which the current user's primary grouo is the specified one. ie docker. (TEMP solution that will only last for the current terminal)
+
+
+
+
+
+
+NGINX container
+______________________________________________________________
+
+Dockerfile:
+The container is based on Debian, the panultimate stable version is by default called OLDSTABLE.
+then nginx and openssl need to be installed in order to run the nginx server.
+A cerftificate needs to be installed in order to limit allowed security protocols(TLSv1.2, 1.3)
+creating a folder for my SSL certificate and generating it:
+	ssl command parameters explained:
+		req - create certificates
+		x509 - certificate type
+		nodes - [no DES(Data Encryption Standard)] makes sure the private key wont be encrypted
+		out - path for the certificate output
+		keyout - path for the PRIVATE KEY
+		subj - the SSL cert demands some info about the owner, openssl by default opens a dialog for the info but [docker build] wont run if prompted for info. this gives all that info within the command to not be prompted.
+
+Rewriting the default NGINX config file to include my changes to the default server (using generated SSL cert, listening on port 443...)
+
+copying my index.html to the nginx server.
+
+EXPOSE:
+	https://we-are.bookmyshow.com/understanding-expose-in-dockerfile-266938b6a33d
+	https://www.baeldung.com/ops/docker-expose-vs-publish
+	The EXPOSE instruction informs Docker that the container listens on the specified network ports at runtime. EXPOSE does not make the ports of the container accessible to the host.
+	when using RUN to run the image, the host port needs to be redirected to the 443 nginx port with [--publish/-p [host port]:[container port(443)]]
+
+lastly, CMD runs nginx. the daemon off; directive tells Nginx to stay in the foreground.
+
+SERVER CONFIGURATION:
+the _server_conf file is not used, but the code in it was placed in nginx.conf which is actually copied into the container.
+
+server{
+	listen 443;											-> pretty self explanatory
+	ssl_protocols TLSv1.2 TLSv1.3;						-> same. allow only these protocols.
+	ssl_certificate /etc/nginx/ssl/inception.crt;		-> use the generated certificate
+	ssl_certificate_key /etc/nginx/ssl/inception.key;	-> use the generated private key
+
+	server_name localhost;								-> defines where to use the certificate. 
+	root /var/www/html;									-> root folder of the site.
+}
+
+//OTHER STUFF
+
+$>	docker build . -t [myimg]
+$>	docker run -d --rm  -p 443:443 --name nginx_cont myimg:latest
+	-d: detach from shell, run in background
+	--rm: delete after closing
+	-p: publish, redirect host port 443 to container port 443
+	--name: give usable name instead of id
+//curl
+	-k: my certificate is self signed, is not trusted. -k skips certification validation
+	-I --head: fetch headers only
+	-v --verbose
+	--tlsvX.X : minimum tls version
+	--tls-max : maximum tls version
+$>	curl -k -I -v --tlsv1.2 --tls-max 1.3 https://localhost:443 //should work
+$>	curl -k -I -v --tlsv1 --tls-max 1.1 https://localhost:443 //should NOT work
+
+
